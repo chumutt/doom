@@ -1,0 +1,1047 @@
+#+TITLE: Chu's Literate DOOM GNU Emacs Configuration
+#+AUTHOR: chu the pup
+#+DESCRIPTION: Chu's Literate Doom GNU Emacs configuration
+#+PROPERTY: header-args :tangle yes
+#+auto_tangle: t
+
+* Preamble
+
+Here's the deets:
+
+** Org-mode babel tangle setup
+
+There is a property defined on at the top of this file:
+
+#+begin_example elisp
+header-args :tangle yes
+#+end_example
+
+This tells Emacs to automatically tangle (include) all code blocks in this file when generating the code for the config file (~config.el~), unless the code block explicitly includes `:tangle no` as the above code block does (or if it is a quote or example block).
+
+
+** Usage of quote and example blocks
+:PROPERTIES:
+:ID:       8f9bc104-87a1-4fa4-b624-a5ea64210b8a
+:END:
+
+What I am about to explain is typically done in order to debug the configuration on my end. However, the use of quote and example blocks also serves as a way of offering an on/off switch to certain blocks of "settings" (blocks beginning in "#+begin_something" and ending in "#+end_something"):
+
+#+begin_quote
+#+begin_example
+...
+#+end_example
+#+end_quote
+
+...or just delete it entirely if you don't want or need the feature / setting, for example, if you want to disable *[[id:a948faf0-c278-4481-bd1b-c857644a4c90][the active Discord presence support plugin for Emacs that I have turned on by default]]*.
+
+I try to keep the ones seen here (as in, in this configuration) limited to settings saved for reference, debugging, or other posterity purposes, rather than leaving behind a bunch of crud and bug fixes that are no longer necessary.
+
+
+* DOOM Emacs Documentation
+
+#+begin_src elisp
+;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
+#+end_src
+
+Doom exposes five (optional) variables for controlling fonts in Doom. Here are the three important ones:
+
++ `doom-font'
+
++ `doom-variable-pitch-font'
+
++ `doom-big-font' -- used for `doom-big-font-mode'; use this for presentations or streaming.
+
+They all accept either a font-spec, font string ("Input Mono-12"), or xlfd font string. You generally only need these two:
+
+#+begin_example
+(setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
+#+end_example
+
+#+begin_example
+(setq doom-variable-pitch-font (font-spec :family "sans" :size 13))
+#+end_example
+
+If you're having issues regarding fonts, you may want to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][stop Emacs from loading your Xresources file.]]
+
+There are two ways to load a theme. Both assume the theme is installed and available. You can either set `doom-theme' or manually load a theme with the `load-theme' function. This is the default:
+
+#+begin_example elisp
+(setq doom-theme 'doom-one)
+#+end_example
+
+Here are some additional functions/macros that could help you configure Doom Emacs:
+
+- `load!' for loading external *.el files relative to this one
+
+- `use-package!' for configuring packages
+
+- `after!' for running code after a package has loaded
+
+- `add-load-path!' for adding directories to the `load-path', relative to
+  this file. Emacs searches the `load-path' when you load packages with
+  `require' or `use-package'.
+
+- `map!' for binding new keys
+
+To get information about any of these functions/macros, move the cursor over the highlighted symbol at press 'K' (non-evil users must press 'C-c c k'). This will open documentation for it, including demos of how they are used.
+
+You can also try 'gd' (or 'C-c c d') to jump to their definition and see how they are implemented.
+
+Place your private configuration here! Remember, you do not need to run 'doom sync' after modifying this file!
+
+Some functionality uses this to identify you, e.g. GPG configuration, email clients, file templates and snippets.
+
+#+begin_example elisp
+(setq user-full-name "John Doe"
+      user-mail-address "example@donut.arpa")
+#+end_example
+
+
+* config
+
+** private configuration
+
+#+begin_src elisp
+(setq user-full-name "chu the pup"
+      user-mail-address "chu@dogboner.xyz")
+#+end_src
+
+
+** abbrev mode
+
+#+begin_src elisp
+(add-hook! org-mode :append
+           #'abbrev-mode)
+#+end_src
+
+
+** dictionary
+
+#+begin_src elisp
+(setq ispell-alternate-dictionary "/usr/share/dict")
+#+end_src
+
+
+** palimpsest prog mode hook
+
+#+begin_src elisp
+(use-package! palimpsest-mode
+  :hook (prog-mode . palimpsest-mode))
+#+end_src
+
+
+** vulpea autosync org roam todos from dailies
+
+#+begin_src elisp
+(use-package! vulpea
+  :hook ((org-roam-db-autosync-mode . vulpea-db-autosync-enable)))
+#+end_src
+
+
+** auth source save behavior
+
+#+begin_src elisp
+(setq auth-source-save-behavior nil)
+#+end_src
+
+
+** EMMS
+
+#+begin_src elisp
+(setq emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
+#+end_src
+
+#+begin_src elisp
+(setq emms-source-file-default-directory "~/Music/")
+#+end_src
+
+
+** IRC (ERC)
+
+Set user information.
+
+#+begin_src elisp :results none
+(setq erc-server "localhost"
+      erc-nick "chuthepup"
+      erc-user-full-name "Chu the Pup")
+#+end_src
+
+
+** Dired director editor (Emacs file manager) settings :dired:
+
+Have Dired ask to back files up prior to overwriting them.
+
+Make sure you know where your Emacs cache backup directory actually resides before putting this in your init.
+
+#+begin_src elisp
+(setq dired-backup-overwrite t)
+#+end_src
+
+
+** Trash instead of delete :dired:
+
+#+begin_src elisp
+(setq delete-by-moving-to-trash t)
+#+end_src
+
+
+** Org-Mode
+
+*** org TODO state hiding
+
+Write TODO state changes into LOGBOOK drawer. [[https://stackoverflow.com/a/63798475][Thanks, LeeRuns (stackoverflow.com)]].
+
+#+begin_src elisp
+(setq org-log-into-drawer "LOGBOOK")
+#+end_src
+
+
+*** Org Babel Auto-Tangle
+
+For the package org-babel-auto-tangle (see packages.org).
+
+#+begin_src elisp
+(add-hook 'org-mode-hook 'org-auto-tangle-mode)
+#+end_src
+
+
+*** Hook load fragtog
+
+#+begin_src elisp
+(add-hook 'org-mode-hook 'org-fragtog-mode)
+#+end_src
+
+
+*** Custom org-todo-keywords
+
+#+begin_src elisp
+(setq org-todo-keywords
+       '((sequence "TODO(t)" "PROJ(p)" "LOOP(r)" "STRT(s)" "WAIT(w)" "HOLD(h)" "HABIT(H)" "IDEA(i)" "|" "DONE(d)" "KILL(k)")
+         (sequence "[ ](T)" "[-](S)" "[?](W)" "|" "[X](D)")
+         (sequence "|" "OKAY(o)" "YES(y)" "NO(n)")))
+#+end_src
+
+
+*** Ensure blank lines between headings and before contents
+
+Ensure that blank lines exist between headings and between headings and their contents.  With prefix, operate on whole buffer.  Ensures that blank lines exist after each headings's drawers.
+
+For those who prefer to maintain blank lines between headings, this makes it easy to automatically add them where necessary, to a subtree or the whole buffer.  It also adds blank lines after drawers.  Works well with [[*~org-return-dwim~]].
+
+#+BEGIN_SRC elisp
+  ;;;###autoload
+  (defun unpackaged/org-fix-blank-lines (&optional prefix)
+    "Ensure that blank lines exist between headings and between headings and their contents.
+  With prefix, operate on whole buffer. Ensures that blank lines
+  exist after each headings's drawers."
+    (interactive "P")
+    (org-map-entries (lambda ()
+                       (org-with-wide-buffer
+                        ;; `org-map-entries' narrows the buffer, which prevents us from seeing
+                        ;; newlines before the current heading, so we do this part widened.
+                        (while (not (looking-back "\n\n" nil))
+                          ;; Insert blank lines before heading.
+                          (insert "\n")))
+                       (let ((end (org-entry-end-position)))
+                         ;; Insert blank lines before entry content
+                         (forward-line)
+                         (while (and (org-at-planning-p)
+                                     (< (point) (point-max)))
+                           ;; Skip planning lines
+                           (forward-line))
+                         (while (re-search-forward org-drawer-regexp end t)
+                           ;; Skip drawers. You might think that `org-at-drawer-p' would suffice, but
+                           ;; for some reason it doesn't work correctly when operating on hidden text.
+                           ;; This works, taken from `org-agenda-get-some-entry-text'.
+                           (re-search-forward "^[ \t]*:END:.*\n?" end t)
+                           (goto-char (match-end 0)))
+                         (unless (or (= (point) (point-max))
+                                     (org-at-heading-p)
+                                     (looking-at-p "\n"))
+                           (insert "\n"))))
+                     t (if prefix
+                           nil
+                         'tree)))
+#+END_SRC
+
+by [[https://github.com/alphapapa/unpackaged.el#ensure-blank-lines-between-headings-and-before-contents][Alphapapa]]
+
+
+*** Custom org directories and files :org:
+
+If you use `org' and don't want your org files in the default location below, change `org-directory'. It must be set before org loads!
+
+
+**** Custom org root directory :org:
+
+The following will vary, so change it to be whatever your org root directory is/what you want it to be.
+
+I use a directory that I sync between computers with a nextcloud server I run but you don't necessarily have to do that.
+
+#+begin_src elisp
+(after! 'org
+  (setq org-directory
+        (concat
+         (getenv "HOME")
+        "/nextcloud/documents/org/")))
+#+end_src
+
+
+**** Custom org bookmark directory :org:
+
+The following will vary, so change it to be whatever your bookmarks file is/what you want it to be.
+
+I use a document that I track with org roam but you don't necessarily have to do that.
+
+#+begin_src elisp
+(with-eval-after-load 'org
+  (setq +org-capture-bookmarks-file
+        (concat
+         (getenv "HOME")
+         "/nextcloud/documents/org/roam/20221004090130-bookmarks.org")))
+#+end_src
+
+
+**** Custom org agenda files :org:
+
+#+begin_src elisp
+(setq org-agenda-files
+      '("/home/chu/nextcloud/documents/org/roam/20220726210347-important_dates.org"
+        "/home/chu/nextcloud/documents/org/roam/20221004221831-todo.org"
+        "/home/chu/nextcloud/documents/org/roam/20220823133456-precalculus_algebra.org"
+        "/home/chu/nextcloud/documents/org/roam/20220826102105-chem_1115.org"
+        "/home/chu/nextcloud/documents/org/roam/20221004222241-notes.org"
+        "/home/chu/nextcloud/documents/org/roam/20221004222237-journal.org"
+        "/home/chu/nextcloud/documents/org/roam/20221004222234-projects.org"
+        "/home/chu/nextcloud/documents/org/roam/20220822103211-engl_1030.org"
+        "/home/chu/nextcloud/documents/org/roam/20221002161631-my_conlang.org"))
+#+end_src
+
+Usually, you just set these using `org-agenda-file-to-front`
+
+
+**** Custom org journal file location :org:
+
+You know the gist by now--change this to whatever you want your file to be.
+
+#+begin_src elisp
+(with-eval-after-load 'org
+  (setq +org-capture-journal-file
+        (concat
+         (getenv "HOME")
+         "/nextcloud/documents/org/roam/20221004222230-journal.org")))
+#+end_src
+
+
+**** Custom org notes file location :org:
+
+#+begin_src elisp
+(with-eval-after-load 'org
+  (setq +org-capture-notes-file
+        (concat
+         (getenv "HOME")
+         "/nextcloud/documents/org/roam/20221004222235-notes.org")))
+#+end_src
+
+
+**** Custom org projects file location :org:
+
+#+begin_src elisp
+(with-eval-after-load 'org
+  (setq +org-capture-projects-file
+        (concat
+         (getenv "HOME")
+         "/nextcloud/documents/org/roam/20221004222226-projects.org")))
+#+end_src
+
+
+**** Custom org todo file location :org:
+
+I primarily use a "todo" file rather than an "agenda" file, for agenda ("TODO") items.
+
+#+begin_src elisp
+(with-eval-after-load 'org
+  (setq +org-capture-todo-file
+        (concat
+         (getenv "HOME")
+         "/nextcloud/documents/org/roam/20221004221829-todo.org")))
+#+end_src
+
+
+**** Org roam v2 directories and files
+
+#+begin_src elisp
+(with-eval-after-load 'org
+  (setq org-roam-directory
+        (concat
+         (getenv "HOME")
+         "/nextcloud/documents/org/roam/")))
+#+end_src
+
+
+**** Org roam v2 dailies directory
+
+Path to daily-notes. This path is relative to org-roam-directory.
+
+#+begin_src elisp
+(setq org-roam-dailies-directory "daily/")
+#+end_src
+
+
+**** Org roam v2 dailies capture template
+
+#+begin_src elisp
+(setq org-roam-dailies-capture-templates
+      '(("d" "default" entry
+         "* %?"
+         :target (file+head "%<%Y-%m-%d>.org"
+                            "#+title: %<%Y-%m-%d>\n"))))
+#+end_src
+
+
+**** org-roam-protocol test
+
+#+begin_src elisp
+(require 'org-roam-protocol)
+#+end_src
+
+
+**** org-roam-export test
+
+#+begin_src elisp
+(require 'org-roam-export)
+#+end_src
+
+
+**** Org id custom id location
+
+#+begin_src elisp
+(setq org-id-locations-file
+      (concat
+       (getenv "HOME")
+       "/nextcloud/documents/org/.orgids"))
+#+end_src
+
+
+**** Org-attach custom directory
+
+#+begin_src elisp
+(setq org-attach-id-dir
+      (concat
+       (getenv "HOME")
+       "/nextcloud/documents/org/.attach/"))
+#+end_src
+
+
+**** Org-Cite (oc.el)
+
+***** Org-Cite (oc.el) bibliography location
+
+#+begin_src elisp
+(setq org-cite-global-bibliography
+       (list
+        (concat
+         (getenv "HOME")
+         "/nextcloud/documents/org/roam/bib.bib")))
+#+end_src
+
+See also [[https://orgmode.org/manual/Citations.html#Citations-1][the org mode manual section on org-cite, the citation module that is native to emacs org mode]] in order to specify per-file bibliography files with .bib or .json files.
+
+
+***** Org-Cite (oc.el) CiteProc formatter file directory location
+
+Citation Style Language (CSL) files can be used with org-cite.
+
+#+begin_src elisp
+(setq org-cite-csl-styles-dir
+      (concat
+       (getenv "HOME")
+       "/nextcloud/documents/org/latex/citeproc-formatters/"))
+#+end_src
+
+
+*** Download/capture for Org mode
+
+#+begin_src elisp
+(with-eval-after-load 'org
+  (require 'org-download)
+  (add-hook 'dired-mode-hook 'org-download-enable))
+#+end_src
+
+
+*** Org-download image width attribute tag
+
+Added automatically when images are attached. Does not affect actual image dimensions, only how they are shown initially within Emacs.
+
+#+begin_example elisp
+(setq org-image-actual-width 500)
+#+end_example
+
+Disabled for now due to academic work with LaTeX.
+
+
+*** LaTeX classes for org mode with org-latex-classes
+
+Helpful when editing LaTeX documents.
+
+#+begin_src elisp
+(with-eval-after-load 'ox-latex
+(add-to-list 'org-latex-classes
+             '("org-plain-latex"
+               "\\documentclass{article}
+           [NO-DEFAULT-PACKAGES]
+           [PACKAGES]
+           [EXTRA]"
+               ("\\section{%s}" . "\\section*{%s}")
+               ("\\subsection{%s}" . "\\subsection*{%s}")
+               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+               ("\\paragraph{%s}" . "\\paragraph*{%s}")
+               ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+#+end_src
+
+
+*** A not-stupid way to archive sections of Org documents: hierarchical subtree archival!
+
+By default, using the Org mode archive function 'org-archive-subtree-default' does not capture the higher-level headings a particular subheading was sitting under when it was archived, which makes a mess of the archive file that gets created. Use this instead!
+
+**** org-archive-subtree-hierarchical example and source citation reference
+
+#+begin_example elisp
+;; org-archive-subtree-hierarchical.el
+;;
+;; version 0.2
+;; modified from https://lists.gnu.org/archive/html/emacs-orgmode/2014-08/msg00109.html
+;; modified from https://stackoverflow.com/a/35475878/259187
+;; In orgmode
+;; * A
+;; ** AA
+;; *** AAA
+;; ** AB
+;; *** ABA
+;; Archiving AA will remove the subtree from the original file and create
+;; it like that in archive target:
+;; * AA
+;; ** AAA
+;; And this give you
+;; * A
+;; ** AA
+;; *** AAA
+;;
+;; Install file to your include path and include in your init file with:
+;;
+;;  (require 'org-archive-subtree-hierarchical)
+;;  (setq org-archive-default-command 'org-archive-subtree-hierarchical)
+;;
+#+end_example
+
+
+**** org-archive-subtree-hierarchical code
+
+#+begin_src elisp
+(provide 'org-archive-subtree-hierarchical)
+(require 'org-archive)
+(defun org-archive-subtree-hierarchical--line-content-as-string ()
+  "Returns the content of the current line as a string"
+  (save-excursion
+    (beginning-of-line)
+    (buffer-substring-no-properties
+     (line-beginning-position) (line-end-position))))
+(defun org-archive-subtree-hierarchical--org-child-list ()
+  "This function returns all children of a heading as a list. "
+  (interactive)
+  (save-excursion
+    ;; this only works with org-version > 8.0, since in previous
+    ;; org-mode versions the function (org-outline-level) returns
+    ;; gargabe when the point is not on a heading.
+    (if (= (org-outline-level) 0)
+        (outline-next-visible-heading 1)
+      (org-goto-first-child))
+    (let ((child-list (list (org-archive-subtree-hierarchical--line-content-as-string))))
+      (while (org-goto-sibling)
+        (setq child-list (cons (org-archive-subtree-hierarchical--line-content-as-string) child-list)))
+      child-list)))
+(defun org-archive-subtree-hierarchical--org-struct-subtree ()
+  "This function returns the tree structure in which a subtree belongs as a list."
+  (interactive)
+  (let ((archive-tree nil))
+    (save-excursion
+      (while (org-up-heading-safe)
+        (let ((heading
+               (buffer-substring-no-properties
+                (line-beginning-position) (line-end-position))))
+          (if (eq archive-tree nil)
+              (setq archive-tree (list heading))
+            (setq archive-tree (cons heading archive-tree))))))
+    archive-tree))
+(defun org-archive-subtree-hierarchical ()
+  "This function archives a subtree hierarchical"
+  (interactive)
+  (let ((org-tree (org-archive-subtree-hierarchical--org-struct-subtree))
+        (this-buffer (current-buffer))
+        (file (abbreviate-file-name
+               (or (buffer-file-name (buffer-base-buffer))
+                   (error "No file associated to buffer")))))
+    (save-excursion
+      (setq location org-archive-location
+            afile (car (org-archive--compute-location
+                        (or (org-entry-get nil "ARCHIVE" 'inherit) location)))
+            ;; heading (org-extract-archive-heading location)
+            infile-p (equal file (abbreviate-file-name (or afile ""))))
+      (unless afile
+        (error "Invalid `org-archive-location'"))
+      (if (> (length afile) 0)
+          (setq newfile-p (not (file-exists-p afile))
+                visiting (find-buffer-visiting afile)
+                buffer (or visiting (find-file-noselect afile)))
+        (setq buffer (current-buffer)))
+      (unless buffer
+        (error "Cannot access file \"%s\"" afile))
+      (org-cut-subtree)
+      (set-buffer buffer)
+      (org-mode)
+      (goto-char (point-min))
+      (while (not (equal org-tree nil))
+        (let ((child-list (org-archive-subtree-hierarchical--org-child-list)))
+          (if (member (car org-tree) child-list)
+              (progn
+                (search-forward (car org-tree) nil t)
+                (setq org-tree (cdr org-tree)))
+            (progn
+              (goto-char (point-max))
+              (newline)
+              (org-insert-struct org-tree)
+              (setq org-tree nil)))))
+      (newline)
+      (org-yank)
+      (when (not (eq this-buffer buffer))
+        (save-buffer))
+      (message "Subtree archived %s"
+               (concat "in file: " (abbreviate-file-name afile))))))
+(defun org-insert-struct (struct)
+  "TODO"
+  (interactive)
+  (when struct
+    (insert (car struct))
+    (newline)
+    (org-insert-struct (cdr struct))))
+(defun org-archive-subtree ()
+  (org-archive-subtree-hierarchical))
+#+end_src
+
+
+**** change the default org archive function to be the not-stupid one
+
+#+begin_src elisp
+(setq org-archive-default-command 'org-archive-subtree-hierarchical)
+#+end_src
+
+
+*** Custom Org Agenda files
+
+Want files tracked in your agenda? Use the ~C-c [~ keybinding in each file to add them to your custom.el to be tracked via your agenda.
+
+
+*** Org Tanglesync
+
+#+begin_src elisp
+(use-package! org-tanglesync
+  ;; :hook ((org-mode . org-tanglesync-mode)
+  ;;        ;; enable watch-mode globally:
+  ;;        ((prog-mode text-mode) . org-tanglesync-watch-mode))
+  ;; :custom
+  ;; (org-tanglesync-watch-files '("example.org"))
+  :bind
+  (( "C-c M-i" . org-tanglesync-process-buffer-interactive)
+   ( "C-c M-a" . org-tanglesync-process-buffer-automatic)))
+#+end_src
+
+
+** Visual Changes
+
+*** Font
+
+I use the default LARBS monospace font instead of Fira Mono for consistency's sake.
+
+#+begin_src elisp
+(setq doom-font (font-spec :family "Mono" :size 12))
+#+end_src
+
+The following ensures correct font size without affecting the font used:
+
+#+begin_example elisp
+(setq doom-font (font-spec :size 12))
+#+end_example
+
+You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs loading your Xresources file.]]
+
+
+*** Temporarily convert images that Emacs cannot otherwise display
+
+This will Set Emacs to convert images if they are going to be shown in the GUI. It detects when Emacs is unable to display the image due to lack of compatibility and temporarily converts it, pushing the converted version into memory during display (it gets cleaned up by the garbage collector).
+
+Note: This is a soft dependency of random-splash-image; in turn, you risk being unable to display certain image file types (notably .webp files) if this is disabled.
+
+#+begin_src elisp
+(setq image-use-external-converter t)
+#+end_src
+
+
+*** Random Splash Images
+
+**** Enable random-splash-image
+
+For the plugin 'random-splash-image' which displays a random splash image on each Emacs startup.
+
+#+begin_src elisp
+(require 'random-splash-image)
+#+end_src
+
+
+**** Tell random-splash-image what directory to look for images in.
+
+Example:
+
+#+begin_example elisp
+(setq random-splash-image-dir
+      (concat
+       (getenv "HOME")
+       "/.local/share/random-splash-image-dir/example/memes/"))
+#+end_example
+
+I use a more specific one at the moment.
+
+#+begin_src elisp
+(setq random-splash-image-dir
+      (concat
+       (getenv "HOME")
+       "/.local/share/random-splash-image-dir/chosen-splash-images/src/"))
+#+end_src
+
+
+**** IDEA How to set multiple directories for random-splash-image
+
+I don't know how to do this yet.
+
+
+*** Set a random splash image on Emacs startup
+
+#+begin_src elisp
+(with-eval-after-load 'random-splash-image
+  (random-splash-image-set))
+#+end_src
+
+
+** projectile project management
+
+*** disable project detection via existence of Makefiles
+
+in other words, tell Projectile to stop detecting new project directories just because a directory has a Makefile in it. normally you'd want to keep this on, but it doesn't play nice with my particular set up.
+
+#+begin_src elisp
+(setq projectile-project-root-functions '(projectile-root-local
+                                           projectile-root-marked
+                                           projectile-root-bottom-up
+                                           projectile-root-top-down
+                                           ;; projectile-root-top-down-recurring
+                                           ))
+#+end_src
+
+credit goes to [[https://emacs.stackexchange.com/a/15262][Marcus Riemer]] for figuring this one out!
+
+
+*** disable automatic project detection as a whole
+
+#+begin_example elisp
+(setq projectile-project-root-functions nil)
+#+end_example
+
+
+*** ripgrep "rg" fast search to handle projectile project files
+
+Use the faster searcher to handle project files: ripgrep "rg"
+
+#+begin_src elisp
+(when (and (not (executable-find "fd"))
+           (executable-find "rg"))
+  (setq projectile-generic-command
+        (let ((rg-cmd ""))
+          (dolist (dir projectile-globally-ignored-directories)
+            (setq rg-cmd (format "%s --glob '!%s'" rg-cmd dir)))
+          (setq rg-ignorefile
+                (concat "--ignore-file" " "
+                        (expand-file-name "rg_ignore" user-emacs-directory)))
+          (concat "rg -0 --files --color=never --hidden" rg-cmd " " rg-ignorefile))))
+#+end_src
+
+
+** Enable active presence on Discord for Emacs
+:PROPERTIES:
+:ID:       a948faf0-c278-4481-bd1b-c857644a4c90
+:END:
+
+*Note:* This will tell anyone on your Discord your current activity status in Emacs—with a pretty hefty amount of detail as well. [[id:8f9bc104-87a1-4fa4-b624-a5ea64210b8a][Remember: you can do the following if you want to disable something]].
+
+#+begin_src elisp
+(use-package! elcord-mode
+  :defer t)
+#+end_src
+
+
+** EPG: Letting Emacs query for GPG passwords
+
+Allow Emacs to handle queries for gpg passwords.
+
+Disabled for now.
+
+#+begin_src elisp
+(setf epg-pinentry-mode 'loopback)
+(defun pinentry-emacs (desc prompt ok error)
+  (let ((str (read-passwd
+              (concat (replace-regexp-in-string "%22" "\""
+                      (replace-regexp-in-string "%0A" "\n" desc)) prompt ": ")))) str))
+#+end_src
+
+
+** Tramp FTP doesn't read my ~/.authinfo.gpg
+
+Ange-FTP defaults to =~/.netrc=  so you need to add this to your init script:
+
+#+begin_src elisp
+(setq ange-ftp-netrc-filename "~/.authinfo.gpg")
+#+end_src
+
+
+** Achievements in Emacs
+
+#+begin_src elisp
+(achievements-mode)
+#+end_src
+
+
+** Round numbers to N decimals in Elisp
+
+from [[https://gergely.polonkai.eu/blog/2014/10/7/rounding-numbers-to-n-decimals-in-emacs.html][Rounding numbers to N decimals in Emacs]] by Gergely Polonkai
+
+#+begin_src elisp
+(defun get-number-at-point ()
+  (interactive)
+  (skip-chars-backward "0123456789.-")
+  (or (looking-at "[0123456789.-]+")
+      (error "No number at point"))
+  (string-to-number (match-string 0)))
+
+(defun round-number-at-point-to-decimals (decimal-count)
+  (interactive "NDecimal count: ")
+  (let ((mult (expt 10 decimal-count)))
+    (replace-match (number-to-string
+              (/
+               (fround
+                (*
+                 mult
+                 (get-number-at-point)))
+                mult)))))
+#+end_src
+
+
+** Alpha background transparency function :function:
+
+Requires a compositor.
+
+[[https://kristofferbalintona.me/posts/202206071000/][True Emacs Transparency | Kristoffer Balintona]]
+
+#+begin_src elisp
+(defun kb/toggle-window-transparency ()
+  "Toggle transparency."
+  (interactive)
+  (let ((alpha-transparency 75))
+    (pcase (frame-parameter nil 'alpha-background)
+      (alpha-transparency (set-frame-parameter nil 'alpha-background 100))
+      (t (set-frame-parameter nil 'alpha-background alpha-transparency)))))
+#+end_src
+
+#+begin_src elisp
+(defun toggle-transparency ()
+  "Toggle transparency. Might need to be called a couple of times in a row to work."
+  (interactive)
+  (let ((alpha (frame-parameter nil 'alpha)))
+    (if (eq
+     (if (numberp alpha)
+         alpha
+       (cdr alpha)) ; may also be nil
+     100)
+    (set-frame-parameter nil 'alpha '(85 . 50))
+      (set-frame-parameter nil 'alpha '(100 . 100)))))
+#+end_src
+
+#+begin_src elisp
+(defun toggle-background-transparency ()
+  "Toggle background transparency, wherein text and other elements in frame are still displayed but a background isn't."
+  (interactive)
+  (if (get 'toggle-background-transparency 'state)
+      (progn
+        (set-frame-parameter nil 'alpha-background 100)
+        (put 'toggle-background-transparency 'state nil))
+    (progn
+      (set-frame-parameter nil 'alpha-background 35)
+      (put 'toggle-background-transparency 'state t))))
+#+end_src
+
+
+** Fix alpha transparency issues
+
+Sometimes Emacs has issues with transparency. In my case, it goes unusably transparent if I make use of an Xresources file.
+
+You can specify frames to use different levels of transparency depending on whether or not you have Emacs focused (active) or if you've clicked off to another application (inactive).
+
+#+begin_example elisp
+(set-frame-parameter (selected-frame) 'alpha '(<active> . <inactive>))
+#+end_example
+
+Or you can just use one number, as so:
+
+#+begin_example elisp
+(set-frame-parameter (selected-frame) 'alpha <both>)
+#+end_example
+
+Here's the settings I currently use:
+
+#+begin_src elisp
+(set-frame-parameter (selected-frame) 'alpha 99) ; set current frame
+(add-to-list 'default-frame-alist '(alpha 99)) ; set all frames from this point on
+#+end_src
+
+from [[https://www.emacswiki.org/emacs/TransparentEmacs][EmacsWiki: Transparent Emacs]]
+
+You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs loading your Xresources file.]]
+
+
+** Inhibit Xresources being loaded by Emacs
+
+#+begin_src elisp
+(setq inhibit-x-resources t) ; inhibit .xresources file from being loaded on emacs init
+#+end_src
+
+
+** literate calc mode
+
+#+begin_src elisp
+(use-package! literate-calc-mode
+  :defer t)
+#+end_src
+
+
+** common lisp find file fix for roswell compatibility :lisp:
+
+#+begin_src elisp
+(defun +lisp/find-file-in-quicklisp ()
+  "Find a file belonging to a library downloaded by Quicklisp."
+  (interactive)
+  (doom-project-find-file "~/.local/share/roswell/lisp/quicklisp/dists"))
+#+end_src
+
+
+** roswell lisp sly helper :lisp:
+
+#+begin_src elisp
+(load! (expand-file-name "~/.local/share/roswell/helper.el"))
+(setq inferior-lisp-program "ros dynamic-space-size=8000 -Q run")
+#+end_src
+
+
+** common lisp snippets for yasnippets (require)
+
+#+begin_src elisp
+(use-package! common-lisp-snippets
+  :defer t)
+#+end_src
+
+
+** sly completion fix :lisp:
+
+#+begin_src elisp
+(after! sly
+  (setq sly-complete-symbol-function 'sly-flex-completions))
+#+end_src
+
+#+RESULTS:
+: sly-flex-completions
+
+
+** dired-rsync :rsync:
+
+*** dired-rsync-skip-newer custom rsync function :custom:rsync:
+
+#+begin_src elisp
+(defun dired-rsync-skip-newer (dest)
+  "Asynchronously copy files in dired to `DEST' using rsync
+set to resolve symlinks, skip files that are newer in `DEST',
+and to run in archive mode."
+  (interactive
+   (list (read-file-name "rsync to: " (dired-dwim-target-directory)
+                         nil nil nil 'file-directory-p)))
+  (let ((dired-rsync-options "-aLuz --info=progress2"))
+    (dired-rsync dest)))
+#+end_src
+
+#+RESULTS:
+: dired-rsync-skip-newer
+
+
+*** dired-rsync map :binds:custom:rsync:
+
+#+begin_src elisp
+(map! "C-c C-d C-r" #'dired-rsync-skip-newer)
+#+end_src
+
+
+** lispy-mode (lispyville) configuration :lisp:parens:lispyville:lispy:
+
+~lispy~ loves to absolutely destroy any emacs lisp it comes across, so I disable it here.
+
+#+begin_src elisp
+(use-package! lispy
+  :hook ((lisp-mode . lispy-mode)
+         ;;(emacs-lisp-mode . lispy-mode)
+         (ielm-mode . lispy-mode)
+         (scheme-mode . lispy-mode)
+         (racket-mode . lispy-mode)
+         (hy-mode . lispy-mode)
+         (lfe-mode . lispy-mode)
+         (dune-mode . lispy-mode)
+         (clojure-mode . lispy-mode)
+         (fennel-mode . lispy-mode)))
+#+end_src
+
+
+* Works Cited
+
+
+** [[https://gergely.polonkai.eu/blog/2014/10/7/rounding-numbers-to-n-decimals-in-emacs.html][Rounding numbers to N decimals in Emacs]] by Gergely Polonkai
+
+
+** https://blog.lazkani.io/posts/bookmark-with-org-capture/
+
+
+** https://orgmode.org/manual/Capture-templates.html
+
+
+** [[https://raw.githubusercontent.com/gilbertw1/emacs-literate-starter/master/emacs.org][DOOM Emacs Literate Config]]
+
+By Gilbert. Thanks, Gilbert.
+
+
+** [[https://github.com/alphapapa/unpackaged.el#ensure-blank-lines-between-headings-and-before-contents][alphapapa/unpackaged.el: A collection of useful Emacs Lisp code that isn't substantial enough to be packaged]]
+
+This is where the 'unpackaged/org-fix-blank-lines' function was sourced from.
+
+By alphapapa. Thanks, alphapapa.
+
+
+** [[https://stackoverflow.com/a/35475878/259187][org-archive-subtree-hierarchical.el v0.2]]
+
+By [[https://gist.github.com/kepi/2f4acc3cc93403c75fbba5684c5d852d][Kepi]]. Thanks, Kepi.
+
+
+*** [[https://lists.gnu.org/archive/html/emacs-orgmode/2014-08/msg00109.html][org-archive-subtree-hierarchical.el v0.1]]
+
+By [[https://lists.gnu.org/archive/html/emacs-orgmode/2014-08/msg00109.html][Florian Adamsky]]. Thanks, Florian Adamsky.
