@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: lispnowebdom
+# uuid:
+# key: lispnowebdom
+# condition: t
+# --
+#+name:
+#+begin_src lisp :tangle dir/file.lisp :mkdirp yes :noweb yes :exports code
+
+#+end_src
