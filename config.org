@@ -993,7 +993,6 @@ and to run in archive mode."
 (map! "C-c C-d C-r" #'dired-rsync-skip-newer)
 #+end_src
 
-
 * Works Cited
 
 
