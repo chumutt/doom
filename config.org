@@ -906,8 +906,8 @@ Or you can just use one number, as so:
 Here's the settings I currently use:
 
 #+begin_src elisp
-(set-frame-parameter (selected-frame) 'alpha 99) ; set current frame
-(add-to-list 'default-frame-alist '(alpha 99)) ; set all frames from this point on
+(set-frame-parameter (selected-frame) 'alpha 98) ; set current frame
+(add-to-list 'default-frame-alist '(alpha 98)) ; set all frames from this point on
 #+end_src
 
 from [[https://www.emacswiki.org/emacs/TransparentEmacs][EmacsWiki: Transparent Emacs]]
