@@ -906,9 +906,12 @@ Or you can just use one number, as so:
 Here's the settings I currently use:
 
 #+begin_src elisp
-(set-frame-parameter (selected-frame) 'alpha 98) ; set current frame
-(add-to-list 'default-frame-alist '(alpha 98)) ; set all frames from this point on
+(set-frame-parameter (selected-frame) 'alpha 97) ; set current frame
+(add-to-list 'default-frame-alist '(alpha 97)) ; set all frames from this point on
 #+end_src
+
+#+RESULTS:
+: ((alpha 97) ((alpha 98) (font LispM-10:antialias=false:hinting=false)) ((alpha 98) (font LispM:antialias=false:hinting=false)) ((alpha 98) (font antialias=false:hinting=false)) ((alpha 98) (font :antialias=false:hinting=false)) ((alpha 98) (font LispM-Monospace:antialias=false:hinting=false)) (font LispM-Monospace:antialias=false:hinting=false) (font . LispM-Monospace:antialias=false:hinting=false) (font . LispM-Monospace-12:antialias=false:hinting=false) (buffer-predicate . doom-buffer-frame-predicate) (right-divider-width . 1) (bottom-divider-width . 1) (alpha 98) (vertical-scroll-bars) (tool-bar-lines . 0) (menu-bar-lines . 0) (left-fringe . 8) (right-fringe . 8))
 
 from [[https://www.emacswiki.org/emacs/TransparentEmacs][EmacsWiki: Transparent Emacs]]
 
@@ -992,6 +995,54 @@ and to run in archive mode."
 #+begin_src elisp
 (map! "C-c C-d C-r" #'dired-rsync-skip-newer)
 #+end_src
+
+** mu4e
+
+#+begin_src elisp :results no silent
+(setq mu4e-sent-folder "/gmail.com/calebdeanwatson/bak.sent")
+(setq mu4e-drafts-folder "/gmail.com/calebdeanwatson/bak.drafts")
+(setq mu4e-trash-folder "/gmail.com/calebdeanwatson/bak.trash")
+(mu4e-context-switch t "calebdeanwatson@gmail.com")
+(after! mu4e
+  (setq +mu4e-backend 'offlineimap
+        sendmail-program (executable-find "msmtp")
+        send-mail-function #'smtpmail-send-it
+        message-sendmail-f-is-evil t
+        message-sendmail-extra-arguments '("--read-envelope-from")
+        message-send-mail-function #'message-send-mail-with-sendmail
+        mu4e-context-policy 'pick-first
+        mu4e-contexts
+        `(,(make-mu4e-context
+            :name "Acalebdeanwatson@gmail.com"
+            :enter-func (lambda () (mu4e-message "Entering calebdeanwatson@gmail.com context"))
+            :leave-func (lambda () (mu4e-message "Leaving calebdeanwatson@gmail.com context"))
+            :match-func (lambda (msg)
+                          (when msg
+                            (string-match-p "^/gmail.com/calebdeanwatson"
+                                            (mu4e-message-field msg :maildir))))
+            :vars '((user-mail-address . "calebdeanwatson@gmail.com")
+                    (user-full-name . "Caleb D. Watson")
+                    (message-signature . (concat "Best regards,\n"
+                                                 "Caleb D. Watson\n"))
+                    (mu4e-sent-folder "/gmail.com/calebdeanwatson/bak.sent")
+                    (mu4e-drafts-folder "/gmail.com/calebdeanwatson/bak.drafts")
+                    (mu4e-trash-folder "/gmail.com/calebdeanwatson/bak.trash")))
+          ,(make-mu4e-context
+            :name "Bchufilthymutt@gmail.com"
+            :enter-func (lambda () (mu4e-message "Entering chufilthymutt@gmail.com context"))
+            :leave-func (lambda () (mu4e-message "Leaving chufilthymutt@gmail.com context"))
+            :match-func (lambda (msg)
+                          (when msg
+                            (string-match-p "^/gmail.com/chufilthymutt"
+                                            (mu4e-message-field msg :maildir))))
+            :vars '((user-mail-address . "chufilthymutt@gmail.com")
+                    (user-full-name . "Chu")
+                    (message-signature . nil)
+                    (mu4e-sent-folder "/gmail.com/chufilthymutt/bak.sent")
+                    (mu4e-drafts-folder "/gmail.com/chufilthymutt/bak.drafts")
+                    (mu4e-trash-folder "/gmail.com/chufilthymutt/bak.trash"))))))
+#+end_src
+
 
 * Works Cited
 
