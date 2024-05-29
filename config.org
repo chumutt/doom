@@ -8,6 +8,7 @@
 
 Here's the deets:
 
+
 ** Org-mode babel tangle setup
 
 There is a property defined on at the top of this file:
@@ -97,32 +98,33 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
 #+end_example
 
 
-* config
+* Config
 
-** private configuration
 
-#+begin_src elisp
+** Private Configuration
+
+#+begin_src elisp :results none
 (setq user-full-name "chu the pup"
-      user-mail-address "chu@dogboner.xyz")
+      user-mail-address "chufilthymutt@gmail.com")
 #+end_src
 
 
-** abbrev mode
+** ~abbrev-mode~
 
-#+begin_src elisp
-(add-hook! org-mode :append
-           #'abbrev-mode)
+#+begin_src elisp :results none
+(after! 'org (abbrev-mode))
 #+end_src
 
 
-** dictionary
+** Dictionary
 
-#+begin_src elisp
-(setq ispell-alternate-dictionary "/usr/share/dict")
+#+begin_src elisp :results none
+(after! 'org
+  (setq ispell-alternate-dictionary "/usr/share/dict"))
 #+end_src
 
 
-** palimpsest prog mode hook
+** Palimpsest prog mode hook
 
 #+begin_src elisp
 (use-package! palimpsest-mode
@@ -130,22 +132,15 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
 #+end_src
 
 
-** vulpea autosync org roam todos from dailies
 
-#+begin_src elisp
-(use-package! vulpea
-  :hook ((org-roam-db-autosync-mode . vulpea-db-autosync-enable)))
-#+end_src
-
-
-** auth source save behavior
+** ~auth-source-save-behavior~
 
 #+begin_src elisp
 (setq auth-source-save-behavior nil)
 #+end_src
 
 
-** EMMS
+** ~emms~ :emms:music:
 
 #+begin_src elisp
 (setq emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
@@ -156,7 +151,7 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
 #+end_src
 
 
-** IRC (ERC)
+** ~erc~ (IRC) :irc:
 
 Set user information.
 
@@ -167,25 +162,61 @@ Set user information.
 #+end_src
 
 
-** Dired director editor (Emacs file manager) settings :dired:
+** ~dired~ director editor (Emacs file manager) settings :dired:
 
 Have Dired ask to back files up prior to overwriting them.
 
-Make sure you know where your Emacs cache backup directory actually resides before putting this in your init.
+Make sure you know where your Emacs cache backup directory actually resides before putting this in your Emacs's initialization file (unless you use gio trash, which'll put your trash in $XDG_DATA_DIR/Trash/files)
 
 #+begin_src elisp
 (setq dired-backup-overwrite t)
 #+end_src
 
 
-** Trash instead of delete :dired:
+*** Dired -> Dirvish :dired:
+
+#+begin_src elisp :results none
+(dirvish-override-dired-mode)
+#+end_src
+
+
+*** dired-rsync :dired:rsync:
+
+
+**** dired-rsync-skip-newer custom rsync function :dired:custom:rsync:
+
+#+begin_src elisp
+(defun dired-rsync-skip-newer (dest)
+  "Asynchronously copy files in dired to `DEST' using rsync
+set to resolve symlinks, skip files that are newer in `DEST',
+and to run in archive mode."
+  (interactive)
+  (list (read-file-name "rsync to: " (dired-dwim-target-directory)
+                         nil nil nil 'file-directory-p))
+  (let ((dired-rsync-options "-aLuz --info=progress2"))
+    (dired-rsync dest)))
+#+end_src
+
+#+RESULTS:
+: dired-rsync-skip-newer
+
+
+**** dired-rsync map :dired:binds:custom:rsync:
+
+#+begin_src elisp
+(map! "C-c C-d C-r" #'dired-rsync-skip-newer)
+#+end_src
+
+
+*** Trash instead of delete :dired:
 
 #+begin_src elisp
 (setq delete-by-moving-to-trash t)
 #+end_src
 
 
-** Org-Mode
+** Org-Mode :org:
+
 
 *** org TODO state hiding
 
@@ -368,7 +399,7 @@ I primarily use a "todo" file rather than an "agenda" file, for agenda ("TODO") 
 #+end_src
 
 
-**** Org roam v2 directories and files
+**** Org roam v2 directories and files :org:roam:
 
 #+begin_src elisp
 (with-eval-after-load 'org
@@ -379,7 +410,7 @@ I primarily use a "todo" file rather than an "agenda" file, for agenda ("TODO") 
 #+end_src
 
 
-**** Org roam v2 dailies directory
+**** Org roam v2 dailies directory :org:roam:
 
 Path to daily-notes. This path is relative to org-roam-directory.
 
@@ -388,7 +419,7 @@ Path to daily-notes. This path is relative to org-roam-directory.
 #+end_src
 
 
-**** Org roam v2 dailies capture template
+**** Org roam v2 dailies capture template :org:roam:
 
 #+begin_src elisp
 (setq org-roam-dailies-capture-templates
@@ -399,21 +430,21 @@ Path to daily-notes. This path is relative to org-roam-directory.
 #+end_src
 
 
-**** org-roam-protocol test
+**** org-roam-protocol test :org:roam:protocols:
 
 #+begin_src elisp
 (require 'org-roam-protocol)
 #+end_src
 
 
-**** org-roam-export test
+**** org-roam-export test :org:roam:
 
 #+begin_src elisp
 (require 'org-roam-export)
 #+end_src
 
 
-**** Org id custom id location
+**** Org id custom id location :org:
 
 #+begin_src elisp
 (setq org-id-locations-file
@@ -423,7 +454,7 @@ Path to daily-notes. This path is relative to org-roam-directory.
 #+end_src
 
 
-**** Org-attach custom directory
+**** Org-attach custom directory :org:
 
 #+begin_src elisp
 (setq org-attach-id-dir
@@ -433,9 +464,10 @@ Path to daily-notes. This path is relative to org-roam-directory.
 #+end_src
 
 
-**** Org-Cite (oc.el)
+**** Org-Cite (oc.el) :org:cite:
 
-***** Org-Cite (oc.el) bibliography location
+
+***** Org-Cite (oc.el) bibliography location :org:cite:bib:
 
 #+begin_src elisp
 (setq org-cite-global-bibliography
@@ -448,7 +480,7 @@ Path to daily-notes. This path is relative to org-roam-directory.
 See also [[https://orgmode.org/manual/Citations.html#Citations-1][the org mode manual section on org-cite, the citation module that is native to emacs org mode]] in order to specify per-file bibliography files with .bib or .json files.
 
 
-***** Org-Cite (oc.el) CiteProc formatter file directory location
+***** Org-Cite (oc.el) CiteProc formatter file directory location :org:cite:citeproc:
 
 Citation Style Language (CSL) files can be used with org-cite.
 
@@ -473,11 +505,9 @@ Citation Style Language (CSL) files can be used with org-cite.
 
 Added automatically when images are attached. Does not affect actual image dimensions, only how they are shown initially within Emacs.
 
-#+begin_example elisp
+#+begin_src elisp
 (setq org-image-actual-width 500)
-#+end_example
-
-Disabled for now due to academic work with LaTeX.
+#+end_src
 
 
 *** LaTeX classes for org mode with org-latex-classes
@@ -500,11 +530,12 @@ Helpful when editing LaTeX documents.
 #+end_src
 
 
-*** A not-stupid way to archive sections of Org documents: hierarchical subtree archival!
+*** A Not-Stupid Way to Archive Sections of Org Documents: Hierarchical Subtree Archival :org:archive:
 
 By default, using the Org mode archive function 'org-archive-subtree-default' does not capture the higher-level headings a particular subheading was sitting under when it was archived, which makes a mess of the archive file that gets created. Use this instead!
 
-**** org-archive-subtree-hierarchical example and source citation reference
+
+**** Example and Reference :org:archive:
 
 #+begin_example elisp
 ;; org-archive-subtree-hierarchical.el
@@ -535,115 +566,117 @@ By default, using the Org mode archive function 'org-archive-subtree-default' do
 #+end_example
 
 
-**** org-archive-subtree-hierarchical code
+**** Source code of ~org-archive-subtree-hierarchical~ :org:archive:
 
-#+begin_src elisp
-(provide 'org-archive-subtree-hierarchical)
-(require 'org-archive)
-(defun org-archive-subtree-hierarchical--line-content-as-string ()
-  "Returns the content of the current line as a string"
-  (save-excursion
-    (beginning-of-line)
-    (buffer-substring-no-properties
-     (line-beginning-position) (line-end-position))))
-(defun org-archive-subtree-hierarchical--org-child-list ()
-  "This function returns all children of a heading as a list. "
-  (interactive)
-  (save-excursion
-    ;; this only works with org-version > 8.0, since in previous
-    ;; org-mode versions the function (org-outline-level) returns
-    ;; gargabe when the point is not on a heading.
-    (if (= (org-outline-level) 0)
-        (outline-next-visible-heading 1)
-      (org-goto-first-child))
-    (let ((child-list (list (org-archive-subtree-hierarchical--line-content-as-string))))
-      (while (org-goto-sibling)
-        (setq child-list (cons (org-archive-subtree-hierarchical--line-content-as-string) child-list)))
-      child-list)))
-(defun org-archive-subtree-hierarchical--org-struct-subtree ()
-  "This function returns the tree structure in which a subtree belongs as a list."
-  (interactive)
-  (let ((archive-tree nil))
+#+begin_src elisp :results none
+(after! 'org
+  (provide 'org-archive-subtree-hierarchical)
+  (require 'org-archive)
+  (defun org-archive-subtree-hierarchical--line-content-as-string ()
+    "Returns the content of the current line as a string"
     (save-excursion
-      (while (org-up-heading-safe)
-        (let ((heading
-               (buffer-substring-no-properties
-                (line-beginning-position) (line-end-position))))
-          (if (eq archive-tree nil)
-              (setq archive-tree (list heading))
-            (setq archive-tree (cons heading archive-tree))))))
-    archive-tree))
-(defun org-archive-subtree-hierarchical ()
-  "This function archives a subtree hierarchical"
-  (interactive)
-  (let ((org-tree (org-archive-subtree-hierarchical--org-struct-subtree))
-        (this-buffer (current-buffer))
-        (file (abbreviate-file-name
-               (or (buffer-file-name (buffer-base-buffer))
-                   (error "No file associated to buffer")))))
+      (beginning-of-line)
+      (buffer-substring-no-properties
+       (line-beginning-position) (line-end-position))))
+  (defun org-archive-subtree-hierarchical--org-child-list ()
+    "This function returns all children of a heading as a list. "
+    (interactive)
     (save-excursion
-      (setq location org-archive-location
-            afile (car (org-archive--compute-location
-                        (or (org-entry-get nil "ARCHIVE" 'inherit) location)))
-            ;; heading (org-extract-archive-heading location)
-            infile-p (equal file (abbreviate-file-name (or afile ""))))
-      (unless afile
-        (error "Invalid `org-archive-location'"))
-      (if (> (length afile) 0)
-          (setq newfile-p (not (file-exists-p afile))
-                visiting (find-buffer-visiting afile)
-                buffer (or visiting (find-file-noselect afile)))
-        (setq buffer (current-buffer)))
-      (unless buffer
-        (error "Cannot access file \"%s\"" afile))
-      (org-cut-subtree)
-      (set-buffer buffer)
-      (org-mode)
-      (goto-char (point-min))
-      (while (not (equal org-tree nil))
-        (let ((child-list (org-archive-subtree-hierarchical--org-child-list)))
-          (if (member (car org-tree) child-list)
+      ;; this only works with org-version > 8.0, since in previous
+      ;; org-mode versions the function (org-outline-level) returns
+      ;; gargabe when the point is not on a heading.
+      (if (= (org-outline-level) 0)
+          (outline-next-visible-heading 1)
+        (org-goto-first-child))
+      (let ((child-list (list (org-archive-subtree-hierarchical--line-content-as-string))))
+        (while (org-goto-sibling)
+          (setq child-list (cons (org-archive-subtree-hierarchical--line-content-as-string) child-list)))
+        child-list)))
+  (defun org-archive-subtree-hierarchical--org-struct-subtree ()
+    "This function returns the tree structure in which a subtree belongs as a list."
+    (interactive)
+    (let ((archive-tree nil))
+      (save-excursion
+        (while (org-up-heading-safe)
+          (let ((heading
+                 (buffer-substring-no-properties
+                  (line-beginning-position) (line-end-position))))
+            (if (eq archive-tree nil)
+                (setq archive-tree (list heading))
+              (setq archive-tree (cons heading archive-tree))))))
+      archive-tree))
+  (defun org-archive-subtree-hierarchical ()
+    "This function archives a subtree hierarchical"
+    (interactive)
+    (let ((org-tree (org-archive-subtree-hierarchical--org-struct-subtree))
+          (this-buffer (current-buffer))
+          (file (abbreviate-file-name
+                 (or (buffer-file-name (buffer-base-buffer))
+                     (error "No file associated to buffer")))))
+      (save-excursion
+        (setq location org-archive-location
+              afile (car (org-archive--compute-location
+                          (or (org-entry-get nil "ARCHIVE" 'inherit) location)))
+              ;; heading (org-extract-archive-heading location)
+              infile-p (equal file (abbreviate-file-name (or afile ""))))
+        (unless afile
+          (error "Invalid `org-archive-location'"))
+        (if (> (length afile) 0)
+            (setq newfile-p (not (file-exists-p afile))
+                  visiting (find-buffer-visiting afile)
+                  buffer (or visiting (find-file-noselect afile)))
+          (setq buffer (current-buffer)))
+        (unless buffer
+          (error "Cannot access file \"%s\"" afile))
+        (org-cut-subtree)
+        (set-buffer buffer)
+        (org-mode)
+        (goto-char (point-min))
+        (while (not (equal org-tree nil))
+          (let ((child-list (org-archive-subtree-hierarchical--org-child-list)))
+            (if (member (car org-tree) child-list)
+                (progn
+                  (search-forward (car org-tree) nil t)
+                  (setq org-tree (cdr org-tree)))
               (progn
-                (search-forward (car org-tree) nil t)
-                (setq org-tree (cdr org-tree)))
-            (progn
-              (goto-char (point-max))
-              (newline)
-              (org-insert-struct org-tree)
-              (setq org-tree nil)))))
+                (goto-char (point-max))
+                (newline)
+                (org-insert-struct org-tree)
+                (setq org-tree nil)))))
+        (newline)
+        (org-yank)
+        (when (not (eq this-buffer buffer))
+          (save-buffer))
+        (message "Subtree archived %s"
+                 (concat "in file: " (abbreviate-file-name afile))))))
+  (defun org-insert-struct (struct)
+    "TODO"
+    (interactive)
+    (when struct
+      (insert (car struct))
       (newline)
-      (org-yank)
-      (when (not (eq this-buffer buffer))
-        (save-buffer))
-      (message "Subtree archived %s"
-               (concat "in file: " (abbreviate-file-name afile))))))
-(defun org-insert-struct (struct)
-  "TODO"
-  (interactive)
-  (when struct
-    (insert (car struct))
-    (newline)
-    (org-insert-struct (cdr struct))))
-(defun org-archive-subtree ()
-  (org-archive-subtree-hierarchical))
+      (org-insert-struct (cdr struct))))
+  (defun org-archive-subtree ()
+    (org-archive-subtree-hierarchical)))
 #+end_src
 
 
-**** change the default org archive function to be the not-stupid one
+**** Change the Default Org Archive Function to be the Not-Stupid One :org:archive:
 
-#+begin_src elisp
-(setq org-archive-default-command 'org-archive-subtree-hierarchical)
+#+begin_src elisp :results none
+(after! 'org-archive
+  (setq org-archive-default-command 'org-archive-subtree-hierarchical))
 #+end_src
 
 
-*** Custom Org Agenda files
+*** Custom Org Agenda files :faq:
 
 Want files tracked in your agenda? Use the ~C-c [~ keybinding in each file to add them to your custom.el to be tracked via your agenda.
 
 
-*** Org Tanglesync
+*** Org Tanglesync :org:tanglesync:
 
-#+begin_src elisp
+#+begin_src elisp :results none
 (use-package! org-tanglesync
   ;; :hook ((org-mode . org-tanglesync-mode)
   ;;        ;; enable watch-mode globally:
@@ -656,7 +689,47 @@ Want files tracked in your agenda? Use the ~C-c [~ keybinding in each file to ad
 #+end_src
 
 
+*** Org Mode Capture Templates Customization :org:templates:
+#+begin_src elisp :results none
+(after! org-mode
+  (setq org-capture-templates
+    (("t" "Personal todo" entry
+      (file+headline +org-capture-todo-file "Inbox")
+    "* [ ] %?\n%i\n%a" :prepend t)
+    ("n" "Personal notes" entry
+    (file+headline +org-capture-notes-file "Inbox")
+    "* %u %?\n%i\n%a" :prepend t)
+    ("j" "Journal" entry
+    (file+olp+datetree +org-capture-journal-file)
+    "* %U %?\n%i\n%a" :prepend t)
+    ("p" "Templates for projects")
+    ("pt" "Project-local todo" entry
+    (file+headline +org-capture-project-todo-file "Inbox")
+    "* TODO %?\n%i\n%a" :prepend t)
+    ("pn" "Project-local notes" entry
+    (file+headline +org-capture-project-notes-file "Inbox")
+    "* %U %?\n%i\n%a" :prepend t)
+    ("pc" "Project-local changelog" entry
+    (file+headline +org-capture-project-changelog-file "Unreleased")
+    "* %U %?\n%i\n%a" :prepend t)
+    ("o" "Centralized templates for projects")
+    ("ot" "Project todo" entry #'+org-capture-central-project-todo-file "* TODO %?\n %i\n %a" :heading "Tasks" :prepend nil)
+    ("on" "Project notes" entry #'+org-capture-central-project-notes-file "* %U %?\n %i\n %a" :heading "Notes" :prepend t)
+    ("oc" "Project changelog" entry #'+org-capture-central-project-changelog-file "* %U %?\n %i\n %a" :heading "Changelog" :prepend t))))
+#+end_src
+
+
+*** Vulpea Auto-Sync Org Roam v2 todos from dailies :org:roam:vulpea:
+
+#+begin_src elisp :results none
+(after! 'org
+  (use-package! vulpea
+    :hook ((org-roam-db-autosync-mode . vulpea-db-autosync-enable))))
+#+end_src
+
+
 ** Visual Changes
+
 
 *** Font
 
@@ -687,6 +760,7 @@ Note: This is a soft dependency of random-splash-image; in turn, you risk being 
 
 
 *** Random Splash Images
+
 
 **** Enable random-splash-image
 
@@ -732,6 +806,7 @@ I don't know how to do this yet.
 
 
 ** projectile project management
+
 
 *** disable project detection via existence of Makefiles
 
@@ -859,9 +934,9 @@ Requires a compositor.
       (t (set-frame-parameter nil 'alpha-background alpha-transparency)))))
 #+end_src
 
-#+begin_src elisp
+#+begin_src elisp :results none
 (defun toggle-transparency ()
-  "Toggle transparency. Might need to be called a couple of times in a row to work."
+  "Toggle TOTAL EMACS X11 transparency. Might need to be called a couple of times in a row to work."
   (interactive)
   (let ((alpha (frame-parameter nil 'alpha)))
     (if (eq
@@ -873,7 +948,7 @@ Requires a compositor.
       (set-frame-parameter nil 'alpha '(100 . 100)))))
 #+end_src
 
-#+begin_src elisp
+#+begin_src elisp :results none
 (defun toggle-background-transparency ()
   "Toggle background transparency, wherein text and other elements in frame are still displayed but a background isn't."
   (interactive)
@@ -882,9 +957,12 @@ Requires a compositor.
         (set-frame-parameter nil 'alpha-background 100)
         (put 'toggle-background-transparency 'state nil))
     (progn
-      (set-frame-parameter nil 'alpha-background 35)
+      (set-frame-parameter nil 'alpha-background 92)
       (put 'toggle-background-transparency 'state t))))
 #+end_src
+
+
+*** TODO add a binding for SPC t B to toggle background transparency
 
 
 ** Fix alpha transparency issues
@@ -905,13 +983,32 @@ Or you can just use one number, as so:
 
 Here's the settings I currently use:
 
+Set current Emacs frame's opacity to 100%:
+
+#+begin_src elisp :results none
+(set-frame-parameter (selected-frame) 'alpha 100)
+#+end_src
+
+Set all Emacs frames opacity from this point on to 100%:
+
+#+begin_src elisp :results none
+(add-to-list 'default-frame-alist '(alpha 100))
+#+end_src
+
+Set Emacs's background opacity to 92%:
+
+#+begin_src elisp :results none
+(set-frame-parameter nil 'alpha-background 92)
+#+end_src
+
+Set all Emacs frames from this point on to have a background opacity of 92%:
+
 #+begin_src elisp
-(set-frame-parameter (selected-frame) 'alpha 97) ; set current frame
-(add-to-list 'default-frame-alist '(alpha 97)) ; set all frames from this point on
+(add-to-list 'default-frame-alist '(alpha-background . 92))
 #+end_src
 
 #+RESULTS:
-: ((alpha 97) ((alpha 98) (font LispM-10:antialias=false:hinting=false)) ((alpha 98) (font LispM:antialias=false:hinting=false)) ((alpha 98) (font antialias=false:hinting=false)) ((alpha 98) (font :antialias=false:hinting=false)) ((alpha 98) (font LispM-Monospace:antialias=false:hinting=false)) (font LispM-Monospace:antialias=false:hinting=false) (font . LispM-Monospace:antialias=false:hinting=false) (font . LispM-Monospace-12:antialias=false:hinting=false) (buffer-predicate . doom-buffer-frame-predicate) (right-divider-width . 1) (bottom-divider-width . 1) (alpha 98) (vertical-scroll-bars) (tool-bar-lines . 0) (menu-bar-lines . 0) (left-fringe . 8) (right-fringe . 8))
+: ((alpha-background . 92) (alpha-background 92) (buffer-predicate . doom-buffer-frame-predicate) (right-divider-width . 1) (bottom-divider-width . 1) (alpha 100) (vertical-scroll-bars) (tool-bar-lines . 0) (menu-bar-lines . 0) (left-fringe . 8) (right-fringe . 8))
 
 from [[https://www.emacswiki.org/emacs/TransparentEmacs][EmacsWiki: Transparent Emacs]]
 
@@ -970,39 +1067,16 @@ You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs lo
 : sly-flex-completions
 
 
-** dired-rsync :rsync:
-
-*** dired-rsync-skip-newer custom rsync function :custom:rsync:
-
+** edit-with-emacs
 #+begin_src elisp
-(defun dired-rsync-skip-newer (dest)
-  "Asynchronously copy files in dired to `DEST' using rsync
-set to resolve symlinks, skip files that are newer in `DEST',
-and to run in archive mode."
-  (interactive
-   (list (read-file-name "rsync to: " (dired-dwim-target-directory)
-                         nil nil nil 'file-directory-p)))
-  (let ((dired-rsync-options "-aLuz --info=progress2"))
-    (dired-rsync dest)))
+;; (require 'edit-server)
+;; (edit-server-start)
 #+end_src
 
-#+RESULTS:
-: dired-rsync-skip-newer
-
-
-*** dired-rsync map :binds:custom:rsync:
-
-#+begin_src elisp
-(map! "C-c C-d C-r" #'dired-rsync-skip-newer)
-#+end_src
 
 ** mu4e
 
 #+begin_src elisp :results no silent
-(setq mu4e-sent-folder "/gmail.com/calebdeanwatson/bak.sent")
-(setq mu4e-drafts-folder "/gmail.com/calebdeanwatson/bak.drafts")
-(setq mu4e-trash-folder "/gmail.com/calebdeanwatson/bak.trash")
-(mu4e-context-switch t "calebdeanwatson@gmail.com")
 (after! mu4e
   (setq +mu4e-backend 'offlineimap
         sendmail-program (executable-find "msmtp")
@@ -1012,6 +1086,7 @@ and to run in archive mode."
         message-send-mail-function #'message-send-mail-with-sendmail
         mu4e-context-policy 'pick-first
         mu4e-contexts
+
         `(,(make-mu4e-context
             :name "Acalebdeanwatson@gmail.com"
             :enter-func (lambda () (mu4e-message "Entering calebdeanwatson@gmail.com context"))
@@ -1024,9 +1099,10 @@ and to run in archive mode."
                     (user-full-name . "Caleb D. Watson")
                     (message-signature . (concat "Best regards,\n"
                                                  "Caleb D. Watson\n"))
-                    (mu4e-sent-folder "/gmail.com/calebdeanwatson/bak.sent")
-                    (mu4e-drafts-folder "/gmail.com/calebdeanwatson/bak.drafts")
-                    (mu4e-trash-folder "/gmail.com/calebdeanwatson/bak.trash")))
+                    (mu4e-sent-folder . "/gmail.com/calebdeanwatson/[Gmail]/Sent Mail")
+                    (mu4e-drafts-folder . "/gmail.com/calebdeanwatson/[Gmail]/Drafts")
+                    (mu4e-trash-folder . "/gmail.com/calebdeanwatson/[Gmail]/Trash")))
+
           ,(make-mu4e-context
             :name "Bchufilthymutt@gmail.com"
             :enter-func (lambda () (mu4e-message "Entering chufilthymutt@gmail.com context"))
@@ -1038,9 +1114,118 @@ and to run in archive mode."
             :vars '((user-mail-address . "chufilthymutt@gmail.com")
                     (user-full-name . "Chu")
                     (message-signature . nil)
-                    (mu4e-sent-folder "/gmail.com/chufilthymutt/bak.sent")
-                    (mu4e-drafts-folder "/gmail.com/chufilthymutt/bak.drafts")
-                    (mu4e-trash-folder "/gmail.com/chufilthymutt/bak.trash"))))))
+                    (mu4e-sent-folder . "/gmail.com/chufilthymutt/[Gmail]/Sent Mail")
+                    (mu4e-drafts-folder . "/gmail.com/chufilthymutt/[Gmail]/Drafts")
+                    (mu4e-trash-folder . "/gmail.com/chufilthymutt/[Gmail]/Trash")))
+
+          ,(make-mu4e-context
+            :name "Ccalebkeown@gmail.com"
+            :enter-func (lambda () (mu4e-message "Entering calebkeown@gmail.com context"))
+            :leave-func (lambda () (mu4e-message "Leaving calebkeown@gmail.com context"))
+            :match-func (lambda (msg)
+                          (when msg
+                            (string-match-p "^/gmail.com/calebkeown"
+                                            (mu4e-message-field msg :maildir))))
+            :vars '((user-mail-address . "calebkeown@gmail.com")
+                    (user-full-name . "Caleb Keown")
+                    (message-signature . nil)
+                    (mu4e-sent-folder . "/gmail.com/calebkeown/[Gmail]/Sent Mail")
+                    (mu4e-drafts-folder . "/gmail.com/calebkeown/[Gmail]/Drafts")
+                    (mu4e-trash-folder . "/gmail.com/calebkeown/[Gmail]/Trash")))
+
+           ,(make-mu4e-context
+            :name "Dformulaicjohnston@gmail.com"
+            :enter-func (lambda () (mu4e-message "Entering formulaicjohnston@gmail.com context"))
+            :leave-func (lambda () (mu4e-message "Leaving formulaicjohnston@gmail.com context"))
+            :match-func (lambda (msg)
+                          (when msg
+                            (string-match-p "^/gmail.com/formulaicjohnston"
+                                            (mu4e-message-field msg :maildir))))
+            :vars '((user-mail-address . "formulaicjohnston@gmail.com")
+                    (user-full-name . "Caleb Keown")
+                    (message-signature . nil)
+                    (mu4e-sent-folder . "/gmail.com/formulaicjohnston/[Gmail]/Sent Mail")
+                    (mu4e-drafts-folder . "/gmail.com/formulaicjohnston/[Gmail]/Drafts")
+                    (mu4e-trash-folder . "/gmail.com/formulaicjohnston/[Gmail]/Trash")))
+
+           ,(make-mu4e-context
+            :name "Fthreepersonapocalypse@gmail.com"
+            :enter-func (lambda () (mu4e-message "Entering threepersonapocalypse@gmail.com context"))
+            :leave-func (lambda () (mu4e-message "Leaving threepersonapocalypse@gmail.com context"))
+            :match-func (lambda (msg)
+                          (when msg
+                            (string-match-p "^/gmail.com/threepersonapocalypse"
+                                            (mu4e-message-field msg :maildir))))
+            :vars '((user-mail-address . "threepersonapocalypse@gmail.com")
+                    (user-full-name . "Strips McKinsey")
+                    (message-signature . nil)
+                    (mu4e-sent-folder . "/gmail.com/threepersonapocalypse/[Gmail]/Sent Mail")
+                    (mu4e-drafts-folder . "/gmail.com/threepersonapocalypse/[Gmail]/Drafts")
+                    (mu4e-trash-folder . "/gmail.com/threepersonapocalypse/[Gmail]/Trash")))
+
+
+           ,(make-mu4e-context
+            :name "Gmarkhenswiner@gmail.com"
+            :enter-func (lambda () (mu4e-message "Entering markhenswiner@gmail.com context"))
+            :leave-func (lambda () (mu4e-message "Leaving markhenswiner@gmail.com context"))
+            :match-func (lambda (msg)
+                          (when msg
+                            (string-match-p "^/gmail.com/markhenswiner"
+                                            (mu4e-message-field msg :maildir))))
+            :vars '((user-mail-address . "markhenswiner@gmail.com")
+                    (user-full-name . "Marks Henswiner")
+                    (message-signature . nil)
+                    (mu4e-sent-folder . "/gmail.com/markhenswiner/[Gmail]/Sent Mail")
+                    (mu4e-drafts-folder . "/gmail.com/markhenswiner/[Gmail]/Drafts")
+                    (mu4e-trash-folder . "/gmail.com/markhenswiner/[Gmail]/Trash")))
+
+           ,(make-mu4e-context
+            :name "Hdoubledeanart@gmail.com"
+            :enter-func (lambda () (mu4e-message "Entering doubledeanart@gmail.com context"))
+            :leave-func (lambda () (mu4e-message "Leaving doubledeanart@gmail.com context"))
+            :match-func (lambda (msg)
+                          (when msg
+                            (string-match-p "^/gmail.com/doubledeanart"
+                                            (mu4e-message-field msg :maildir))))
+            :vars '((user-mail-address . "doubledeanart@gmail.com")
+                    (user-full-name . "Double Dean Art")
+                    (message-signature . nil)
+                    (mu4e-sent-folder . "/gmail.com/doubledeanart/[Gmail]/Sent Mail")
+                    (mu4e-drafts-folder . "/gmail.com/doubledeanart/[Gmail]/Drafts")
+                    (mu4e-trash-folder . "/gmail.com/doubledeanart/[Gmail]/Trash")))
+
+           ,(make-mu4e-context
+            :name "Inetworkcholanger@gmail.com"
+            :enter-func (lambda () (mu4e-message "Entering networkcholanger@gmail.com context"))
+            :leave-func (lambda () (mu4e-message "Leaving networkcholanger@gmail.com context"))
+            :match-func (lambda (msg)
+                          (when msg
+                            (string-match-p "^/gmail.com/networkcholanger"
+                                            (mu4e-message-field msg :maildir))))
+            :vars '((user-mail-address . "networkcholanger@gmail.com")
+                    (user-full-name . "N. Cholanger")
+                    (message-signature . nil)
+                    (mu4e-sent-folder . "/gmail.com/networkcholanger/[Gmail]/Sent Mail")
+                    (mu4e-drafts-folder . "/gmail.com/networkcholanger/[Gmail]/Drafts")
+                    (mu4e-trash-folder . "/gmail.com/networkcholanger/[Gmail]/Trash")))
+
+           ,(make-mu4e-context
+            :name "Jdeafelbow@gmail.com"
+            :enter-func (lambda () (mu4e-message "Entering deafelbow@gmail.com context"))
+            :leave-func (lambda () (mu4e-message "Leaving deafelbow@gmail.com context"))
+            :match-func (lambda (msg)
+                          (when msg
+                            (string-match-p "^/gmail.com/deafelbow"
+                                            (mu4e-message-field msg :maildir))))
+            :vars '((user-mail-address . "deafelbow@gmail.com")
+                    (user-full-name . "Deaf Elbow")
+                    (message-signature . nil)
+                    (mu4e-sent-folder . "/gmail.com/deafelbow/[Gmail]/Sent Mail")
+                    (mu4e-drafts-folder . "/gmail.com/deafelbow/[Gmail]/Drafts")
+                    (mu4e-trash-folder . "/gmail.com/deafelbow/[Gmail]/Trash")))
+
+                    )))
+
 #+end_src
 
 
