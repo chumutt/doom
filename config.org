@@ -38,11 +38,13 @@ What I am about to explain is typically done in order to debug the configuration
 I try to keep the ones seen here (as in, in this configuration) limited to settings saved for reference, debugging, or other posterity purposes, rather than leaving behind a bunch of crud and bug fixes that are no longer necessary.
 
 
-* DOOM Emacs Documentation
+* ~config.el~ lexical binding
 
 #+begin_src elisp
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 #+end_src
+
+* DOOM Emacs Documentation
 
 Doom exposes five (optional) variables for controlling fonts in Doom. Here are the three important ones:
 
@@ -173,13 +175,6 @@ Make sure you know where your Emacs cache backup directory actually resides befo
 #+end_src
 
 
-*** Dired -> Dirvish :dired:
-
-#+begin_src elisp :results none
-(dirvish-override-dired-mode)
-#+end_src
-
-
 *** dired-rsync :dired:rsync:
 
 
@@ -190,21 +185,21 @@ Make sure you know where your Emacs cache backup directory actually resides befo
   "Asynchronously copy files in dired to `DEST' using rsync
 set to resolve symlinks, skip files that are newer in `DEST',
 and to run in archive mode."
-  (interactive)
-  (list (read-file-name "rsync to: " (dired-dwim-target-directory)
-                         nil nil nil 'file-directory-p))
+  (interactive
+   (list (read-file-name "rsync to: " (dired-dwim-target-directory)
+                              nil nil nil 'file-directory-p)))
   (let ((dired-rsync-options "-aLuz --info=progress2"))
-    (dired-rsync dest)))
+        (dired-rsync dest)))
 #+end_src
 
-#+RESULTS:
-: dired-rsync-skip-newer
 
-
-**** dired-rsync map :dired:binds:custom:rsync:
+**** ~dired-rsync-skip-newer~ binding map :dired:binds:custom:rsync:
 
 #+begin_src elisp
-(map! "C-c C-d C-r" #'dired-rsync-skip-newer)
+(after! dired
+  (map! :map dired-mode-map
+        :prefix "C-c C-d"
+        "C-r" #'dired-rsync-skip-newer))
 #+end_src
 
 
@@ -257,7 +252,7 @@ For the package org-babel-auto-tangle (see packages.org).
 
 Ensure that blank lines exist between headings and between headings and their contents.  With prefix, operate on whole buffer.  Ensures that blank lines exist after each headings's drawers.
 
-For those who prefer to maintain blank lines between headings, this makes it easy to automatically add them where necessary, to a subtree or the whole buffer.  It also adds blank lines after drawers.  Works well with [[*~org-return-dwim~]].
+For those who prefer to maintain blank lines between headings, this makes it easy to automatically add them where necessary, to a subtree or the whole buffer. It also adds blank lines after drawers. Works well with ~org-return-dwim~.
 
 #+BEGIN_SRC elisp
   ;;;###autoload
@@ -877,12 +872,29 @@ Disabled for now.
 #+end_src
 
 
-** Tramp FTP doesn't read my ~/.authinfo.gpg
+** Tramp :tramp:ssh:
+*** Tramp FTP doesn't read my ~/.authinfo.gpg :tramp:ssh:
 
 Ange-FTP defaults to =~/.netrc=  so you need to add this to your init script:
 
 #+begin_src elisp
 (setq ange-ftp-netrc-filename "~/.authinfo.gpg")
+#+end_src
+
+*** Tramp intregration with dirvish :tramp:ssh:dirvish:
+
+#+begin_src elisp :results none
+(use-package tramp
+  :config
+  ;; Enable full-featured Dirvish over TRAMP on certain connections
+  ;; https://www.gnu.org/software/tramp/#Improving-performance-of-asynchronous-remote-processes-1.
+  (add-to-list 'tramp-connection-properties
+               (list (regexp-quote "/ssh:chunix:")
+                     "direct-async-process" t))
+  ;; Tips to speed up connections
+  (setq tramp-verbose 0)
+  (setq tramp-chunksize 2000)
+  (setq tramp-use-ssh-controlmaster-options nil))
 #+end_src
 
 
@@ -1040,7 +1052,7 @@ You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs lo
 #+end_src
 
 
-** roswell lisp sly helper :lisp:
+** ~roswell~ lisp sly helper :lisp:roswell:sly:repl:
 
 #+begin_src elisp
 (load! (expand-file-name "~/.local/share/roswell/helper.el"))
@@ -1076,7 +1088,7 @@ You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs lo
 
 ** mu4e
 
-#+begin_src elisp :results no silent
+#+begin_src elisp :results none
 (after! mu4e
   (setq +mu4e-backend 'offlineimap
         sendmail-program (executable-find "msmtp")
