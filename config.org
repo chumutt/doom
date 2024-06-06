@@ -936,7 +936,7 @@ Requires a compositor.
 
 [[https://kristofferbalintona.me/posts/202206071000/][True Emacs Transparency | Kristoffer Balintona]]
 
-#+begin_src elisp
+#+begin_src elisp :tangle no
 (defun kb/toggle-window-transparency ()
   "Toggle transparency."
   (interactive)
