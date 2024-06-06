@@ -969,7 +969,7 @@ Requires a compositor.
         (set-frame-parameter nil 'alpha-background 100)
         (put 'toggle-background-transparency 'state nil))
     (progn
-      (set-frame-parameter nil 'alpha-background 92)
+      (set-frame-parameter nil 'alpha-background 85)
       (put 'toggle-background-transparency 'state t))))
 #+end_src
 
