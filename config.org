@@ -771,6 +771,10 @@ I don't know how to do this yet.
 #+begin_src elisp
 (setq projectile-project-root-files-top-down-recurring '("compile_commands.json"))
 #+end_src
+
+#+RESULTS:
+| compile_commands.json |
+
 *** Correct Projectile sub directory detection
 
 #+begin_src elisp
@@ -780,9 +784,11 @@ I don't know how to do this yet.
 
 *** Disable automatic project detection as a whole
 
-#+begin_example elisp
+#+begin_src elisp
 (setq projectile-project-root-functions nil)
-#+end_example
+#+end_src
+
+#+RESULTS:
 
 *** RipGrep "rg" fast search to handle Projectile project files
 
@@ -1026,8 +1032,31 @@ You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs lo
 ** mu4e
 
 #+begin_src elisp :results none
-(after! mu4e
-  (setq +mu4e-backend 'offlineimap
+(use-package mu4e
+  ;; :ensure nil
+  ;; :load-path "/usr/share/emacs/site-lisp/mu4e/"
+  ;; :defer 20 ; Wait until 20 seconds after startup
+  :config
+
+  ;; This is set to 't' to avoid mail syncing issues when using mbsync
+  (setq mu4e-change-filenames-when-moving t)
+
+  ;; Refresh mail using isync every 10 minutes
+  (setq mu4e-update-interval (* 10 60))
+  (setq mu4e-get-mail-command "mbsync -a")
+  (setq mu4e-maildir "~/.local/share/mail")
+
+  (setq mu4e-drafts-folder "/[Gmail]/Drafts")
+  (setq mu4e-sent-folder   "/[Gmail]/Sent Mail")
+  (setq mu4e-refile-folder "/[Gmail]/All Mail")
+  (setq mu4e-trash-folder  "/[Gmail]/Trash")
+  (setq mu4e-maildir-shortcuts
+        '((:maildir "/Inbox"    :key ?i)
+          (:maildir "/[Gmail]/Sent Mail" :key ?s)
+          (:maildir "/[Gmail]/Trash"     :key ?t)
+          (:maildir "/[Gmail]/Drafts"    :key ?d)
+          (:maildir "/[Gmail]/All Mail"  :key ?a)))
+  (setq +mu4e-backend 'mbsync
         sendmail-program (executable-find "msmtp")
         send-mail-function #'smtpmail-send-it
         message-sendmail-f-is-evil t
@@ -1098,7 +1127,7 @@ You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs lo
                     (mu4e-trash-folder . "/gmail.com/formulaicjohnston/[Gmail]/Trash")))
 
            ,(make-mu4e-context
-            :name "Fthreepersonapocalypse@gmail.com"
+            :name "Ethreepersonapocalypse@gmail.com"
             :enter-func (lambda () (mu4e-message "Entering threepersonapocalypse@gmail.com context"))
             :leave-func (lambda () (mu4e-message "Leaving threepersonapocalypse@gmail.com context"))
             :match-func (lambda (msg)
@@ -1114,7 +1143,7 @@ You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs lo
 
 
            ,(make-mu4e-context
-            :name "Gmarkhenswiner@gmail.com"
+            :name "Fmarkhenswiner@gmail.com"
             :enter-func (lambda () (mu4e-message "Entering markhenswiner@gmail.com context"))
             :leave-func (lambda () (mu4e-message "Leaving markhenswiner@gmail.com context"))
             :match-func (lambda (msg)
@@ -1129,7 +1158,7 @@ You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs lo
                     (mu4e-trash-folder . "/gmail.com/markhenswiner/[Gmail]/Trash")))
 
            ,(make-mu4e-context
-            :name "Hdoubledeanart@gmail.com"
+            :name "Gdoubledeanart@gmail.com"
             :enter-func (lambda () (mu4e-message "Entering doubledeanart@gmail.com context"))
             :leave-func (lambda () (mu4e-message "Leaving doubledeanart@gmail.com context"))
             :match-func (lambda (msg)
@@ -1144,7 +1173,7 @@ You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs lo
                     (mu4e-trash-folder . "/gmail.com/doubledeanart/[Gmail]/Trash")))
 
            ,(make-mu4e-context
-            :name "Inetworkcholanger@gmail.com"
+            :name "Hnetworkcholanger@gmail.com"
             :enter-func (lambda () (mu4e-message "Entering networkcholanger@gmail.com context"))
             :leave-func (lambda () (mu4e-message "Leaving networkcholanger@gmail.com context"))
             :match-func (lambda (msg)
@@ -1159,7 +1188,7 @@ You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs lo
                     (mu4e-trash-folder . "/gmail.com/networkcholanger/[Gmail]/Trash")))
 
            ,(make-mu4e-context
-            :name "Jdeafelbow@gmail.com"
+            :name "Ideafelbow@gmail.com"
             :enter-func (lambda () (mu4e-message "Entering deafelbow@gmail.com context"))
             :leave-func (lambda () (mu4e-message "Leaving deafelbow@gmail.com context"))
             :match-func (lambda (msg)
