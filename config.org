@@ -3,11 +3,9 @@
 #+DESCRIPTION: Chu's Literate Doom GNU Emacs configuration
 #+PROPERTY: header-args :tangle yes
 #+auto_tangle: t
-
 * Preamble
 
 Here's the deets:
-
 
 ** Org-mode babel tangle setup
 
@@ -18,7 +16,6 @@ header-args :tangle yes
 #+end_example
 
 This tells Emacs to automatically tangle (include) all code blocks in this file when generating the code for the config file (~config.el~), unless the code block explicitly includes `:tangle no` as the above code block does (or if it is a quote or example block).
-
 
 ** Usage of quote and example blocks
 :PROPERTIES:
@@ -36,7 +33,6 @@ What I am about to explain is typically done in order to debug the configuration
 ...or just delete it entirely if you don't want or need the feature / setting, for example, if you want to disable *[[id:a948faf0-c278-4481-bd1b-c857644a4c90][the active Discord presence support plugin for Emacs that I have turned on by default]]*.
 
 I try to keep the ones seen here (as in, in this configuration) limited to settings saved for reference, debugging, or other posterity purposes, rather than leaving behind a bunch of crud and bug fixes that are no longer necessary.
-
 
 * ~config.el~ lexical binding
 
@@ -99,10 +95,7 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
       user-mail-address "example@donut.arpa")
 #+end_example
 
-
 * Config
-
-
 ** Private Configuration
 
 #+begin_src elisp :results none
@@ -110,12 +103,21 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
       user-mail-address "chufilthymutt@gmail.com")
 #+end_src
 
-
 ** ~abbrev-mode~
+:PROPERTIES:
+:ID:       573045ef-062a-4bc9-94c8-d9a3f5c9c9d0
+:END:
 
-#+begin_src elisp :results none
-(after! 'org (abbrev-mode))
+The mode in the abbrev-mode package allows for user-defined abbreviations that get expanded during typing. I have them turn on when in Org mode or Text mode and have them off otherwise.
+
+#+begin_src elisp
+(use-package! abbrev-mode
+  :hook (org-mode . abbrev-mode)
+        (text-mode . abbrev-mode))
 #+end_src
+
+#+RESULTS:
+| abbrev-mode | +spell-remove-run-together-switch-for-aspell-h | er/add-text-mode-expansions | +word-wrap-mode | highlight-indent-guides-mode | display-line-numbers-mode | vi-tilde-fringe-mode | text-mode-hook-identify | editorconfig-major-mode-hook |
 
 
 ** Dictionary
@@ -125,7 +127,6 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
   (setq ispell-alternate-dictionary "/usr/share/dict"))
 #+end_src
 
-
 ** Palimpsest prog mode hook
 
 #+begin_src elisp
@@ -133,14 +134,11 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
   :hook (prog-mode . palimpsest-mode))
 #+end_src
 
-
-
 ** ~auth-source-save-behavior~
 
 #+begin_src elisp
 (setq auth-source-save-behavior nil)
 #+end_src
-
 
 ** ~emms~ :emms:music:
 
@@ -152,6 +150,15 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
 (setq emms-source-file-default-directory "~/Music/")
 #+end_src
 
+** ~nov.el~ for reading epub files in Emacs
+:PROPERTIES:
+:ID:       246c5efa-98ea-4285-b52a-39fbb914ea9f
+:END:
+In actuality, this is a hook to activate the ~nov.el~ mode (nov-mode) whenever you open a file ending in ".epub" within Emacs.
+
+#+begin_src elisp :results none
+(add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
+#+end_src
 
 ** ~erc~ (IRC) :irc:
 
@@ -163,7 +170,6 @@ Set user information.
       erc-user-full-name "Chu the Pup")
 #+end_src
 
-
 ** ~dired~ director editor (Emacs file manager) settings :dired:
 
 Have Dired ask to back files up prior to overwriting them.
@@ -174,9 +180,7 @@ Make sure you know where your Emacs cache backup directory actually resides befo
 (setq dired-backup-overwrite t)
 #+end_src
 
-
 *** dired-rsync :dired:rsync:
-
 
 **** dired-rsync-skip-newer custom rsync function :dired:custom:rsync:
 
@@ -192,7 +196,6 @@ and to run in archive mode."
         (dired-rsync dest)))
 #+end_src
 
-
 **** ~dired-rsync-skip-newer~ binding map :dired:binds:custom:rsync:
 
 #+begin_src elisp
@@ -202,16 +205,13 @@ and to run in archive mode."
         "C-r" #'dired-rsync-skip-newer))
 #+end_src
 
-
 *** Trash instead of delete :dired:
 
 #+begin_src elisp
 (setq delete-by-moving-to-trash t)
 #+end_src
 
-
 ** Org-Mode :org:
-
 
 *** org TODO state hiding
 
@@ -221,7 +221,6 @@ Write TODO state changes into LOGBOOK drawer. [[https://stackoverflow.com/a/6379
 (setq org-log-into-drawer "LOGBOOK")
 #+end_src
 
-
 *** Org Babel Auto-Tangle
 
 For the package org-babel-auto-tangle (see packages.org).
@@ -230,13 +229,11 @@ For the package org-babel-auto-tangle (see packages.org).
 (add-hook 'org-mode-hook 'org-auto-tangle-mode)
 #+end_src
 
-
 *** Hook load fragtog
 
 #+begin_src elisp
 (add-hook 'org-mode-hook 'org-fragtog-mode)
 #+end_src
-
 
 *** Custom org-todo-keywords
 
@@ -246,7 +243,6 @@ For the package org-babel-auto-tangle (see packages.org).
          (sequence "[ ](T)" "[-](S)" "[?](W)" "|" "[X](D)")
          (sequence "|" "OKAY(o)" "YES(y)" "NO(n)")))
 #+end_src
-
 
 *** Ensure blank lines between headings and before contents
 
@@ -292,11 +288,9 @@ For those who prefer to maintain blank lines between headings, this makes it eas
 
 by [[https://github.com/alphapapa/unpackaged.el#ensure-blank-lines-between-headings-and-before-contents][Alphapapa]]
 
-
 *** Custom org directories and files :org:
 
 If you use `org' and don't want your org files in the default location below, change `org-directory'. It must be set before org loads!
-
 
 **** Custom org root directory :org:
 
@@ -312,7 +306,6 @@ I use a directory that I sync between computers with a nextcloud server I run bu
         "/nextcloud/documents/org/")))
 #+end_src
 
-
 **** Custom org bookmark directory :org:
 
 The following will vary, so change it to be whatever your bookmarks file is/what you want it to be.
@@ -326,7 +319,6 @@ I use a document that I track with org roam but you don't necessarily have to do
          (getenv "HOME")
          "/nextcloud/documents/org/roam/20221004090130-bookmarks.org")))
 #+end_src
-
 
 **** Custom org agenda files :org:
 
@@ -345,7 +337,6 @@ I use a document that I track with org roam but you don't necessarily have to do
 
 Usually, you just set these using `org-agenda-file-to-front`
 
-
 **** Custom org journal file location :org:
 
 You know the gist by now--change this to whatever you want your file to be.
@@ -358,7 +349,6 @@ You know the gist by now--change this to whatever you want your file to be.
          "/nextcloud/documents/org/roam/20221004222230-journal.org")))
 #+end_src
 
-
 **** Custom org notes file location :org:
 
 #+begin_src elisp
@@ -369,7 +359,6 @@ You know the gist by now--change this to whatever you want your file to be.
          "/nextcloud/documents/org/roam/20221004222235-notes.org")))
 #+end_src
 
-
 **** Custom org projects file location :org:
 
 #+begin_src elisp
@@ -379,7 +368,6 @@ You know the gist by now--change this to whatever you want your file to be.
          (getenv "HOME")
          "/nextcloud/documents/org/roam/20221004222226-projects.org")))
 #+end_src
-
 
 **** Custom org todo file location :org:
 
@@ -393,7 +381,6 @@ I primarily use a "todo" file rather than an "agenda" file, for agenda ("TODO") 
          "/nextcloud/documents/org/roam/20221004221829-todo.org")))
 #+end_src
 
-
 **** Org roam v2 directories and files :org:roam:
 
 #+begin_src elisp
@@ -404,7 +391,6 @@ I primarily use a "todo" file rather than an "agenda" file, for agenda ("TODO") 
          "/nextcloud/documents/org/roam/")))
 #+end_src
 
-
 **** Org roam v2 dailies directory :org:roam:
 
 Path to daily-notes. This path is relative to org-roam-directory.
@@ -412,7 +398,6 @@ Path to daily-notes. This path is relative to org-roam-directory.
 #+begin_src elisp
 (setq org-roam-dailies-directory "daily/")
 #+end_src
-
 
 **** Org roam v2 dailies capture template :org:roam:
 
@@ -424,20 +409,17 @@ Path to daily-notes. This path is relative to org-roam-directory.
                             "#+title: %<%Y-%m-%d>\n"))))
 #+end_src
 
-
 **** org-roam-protocol test :org:roam:protocols:
 
 #+begin_src elisp
 (require 'org-roam-protocol)
 #+end_src
 
-
 **** org-roam-export test :org:roam:
 
 #+begin_src elisp
 (require 'org-roam-export)
 #+end_src
-
 
 **** Org id custom id location :org:
 
@@ -448,7 +430,6 @@ Path to daily-notes. This path is relative to org-roam-directory.
        "/nextcloud/documents/org/.orgids"))
 #+end_src
 
-
 **** Org-attach custom directory :org:
 
 #+begin_src elisp
@@ -458,9 +439,7 @@ Path to daily-notes. This path is relative to org-roam-directory.
        "/nextcloud/documents/org/.attach/"))
 #+end_src
 
-
 **** Org-Cite (oc.el) :org:cite:
-
 
 ***** Org-Cite (oc.el) bibliography location :org:cite:bib:
 
@@ -474,7 +453,6 @@ Path to daily-notes. This path is relative to org-roam-directory.
 
 See also [[https://orgmode.org/manual/Citations.html#Citations-1][the org mode manual section on org-cite, the citation module that is native to emacs org mode]] in order to specify per-file bibliography files with .bib or .json files.
 
-
 ***** Org-Cite (oc.el) CiteProc formatter file directory location :org:cite:citeproc:
 
 Citation Style Language (CSL) files can be used with org-cite.
@@ -486,7 +464,6 @@ Citation Style Language (CSL) files can be used with org-cite.
        "/nextcloud/documents/org/latex/citeproc-formatters/"))
 #+end_src
 
-
 *** Download/capture for Org mode
 
 #+begin_src elisp
@@ -495,7 +472,6 @@ Citation Style Language (CSL) files can be used with org-cite.
   (add-hook 'dired-mode-hook 'org-download-enable))
 #+end_src
 
-
 *** Org-download image width attribute tag
 
 Added automatically when images are attached. Does not affect actual image dimensions, only how they are shown initially within Emacs.
@@ -503,7 +479,6 @@ Added automatically when images are attached. Does not affect actual image dimen
 #+begin_src elisp
 (setq org-image-actual-width 500)
 #+end_src
-
 
 *** LaTeX classes for org mode with org-latex-classes
 
@@ -524,11 +499,9 @@ Helpful when editing LaTeX documents.
                ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 #+end_src
 
-
 *** A Not-Stupid Way to Archive Sections of Org Documents: Hierarchical Subtree Archival :org:archive:
 
 By default, using the Org mode archive function 'org-archive-subtree-default' does not capture the higher-level headings a particular subheading was sitting under when it was archived, which makes a mess of the archive file that gets created. Use this instead!
-
 
 **** Example and Reference :org:archive:
 
@@ -559,7 +532,6 @@ By default, using the Org mode archive function 'org-archive-subtree-default' do
 ;;  (setq org-archive-default-command 'org-archive-subtree-hierarchical)
 ;;
 #+end_example
-
 
 **** Source code of ~org-archive-subtree-hierarchical~ :org:archive:
 
@@ -655,7 +627,6 @@ By default, using the Org mode archive function 'org-archive-subtree-default' do
     (org-archive-subtree-hierarchical)))
 #+end_src
 
-
 **** Change the Default Org Archive Function to be the Not-Stupid One :org:archive:
 
 #+begin_src elisp :results none
@@ -663,11 +634,9 @@ By default, using the Org mode archive function 'org-archive-subtree-default' do
   (setq org-archive-default-command 'org-archive-subtree-hierarchical))
 #+end_src
 
-
 *** Custom Org Agenda files :faq:
 
 Want files tracked in your agenda? Use the ~C-c [~ keybinding in each file to add them to your custom.el to be tracked via your agenda.
-
 
 *** Org Tanglesync :org:tanglesync:
 
@@ -682,7 +651,6 @@ Want files tracked in your agenda? Use the ~C-c [~ keybinding in each file to ad
   (( "C-c M-i" . org-tanglesync-process-buffer-interactive)
    ( "C-c M-a" . org-tanglesync-process-buffer-automatic)))
 #+end_src
-
 
 *** Org Mode Capture Templates Customization :org:templates:
 #+begin_src elisp :results none
@@ -713,7 +681,6 @@ Want files tracked in your agenda? Use the ~C-c [~ keybinding in each file to ad
     ("oc" "Project changelog" entry #'+org-capture-central-project-changelog-file "* %U %?\n %i\n %a" :heading "Changelog" :prepend t))))
 #+end_src
 
-
 *** Vulpea Auto-Sync Org Roam v2 todos from dailies :org:roam:vulpea:
 
 #+begin_src elisp :results none
@@ -722,9 +689,7 @@ Want files tracked in your agenda? Use the ~C-c [~ keybinding in each file to ad
     :hook ((org-roam-db-autosync-mode . vulpea-db-autosync-enable))))
 #+end_src
 
-
 ** Visual Changes
-
 
 *** Font
 
@@ -742,7 +707,6 @@ The following ensures correct font size without affecting the font used:
 
 You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs loading your Xresources file.]]
 
-
 *** Temporarily convert images that Emacs cannot otherwise display
 
 This will Set Emacs to convert images if they are going to be shown in the GUI. It detects when Emacs is unable to display the image due to lack of compatibility and temporarily converts it, pushing the converted version into memory during display (it gets cleaned up by the garbage collector).
@@ -753,9 +717,7 @@ Note: This is a soft dependency of random-splash-image; in turn, you risk being 
 (setq image-use-external-converter t)
 #+end_src
 
-
 *** Random Splash Images
-
 
 **** Enable random-splash-image
 
@@ -764,7 +726,6 @@ For the plugin 'random-splash-image' which displays a random splash image on eac
 #+begin_src elisp
 (require 'random-splash-image)
 #+end_src
-
 
 **** Tell random-splash-image what directory to look for images in.
 
@@ -786,11 +747,9 @@ I use a more specific one at the moment.
        "/.local/share/random-splash-image-dir/chosen-splash-images/src/"))
 #+end_src
 
-
 **** IDEA How to set multiple directories for random-splash-image
 
 I don't know how to do this yet.
-
 
 *** Set a random splash image on Emacs startup
 
@@ -799,32 +758,36 @@ I don't know how to do this yet.
   (random-splash-image-set))
 #+end_src
 
-
 ** projectile project management
-
 
 *** disable project detection via existence of Makefiles
 
-in other words, tell Projectile to stop detecting new project directories just because a directory has a Makefile in it. normally you'd want to keep this on, but it doesn't play nice with my particular set up.
+In other words, tell Projectile to stop detecting new project directories just because a directory has a Makefile in it. normally you'd want to keep this on, but it doesn't play nice with my particular set up.
 
 #+begin_src elisp
-(setq projectile-project-root-functions '(projectile-root-local
-                                           projectile-root-marked
-                                           projectile-root-bottom-up
-                                           projectile-root-top-down
-                                           ;; projectile-root-top-down-recurring
-                                           ))
+(setq projectile-project-root-functions '(
+                                          projectile-root-local
+                                          projectile-root-marked
+                                          projectile-root-top-down
+                                          projectile-root-bottom-up
+                                          ;; projectile-root-top-down-recurring
+                                          ))
 #+end_src
 
 credit goes to [[https://emacs.stackexchange.com/a/15262][Marcus Riemer]] for figuring this one out!
 
+*** Correct projectile sub directory detection
+
+#+begin_src elisp
+(setq projectile-switch-project-action #'projectile-find-dir)
+(setq projectile-find-dir-includes-top-level t)
+#+end_src
 
 *** disable automatic project detection as a whole
 
 #+begin_example elisp
 (setq projectile-project-root-functions nil)
 #+end_example
-
 
 *** ripgrep "rg" fast search to handle projectile project files
 
@@ -843,7 +806,6 @@ Use the faster searcher to handle project files: ripgrep "rg"
           (concat "rg -0 --files --color=never --hidden" rg-cmd " " rg-ignorefile))))
 #+end_src
 
-
 ** Enable active presence on Discord for Emacs
 :PROPERTIES:
 :ID:       a948faf0-c278-4481-bd1b-c857644a4c90
@@ -855,7 +817,6 @@ Use the faster searcher to handle project files: ripgrep "rg"
 (use-package! elcord-mode
   :defer t)
 #+end_src
-
 
 ** EPG: Letting Emacs query for GPG passwords
 
@@ -870,7 +831,6 @@ Disabled for now.
               (concat (replace-regexp-in-string "%22" "\""
                       (replace-regexp-in-string "%0A" "\n" desc)) prompt ": ")))) str))
 #+end_src
-
 
 ** Tramp :tramp:ssh:
 *** Tramp FTP doesn't read my ~/.authinfo.gpg :tramp:ssh:
@@ -897,13 +857,11 @@ Ange-FTP defaults to =~/.netrc=  so you need to add this to your init script:
   (setq tramp-use-ssh-controlmaster-options nil))
 #+end_src
 
-
 ** Achievements in Emacs
 
 #+begin_src elisp
 (achievements-mode)
 #+end_src
-
 
 ** Round numbers to N decimals in Elisp
 
@@ -928,7 +886,6 @@ from [[https://gergely.polonkai.eu/blog/2014/10/7/rounding-numbers-to-n-decimals
                  (get-number-at-point)))
                 mult)))))
 #+end_src
-
 
 ** Alpha background transparency function :function:
 
@@ -969,13 +926,11 @@ Requires a compositor.
         (set-frame-parameter nil 'alpha-background 100)
         (put 'toggle-background-transparency 'state nil))
     (progn
-      (set-frame-parameter nil 'alpha-background 85)
+      (set-frame-parameter nil 'alpha-background 60)
       (put 'toggle-background-transparency 'state t))))
 #+end_src
 
-
 *** TODO add a binding for SPC t B to toggle background transparency
-
 
 ** Fix alpha transparency issues
 
@@ -1026,13 +981,11 @@ from [[https://www.emacswiki.org/emacs/TransparentEmacs][EmacsWiki: Transparent 
 
 You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs loading your Xresources file.]]
 
-
 ** Inhibit Xresources being loaded by Emacs
 
 #+begin_src elisp
 (setq inhibit-x-resources t) ; inhibit .xresources file from being loaded on emacs init
 #+end_src
-
 
 ** literate calc mode
 
@@ -1040,7 +993,6 @@ You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs lo
 (use-package! literate-calc-mode
   :defer t)
 #+end_src
-
 
 ** common lisp find file fix for roswell compatibility :lisp:
 
@@ -1051,7 +1003,6 @@ You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs lo
   (doom-project-find-file "~/.local/share/roswell/lisp/quicklisp/dists"))
 #+end_src
 
-
 ** ~roswell~ lisp sly helper :lisp:roswell:sly:repl:
 
 #+begin_src elisp
@@ -1059,14 +1010,12 @@ You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs lo
 (setq inferior-lisp-program "ros dynamic-space-size=8000 -Q run")
 #+end_src
 
-
 ** common lisp snippets for yasnippets (require)
 
 #+begin_src elisp
 (use-package! common-lisp-snippets
   :defer t)
 #+end_src
-
 
 ** sly completion fix :lisp:
 
@@ -1078,13 +1027,11 @@ You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs lo
 #+RESULTS:
 : sly-flex-completions
 
-
 ** edit-with-emacs
 #+begin_src elisp
 ;; (require 'edit-server)
 ;; (edit-server-start)
 #+end_src
-
 
 ** mu4e
 
@@ -1240,23 +1187,17 @@ You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs lo
 
 #+end_src
 
-
 * Works Cited
-
 
 ** [[https://gergely.polonkai.eu/blog/2014/10/7/rounding-numbers-to-n-decimals-in-emacs.html][Rounding numbers to N decimals in Emacs]] by Gergely Polonkai
 
-
 ** https://blog.lazkani.io/posts/bookmark-with-org-capture/
 
-
 ** https://orgmode.org/manual/Capture-templates.html
-
 
 ** [[https://raw.githubusercontent.com/gilbertw1/emacs-literate-starter/master/emacs.org][DOOM Emacs Literate Config]]
 
 By Gilbert. Thanks, Gilbert.
-
 
 ** [[https://github.com/alphapapa/unpackaged.el#ensure-blank-lines-between-headings-and-before-contents][alphapapa/unpackaged.el: A collection of useful Emacs Lisp code that isn't substantial enough to be packaged]]
 
@@ -1264,11 +1205,9 @@ This is where the 'unpackaged/org-fix-blank-lines' function was sourced from.
 
 By alphapapa. Thanks, alphapapa.
 
-
 ** [[https://stackoverflow.com/a/35475878/259187][org-archive-subtree-hierarchical.el v0.2]]
 
 By [[https://gist.github.com/kepi/2f4acc3cc93403c75fbba5684c5d852d][Kepi]]. Thanks, Kepi.
-
 
 *** [[https://lists.gnu.org/archive/html/emacs-orgmode/2014-08/msg00109.html][org-archive-subtree-hierarchical.el v0.1]]
 
