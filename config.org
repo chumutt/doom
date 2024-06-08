@@ -103,22 +103,11 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
       user-mail-address "chufilthymutt@gmail.com")
 #+end_src
 
-** ~abbrev-mode~
-:PROPERTIES:
-:ID:       573045ef-062a-4bc9-94c8-d9a3f5c9c9d0
-:END:
-
-The mode in the abbrev-mode package allows for user-defined abbreviations that get expanded during typing. I have them turn on when in Org mode or Text mode and have them off otherwise.
-
+** Editing server (~edit-server~) for Emacs with ~edit-with-emacs~
 #+begin_src elisp
-(use-package! abbrev-mode
-  :hook (org-mode . abbrev-mode)
-        (text-mode . abbrev-mode))
+(require 'edit-server)
+(edit-server-start)
 #+end_src
-
-#+RESULTS:
-| abbrev-mode | +spell-remove-run-together-switch-for-aspell-h | er/add-text-mode-expansions | +word-wrap-mode | highlight-indent-guides-mode | display-line-numbers-mode | vi-tilde-fringe-mode | text-mode-hook-identify | editorconfig-major-mode-hook |
-
 
 ** Dictionary
 
@@ -689,6 +678,22 @@ Want files tracked in your agenda? Use the ~C-c [~ keybinding in each file to ad
     :hook ((org-roam-db-autosync-mode . vulpea-db-autosync-enable))))
 #+end_src
 
+** ~abbrev-mode~
+:PROPERTIES:
+:ID:       573045ef-062a-4bc9-94c8-d9a3f5c9c9d0
+:END:
+
+The mode in the abbrev-mode package allows for user-defined abbreviations that get expanded during typing. I have them turn on when in Org mode or Text mode and have them off otherwise.
+
+#+begin_src elisp
+(use-package! abbrev-mode
+  :hook (org-mode . abbrev-mode)
+        (text-mode . abbrev-mode))
+#+end_src
+
+#+RESULTS:
+| abbrev-mode | +spell-remove-run-together-switch-for-aspell-h | er/add-text-mode-expansions | +word-wrap-mode | highlight-indent-guides-mode | display-line-numbers-mode | vi-tilde-fringe-mode | text-mode-hook-identify | editorconfig-major-mode-hook |
+
 ** Visual Changes
 
 *** Font
@@ -758,38 +763,28 @@ I don't know how to do this yet.
   (random-splash-image-set))
 #+end_src
 
-** projectile project management
-
-*** disable project detection via existence of Makefiles
-
-In other words, tell Projectile to stop detecting new project directories just because a directory has a Makefile in it. normally you'd want to keep this on, but it doesn't play nice with my particular set up.
-
+** Projectile project management
+:PROPERTIES:
+:ID:       cb42f656-6a3f-45c3-9eeb-0298b829010d
+:END:
+*** Projectile don't makefile detect
 #+begin_src elisp
-(setq projectile-project-root-functions '(
-                                          projectile-root-local
-                                          projectile-root-marked
-                                          projectile-root-top-down
-                                          projectile-root-bottom-up
-                                          ;; projectile-root-top-down-recurring
-                                          ))
+(setq projectile-project-root-files-top-down-recurring '("compile_commands.json"))
 #+end_src
-
-credit goes to [[https://emacs.stackexchange.com/a/15262][Marcus Riemer]] for figuring this one out!
-
-*** Correct projectile sub directory detection
+*** Correct Projectile sub directory detection
 
 #+begin_src elisp
 (setq projectile-switch-project-action #'projectile-find-dir)
 (setq projectile-find-dir-includes-top-level t)
 #+end_src
 
-*** disable automatic project detection as a whole
+*** Disable automatic project detection as a whole
 
 #+begin_example elisp
 (setq projectile-project-root-functions nil)
 #+end_example
 
-*** ripgrep "rg" fast search to handle projectile project files
+*** RipGrep "rg" fast search to handle Projectile project files
 
 Use the faster searcher to handle project files: ripgrep "rg"
 
@@ -987,14 +982,15 @@ You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs lo
 (setq inhibit-x-resources t) ; inhibit .xresources file from being loaded on emacs init
 #+end_src
 
-** literate calc mode
+** Literate Calc mode
 
 #+begin_src elisp
 (use-package! literate-calc-mode
   :defer t)
 #+end_src
 
-** common lisp find file fix for roswell compatibility :lisp:
+** Common Lisp
+*** Common Lisp find file fix for Roswell compatibility :lisp:
 
 #+begin_src elisp
 (defun +lisp/find-file-in-quicklisp ()
@@ -1003,21 +999,21 @@ You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs lo
   (doom-project-find-file "~/.local/share/roswell/lisp/quicklisp/dists"))
 #+end_src
 
-** ~roswell~ lisp sly helper :lisp:roswell:sly:repl:
+*** ~roswell~ Lisp Sly helper :lisp:roswell:sly:repl:
 
 #+begin_src elisp
 (load! (expand-file-name "~/.local/share/roswell/helper.el"))
 (setq inferior-lisp-program "ros dynamic-space-size=8000 -Q run")
 #+end_src
 
-** common lisp snippets for yasnippets (require)
+*** Common Lisp snippets for yasnippets (require)
 
 #+begin_src elisp
 (use-package! common-lisp-snippets
   :defer t)
 #+end_src
 
-** sly completion fix :lisp:
+*** Sly completion fix :lisp:
 
 #+begin_src elisp
 (after! sly
@@ -1026,12 +1022,6 @@ You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs lo
 
 #+RESULTS:
 : sly-flex-completions
-
-** edit-with-emacs
-#+begin_src elisp
-;; (require 'edit-server)
-;; (edit-server-start)
-#+end_src
 
 ** mu4e
 
