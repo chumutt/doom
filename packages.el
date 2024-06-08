@@ -140,4 +140,4 @@
 ;; (package! stopwatch
 ;;   :recipe (:host github
 ;;            :repo "asnr/stopwatch"))
-;; (package! edit-server)
+(package! edit-server)
