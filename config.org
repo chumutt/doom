@@ -767,13 +767,21 @@ I don't know how to do this yet.
 :PROPERTIES:
 :ID:       cb42f656-6a3f-45c3-9eeb-0298b829010d
 :END:
-*** Projectile don't makefile detect
+*** Projectile don't detect .ccls_cache
+
+I prefer ".git".
+
+#+begin_src elisp
+(setq projectile-project-root-files-bottom-up '(".projectile" ".project" ".git"))
+#+end_src
+
+*** Projectile don't detect Makefile
+
+I don't really work with Java stuff, so I just keep this default.
+
 #+begin_src elisp
 (setq projectile-project-root-files-top-down-recurring '("compile_commands.json"))
 #+end_src
-
-#+RESULTS:
-| compile_commands.json |
 
 *** Correct Projectile sub directory detection
 
@@ -784,11 +792,9 @@ I don't know how to do this yet.
 
 *** Disable automatic project detection as a whole
 
-#+begin_src elisp
+#+begin_example elisp
 (setq projectile-project-root-functions nil)
-#+end_src
-
-#+RESULTS:
+#+end_example
 
 *** RipGrep "rg" fast search to handle Projectile project files
 
@@ -1204,6 +1210,19 @@ You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs lo
 
                     )))
 
+#+end_src
+** ~whisper~ Voice transcription (speech to text)
+
+#+begin_src elisp
+(use-package whisper
+  ;; :load-path "path/to/whisper.el"
+  :bind ("C-H-r" . whisper-run)
+  :config
+  (setq whisper-install-directory "/tmp/"
+        whisper-model "base"
+        whisper-language "en"
+        whisper-translate nil
+        whisper-use-threads (/ (num-processors) 2)))
 #+end_src
 
 * Works Cited

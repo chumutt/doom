@@ -141,3 +141,5 @@
 ;;   :recipe (:host github
 ;;            :repo "asnr/stopwatch"))
 (package! edit-server)
+
+(package! whisper)
