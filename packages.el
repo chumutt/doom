@@ -142,4 +142,6 @@
 ;;            :repo "asnr/stopwatch"))
 (package! edit-server)
 
-(package! whisper)
+(package! whisper
+  :recipe (:host github
+           :repo "natrys/whisper.el"))

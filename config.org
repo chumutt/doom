@@ -1018,7 +1018,7 @@ You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs lo
 (setq inferior-lisp-program "ros dynamic-space-size=8000 -Q run")
 #+end_src
 
-*** Common Lisp snippets for yasnippets (require)
+*** Common Lisp snippets for ya snippets (require)
 
 #+begin_src elisp
 (use-package! common-lisp-snippets
@@ -1211,19 +1211,22 @@ You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs lo
                     )))
 
 #+end_src
+
 ** ~whisper~ Voice transcription (speech to text)
 
-#+begin_src elisp
+#+begin_src elisp :results none
 (use-package whisper
-  ;; :load-path "path/to/whisper.el"
-  :bind ("C-H-r" . whisper-run)
   :config
-  (setq whisper-install-directory "/tmp/"
+  (setq whisper-install-directory "~/.config/emacs/.local/cache/"
         whisper-model "base"
         whisper-language "en"
         whisper-translate nil
-        whisper-use-threads (/ (num-processors) 2)))
+        whisper-use-threads (/ (num-processors) 2))
+        ;; turn off after 600 seconds of silence
+        whisper-recording-timeout 600)
 #+end_src
+
+
 
 * Works Cited
 
