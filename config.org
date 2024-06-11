@@ -792,9 +792,9 @@ I don't really work with Java stuff, so I just keep this default.
 
 *** Disable automatic project detection as a whole
 
-#+begin_example elisp
+#+begin_src elisp
 (setq projectile-project-root-functions nil)
-#+end_example
+#+end_src
 
 *** RipGrep "rg" fast search to handle Projectile project files
 
