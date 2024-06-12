@@ -103,6 +103,22 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
       user-mail-address "chufilthymutt@gmail.com")
 #+end_src
 
+** Emacs Relay Chat (~erc~) for Internet Relay Chat (IRC) :irc:
+
+Set user information.
+
+#+begin_src elisp :results none
+(setq erc-server "localhost"
+      erc-nick "chuthepup"
+      erc-user-full-name "Chu the Pup")
+#+end_src
+
+** Achievements in Emacs
+
+#+begin_src elisp :results none
+(achievements-mode)
+#+end_src
+
 ** Editing server (~edit-server~) for Emacs with ~edit-with-emacs~
 #+begin_src elisp
 (require 'edit-server)
@@ -143,20 +159,11 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
 :PROPERTIES:
 :ID:       246c5efa-98ea-4285-b52a-39fbb914ea9f
 :END:
-In actuality, this is a hook to activate the ~nov.el~ mode (nov-mode) whenever you open a file ending in ".epub" within Emacs.
+
+This is a hook to activate the ~nov.el~ mode (nov-mode) whenever you open a file ending in ".epub" within Emacs.
 
 #+begin_src elisp :results none
 (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
-#+end_src
-
-** ~erc~ (IRC) :irc:
-
-Set user information.
-
-#+begin_src elisp :results none
-(setq erc-server "localhost"
-      erc-nick "chuthepup"
-      erc-user-full-name "Chu the Pup")
 #+end_src
 
 ** ~dired~ director editor (Emacs file manager) settings :dired:
@@ -205,6 +212,8 @@ and to run in archive mode."
 *** org TODO state hiding
 
 Write TODO state changes into LOGBOOK drawer. [[https://stackoverflow.com/a/63798475][Thanks, LeeRuns (stackoverflow.com)]].
+
+This helps keep Org files tidier and cleaner in the case of recurring / looping tasks. You can fold them, whereas by default, the change in TODO state (e.g. from TODO -> DONE) create separate logs.
 
 #+begin_src elisp
 (setq org-log-into-drawer "LOGBOOK")
@@ -466,8 +475,10 @@ Citation Style Language (CSL) files can be used with org-cite.
 Added automatically when images are attached. Does not affect actual image dimensions, only how they are shown initially within Emacs.
 
 #+begin_src elisp
-(setq org-image-actual-width 500)
+(setq org-image-actual-width nil)
 #+end_src
+
+#+RESULTS:
 
 *** LaTeX classes for org mode with org-latex-classes
 
@@ -772,7 +783,7 @@ I don't know how to do this yet.
 I prefer ".git".
 
 #+begin_src elisp
-(setq projectile-project-root-files-bottom-up '(".projectile" ".project" ".git"))
+(setq projectile-project-root-files-bottom-up '(".projectile" ".project"))
 #+end_src
 
 *** Projectile don't detect Makefile
@@ -862,12 +873,6 @@ Ange-FTP defaults to =~/.netrc=  so you need to add this to your init script:
   (setq tramp-verbose 0)
   (setq tramp-chunksize 2000)
   (setq tramp-use-ssh-controlmaster-options nil))
-#+end_src
-
-** Achievements in Emacs
-
-#+begin_src elisp
-(achievements-mode)
 #+end_src
 
 ** Round numbers to N decimals in Elisp
@@ -977,12 +982,9 @@ Set Emacs's background opacity to 92%:
 
 Set all Emacs frames from this point on to have a background opacity of 92%:
 
-#+begin_src elisp
+#+begin_src elisp :results none
 (add-to-list 'default-frame-alist '(alpha-background . 92))
 #+end_src
-
-#+RESULTS:
-: ((alpha-background . 92) (alpha-background 92) (buffer-predicate . doom-buffer-frame-predicate) (right-divider-width . 1) (bottom-divider-width . 1) (alpha 100) (vertical-scroll-bars) (tool-bar-lines . 0) (menu-bar-lines . 0) (left-fringe . 8) (right-fringe . 8))
 
 from [[https://www.emacswiki.org/emacs/TransparentEmacs][EmacsWiki: Transparent Emacs]]
 
@@ -1032,26 +1034,19 @@ You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs lo
   (setq sly-complete-symbol-function 'sly-flex-completions))
 #+end_src
 
-#+RESULTS:
-: sly-flex-completions
-
 ** mu4e
-
 #+begin_src elisp :results none
 (use-package mu4e
   ;; :ensure nil
   ;; :load-path "/usr/share/emacs/site-lisp/mu4e/"
   ;; :defer 20 ; Wait until 20 seconds after startup
   :config
-
   ;; This is set to 't' to avoid mail syncing issues when using mbsync
   (setq mu4e-change-filenames-when-moving t)
-
   ;; Refresh mail using isync every 10 minutes
   (setq mu4e-update-interval (* 10 60))
   (setq mu4e-get-mail-command "mbsync -a")
   (setq mu4e-maildir "~/.local/share/mail")
-
   (setq mu4e-drafts-folder "/[Gmail]/Drafts")
   (setq mu4e-sent-folder   "/[Gmail]/Sent Mail")
   (setq mu4e-refile-folder "/[Gmail]/All Mail")
@@ -1070,7 +1065,6 @@ You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs lo
         message-send-mail-function #'message-send-mail-with-sendmail
         mu4e-context-policy 'pick-first
         mu4e-contexts
-
         `(,(make-mu4e-context
             :name "Acalebdeanwatson@gmail.com"
             :enter-func (lambda () (mu4e-message "Entering calebdeanwatson@gmail.com context"))
@@ -1086,7 +1080,6 @@ You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs lo
                     (mu4e-sent-folder . "/gmail.com/calebdeanwatson/[Gmail]/Sent Mail")
                     (mu4e-drafts-folder . "/gmail.com/calebdeanwatson/[Gmail]/Drafts")
                     (mu4e-trash-folder . "/gmail.com/calebdeanwatson/[Gmail]/Trash")))
-
           ,(make-mu4e-context
             :name "Bchufilthymutt@gmail.com"
             :enter-func (lambda () (mu4e-message "Entering chufilthymutt@gmail.com context"))
@@ -1101,7 +1094,6 @@ You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs lo
                     (mu4e-sent-folder . "/gmail.com/chufilthymutt/[Gmail]/Sent Mail")
                     (mu4e-drafts-folder . "/gmail.com/chufilthymutt/[Gmail]/Drafts")
                     (mu4e-trash-folder . "/gmail.com/chufilthymutt/[Gmail]/Trash")))
-
           ,(make-mu4e-context
             :name "Ccalebkeown@gmail.com"
             :enter-func (lambda () (mu4e-message "Entering calebkeown@gmail.com context"))
@@ -1116,7 +1108,6 @@ You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs lo
                     (mu4e-sent-folder . "/gmail.com/calebkeown/[Gmail]/Sent Mail")
                     (mu4e-drafts-folder . "/gmail.com/calebkeown/[Gmail]/Drafts")
                     (mu4e-trash-folder . "/gmail.com/calebkeown/[Gmail]/Trash")))
-
            ,(make-mu4e-context
             :name "Dformulaicjohnston@gmail.com"
             :enter-func (lambda () (mu4e-message "Entering formulaicjohnston@gmail.com context"))
@@ -1131,7 +1122,6 @@ You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs lo
                     (mu4e-sent-folder . "/gmail.com/formulaicjohnston/[Gmail]/Sent Mail")
                     (mu4e-drafts-folder . "/gmail.com/formulaicjohnston/[Gmail]/Drafts")
                     (mu4e-trash-folder . "/gmail.com/formulaicjohnston/[Gmail]/Trash")))
-
            ,(make-mu4e-context
             :name "Ethreepersonapocalypse@gmail.com"
             :enter-func (lambda () (mu4e-message "Entering threepersonapocalypse@gmail.com context"))
@@ -1146,8 +1136,6 @@ You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs lo
                     (mu4e-sent-folder . "/gmail.com/threepersonapocalypse/[Gmail]/Sent Mail")
                     (mu4e-drafts-folder . "/gmail.com/threepersonapocalypse/[Gmail]/Drafts")
                     (mu4e-trash-folder . "/gmail.com/threepersonapocalypse/[Gmail]/Trash")))
-
-
            ,(make-mu4e-context
             :name "Fmarkhenswiner@gmail.com"
             :enter-func (lambda () (mu4e-message "Entering markhenswiner@gmail.com context"))
@@ -1162,7 +1150,6 @@ You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs lo
                     (mu4e-sent-folder . "/gmail.com/markhenswiner/[Gmail]/Sent Mail")
                     (mu4e-drafts-folder . "/gmail.com/markhenswiner/[Gmail]/Drafts")
                     (mu4e-trash-folder . "/gmail.com/markhenswiner/[Gmail]/Trash")))
-
            ,(make-mu4e-context
             :name "Gdoubledeanart@gmail.com"
             :enter-func (lambda () (mu4e-message "Entering doubledeanart@gmail.com context"))
@@ -1177,7 +1164,6 @@ You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs lo
                     (mu4e-sent-folder . "/gmail.com/doubledeanart/[Gmail]/Sent Mail")
                     (mu4e-drafts-folder . "/gmail.com/doubledeanart/[Gmail]/Drafts")
                     (mu4e-trash-folder . "/gmail.com/doubledeanart/[Gmail]/Trash")))
-
            ,(make-mu4e-context
             :name "Hnetworkcholanger@gmail.com"
             :enter-func (lambda () (mu4e-message "Entering networkcholanger@gmail.com context"))
@@ -1192,7 +1178,6 @@ You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs lo
                     (mu4e-sent-folder . "/gmail.com/networkcholanger/[Gmail]/Sent Mail")
                     (mu4e-drafts-folder . "/gmail.com/networkcholanger/[Gmail]/Drafts")
                     (mu4e-trash-folder . "/gmail.com/networkcholanger/[Gmail]/Trash")))
-
            ,(make-mu4e-context
             :name "Ideafelbow@gmail.com"
             :enter-func (lambda () (mu4e-message "Entering deafelbow@gmail.com context"))
@@ -1206,13 +1191,14 @@ You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs lo
                     (message-signature . nil)
                     (mu4e-sent-folder . "/gmail.com/deafelbow/[Gmail]/Sent Mail")
                     (mu4e-drafts-folder . "/gmail.com/deafelbow/[Gmail]/Drafts")
-                    (mu4e-trash-folder . "/gmail.com/deafelbow/[Gmail]/Trash")))
-
-                    )))
-
+                    (mu4e-trash-folder . "/gmail.com/deafelbow/[Gmail]/Trash"))))))
 #+end_src
 
 ** ~whisper~ Voice transcription (speech to text)
+
+Personally, I can't get a model other than the ~base~ one to download. I'm an English speaker, so there's no translation services enabled.
+
+The ~num-processors~ function is a part of base Emacs: [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Process-Information.html#index-num_002dprocessors][GNU Emacs Manual 40.6 Process Information]].
 
 #+begin_src elisp :results none
 (use-package whisper
@@ -1227,22 +1213,18 @@ You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs lo
 #+end_src
 
 
-
 * Works Cited
-
-** [[https://gergely.polonkai.eu/blog/2014/10/7/rounding-numbers-to-n-decimals-in-emacs.html][Rounding numbers to N decimals in Emacs]] by Gergely Polonkai
-
+** [[https://gergely.polonkai.eu/blog/2014/10/7/rounding-numbers-to-n-decimals-in-emacs.html][Rounding numbers to N decimals in Emacs]]
+by Gergely Polonkai.
 ** https://blog.lazkani.io/posts/bookmark-with-org-capture/
-
 ** https://orgmode.org/manual/Capture-templates.html
-
 ** [[https://raw.githubusercontent.com/gilbertw1/emacs-literate-starter/master/emacs.org][DOOM Emacs Literate Config]]
 
 By Gilbert. Thanks, Gilbert.
 
 ** [[https://github.com/alphapapa/unpackaged.el#ensure-blank-lines-between-headings-and-before-contents][alphapapa/unpackaged.el: A collection of useful Emacs Lisp code that isn't substantial enough to be packaged]]
 
-This is where the 'unpackaged/org-fix-blank-lines' function was sourced from.
+This is where the '~unpackaged/org-fix-blank-lines~' function was sourced from.
 
 By alphapapa. Thanks, alphapapa.
 
