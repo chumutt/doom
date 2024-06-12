@@ -96,6 +96,81 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
 #+end_example
 
 * Config
+** Visual Changes
+*** Font
+
+I use the default LARBS monospace font instead of Fira Mono for consistency's sake.
+
+#+begin_src elisp
+(setq doom-font (font-spec :family "Mono" :size 12))
+#+end_src
+
+The following ensures correct font size without affecting the font used:
+
+#+begin_example elisp
+(setq doom-font (font-spec :size 12))
+#+end_example
+
+You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs loading your Xresources file.]]
+
+*** Temporarily convert images that Emacs cannot otherwise display
+
+This will Set Emacs to convert images if they are going to be shown in the GUI. It detects when Emacs is unable to display the image due to lack of compatibility and temporarily converts it, pushing the converted version into memory during display (it gets cleaned up by the garbage collector).
+
+Note: This is a soft dependency of random-splash-image; in turn, you risk being unable to display certain image file types (notably .webp files) if this is disabled.
+
+#+begin_src elisp
+(setq image-use-external-converter t)
+#+end_src
+
+*** Random Splash Images
+
+**** Enable random-splash-image
+
+For the plugin 'random-splash-image' which displays a random splash image on each Emacs startup.
+
+#+begin_src elisp
+(require 'random-splash-image)
+#+end_src
+
+**** Tell random-splash-image what directory to look for images in.
+
+Example:
+
+#+begin_example elisp
+(setq random-splash-image-dir
+      (concat
+       (getenv "HOME")
+       "/.local/share/random-splash-image-dir/example/memes/"))
+#+end_example
+
+I use a more specific one at the moment.
+
+#+begin_src elisp
+(setq random-splash-image-dir
+      (concat
+       (getenv "HOME")
+       "/.local/share/random-splash-image-dir/chosen-splash-images/src/"))
+#+end_src
+
+**** IDEA How to set multiple directories for random-splash-image
+
+I don't know how to do this yet.
+
+*** Set a random splash image on Emacs startup
+
+#+begin_src elisp
+(with-eval-after-load 'random-splash-image
+  (random-splash-image-set))
+#+end_src
+*** Toggle line numbers off by default
+
+You can toggle them back on, turn them to a "relative line number" mode, and back off again with ~SPC t l~ (lowercase ~L~).
+
+#+begin_src elisp :results none
+(setq display-line-numbers nil)
+#+end_src
+
 ** Private Configuration
 
 #+begin_src elisp :results none
@@ -704,75 +779,6 @@ The mode in the abbrev-mode package allows for user-defined abbreviations that g
 
 #+RESULTS:
 | abbrev-mode | +spell-remove-run-together-switch-for-aspell-h | er/add-text-mode-expansions | +word-wrap-mode | highlight-indent-guides-mode | display-line-numbers-mode | vi-tilde-fringe-mode | text-mode-hook-identify | editorconfig-major-mode-hook |
-
-** Visual Changes
-
-*** Font
-
-I use the default LARBS monospace font instead of Fira Mono for consistency's sake.
-
-#+begin_src elisp
-(setq doom-font (font-spec :family "Mono" :size 12))
-#+end_src
-
-The following ensures correct font size without affecting the font used:
-
-#+begin_example elisp
-(setq doom-font (font-spec :size 12))
-#+end_example
-
-You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs loading your Xresources file.]]
-
-*** Temporarily convert images that Emacs cannot otherwise display
-
-This will Set Emacs to convert images if they are going to be shown in the GUI. It detects when Emacs is unable to display the image due to lack of compatibility and temporarily converts it, pushing the converted version into memory during display (it gets cleaned up by the garbage collector).
-
-Note: This is a soft dependency of random-splash-image; in turn, you risk being unable to display certain image file types (notably .webp files) if this is disabled.
-
-#+begin_src elisp
-(setq image-use-external-converter t)
-#+end_src
-
-*** Random Splash Images
-
-**** Enable random-splash-image
-
-For the plugin 'random-splash-image' which displays a random splash image on each Emacs startup.
-
-#+begin_src elisp
-(require 'random-splash-image)
-#+end_src
-
-**** Tell random-splash-image what directory to look for images in.
-
-Example:
-
-#+begin_example elisp
-(setq random-splash-image-dir
-      (concat
-       (getenv "HOME")
-       "/.local/share/random-splash-image-dir/example/memes/"))
-#+end_example
-
-I use a more specific one at the moment.
-
-#+begin_src elisp
-(setq random-splash-image-dir
-      (concat
-       (getenv "HOME")
-       "/.local/share/random-splash-image-dir/chosen-splash-images/src/"))
-#+end_src
-
-**** IDEA How to set multiple directories for random-splash-image
-
-I don't know how to do this yet.
-
-*** Set a random splash image on Emacs startup
-
-#+begin_src elisp
-(with-eval-after-load 'random-splash-image
-  (random-splash-image-set))
-#+end_src
 
 ** Projectile project management
 :PROPERTIES:
