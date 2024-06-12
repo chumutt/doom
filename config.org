@@ -96,81 +96,6 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
 #+end_example
 
 * Config
-** Visual Changes
-*** Font
-
-I use the default LARBS monospace font instead of Fira Mono for consistency's sake.
-
-#+begin_src elisp
-(setq doom-font (font-spec :family "Mono" :size 12))
-#+end_src
-
-The following ensures correct font size without affecting the font used:
-
-#+begin_example elisp
-(setq doom-font (font-spec :size 12))
-#+end_example
-
-You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs loading your Xresources file.]]
-
-*** Temporarily convert images that Emacs cannot otherwise display
-
-This will Set Emacs to convert images if they are going to be shown in the GUI. It detects when Emacs is unable to display the image due to lack of compatibility and temporarily converts it, pushing the converted version into memory during display (it gets cleaned up by the garbage collector).
-
-Note: This is a soft dependency of random-splash-image; in turn, you risk being unable to display certain image file types (notably .webp files) if this is disabled.
-
-#+begin_src elisp
-(setq image-use-external-converter t)
-#+end_src
-
-*** Random Splash Images
-
-**** Enable random-splash-image
-
-For the plugin 'random-splash-image' which displays a random splash image on each Emacs startup.
-
-#+begin_src elisp
-(require 'random-splash-image)
-#+end_src
-
-**** Tell random-splash-image what directory to look for images in.
-
-Example:
-
-#+begin_example elisp
-(setq random-splash-image-dir
-      (concat
-       (getenv "HOME")
-       "/.local/share/random-splash-image-dir/example/memes/"))
-#+end_example
-
-I use a more specific one at the moment.
-
-#+begin_src elisp
-(setq random-splash-image-dir
-      (concat
-       (getenv "HOME")
-       "/.local/share/random-splash-image-dir/chosen-splash-images/src/"))
-#+end_src
-
-**** IDEA How to set multiple directories for random-splash-image
-
-I don't know how to do this yet.
-
-*** Set a random splash image on Emacs startup
-
-#+begin_src elisp
-(with-eval-after-load 'random-splash-image
-  (random-splash-image-set))
-#+end_src
-*** Toggle line numbers off by default
-
-You can toggle them back on, turn them to a "relative line number" mode, and back off again with ~SPC t l~ (lowercase ~L~).
-
-#+begin_src elisp :results none
-(setq display-line-numbers nil)
-#+end_src
-
 ** Private Configuration
 
 #+begin_src elisp :results none
@@ -950,52 +875,6 @@ Requires a compositor.
 
 *** TODO add a binding for SPC t B to toggle background transparency
 
-** Fix alpha transparency issues
-
-Sometimes Emacs has issues with transparency. In my case, it goes unusably transparent if I make use of an Xresources file.
-
-You can specify frames to use different levels of transparency depending on whether or not you have Emacs focused (active) or if you've clicked off to another application (inactive).
-
-#+begin_example elisp
-(set-frame-parameter (selected-frame) 'alpha '(<active> . <inactive>))
-#+end_example
-
-Or you can just use one number, as so:
-
-#+begin_example elisp
-(set-frame-parameter (selected-frame) 'alpha <both>)
-#+end_example
-
-Here's the settings I currently use:
-
-Set current Emacs frame's opacity to 100%:
-
-#+begin_src elisp :results none
-(set-frame-parameter (selected-frame) 'alpha 100)
-#+end_src
-
-Set all Emacs frames opacity from this point on to 100%:
-
-#+begin_src elisp :results none
-(add-to-list 'default-frame-alist '(alpha 100))
-#+end_src
-
-Set Emacs's background opacity to 92%:
-
-#+begin_src elisp :results none
-(set-frame-parameter nil 'alpha-background 92)
-#+end_src
-
-Set all Emacs frames from this point on to have a background opacity of 92%:
-
-#+begin_src elisp :results none
-(add-to-list 'default-frame-alist '(alpha-background . 92))
-#+end_src
-
-from [[https://www.emacswiki.org/emacs/TransparentEmacs][EmacsWiki: Transparent Emacs]]
-
-You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs loading your Xresources file.]]
-
 ** Inhibit Xresources being loaded by Emacs
 
 #+begin_src elisp
@@ -1216,6 +1095,127 @@ The ~num-processors~ function is a part of base Emacs: [[https://www.gnu.org/sof
         whisper-use-threads (/ (num-processors) 2))
         ;; turn off after 600 seconds of silence
         whisper-recording-timeout 600)
+#+end_src
+
+** Visual Changes
+** Fix alpha transparency issues
+
+Sometimes Emacs has issues with transparency. In my case, it goes unusably transparent if I make use of an Xresources file.
+
+You can specify frames to use different levels of transparency depending on whether or not you have Emacs focused (active) or if you've clicked off to another application (inactive).
+
+#+begin_example elisp
+(set-frame-parameter (selected-frame) 'alpha '(<active> . <inactive>))
+#+end_example
+
+Or you can just use one number, as so:
+
+#+begin_example elisp
+(set-frame-parameter (selected-frame) 'alpha <both>)
+#+end_example
+
+Here's the settings I currently use:
+
+Set current Emacs frame's opacity to 100%:
+
+#+begin_src elisp :results none
+(set-frame-parameter (selected-frame) 'alpha 100)
+#+end_src
+
+Set all Emacs frames opacity from this point on to 100%:
+
+#+begin_src elisp :results none
+(add-to-list 'default-frame-alist '(alpha 100))
+#+end_src
+
+Set Emacs's background opacity to 92%:
+
+#+begin_src elisp :results none
+(set-frame-parameter nil 'alpha-background 92)
+#+end_src
+
+Set all Emacs frames from this point on to have a background opacity of 92%:
+
+#+begin_src elisp :results none
+(add-to-list 'default-frame-alist '(alpha-background . 92))
+#+end_src
+
+from [[https://www.emacswiki.org/emacs/TransparentEmacs][EmacsWiki: Transparent Emacs]]
+
+You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs loading your Xresources file.]]
+
+*** Font
+
+I use the default LARBS monospace font instead of Fira Mono for consistency's sake.
+
+#+begin_src elisp
+(setq doom-font (font-spec :family "Mono" :size 12))
+#+end_src
+
+The following ensures correct font size without affecting the font used:
+
+#+begin_example elisp
+(setq doom-font (font-spec :size 12))
+#+end_example
+
+You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs loading your Xresources file.]]
+
+*** Temporarily convert images that Emacs cannot otherwise display
+
+This will Set Emacs to convert images if they are going to be shown in the GUI. It detects when Emacs is unable to display the image due to lack of compatibility and temporarily converts it, pushing the converted version into memory during display (it gets cleaned up by the garbage collector).
+
+Note: This is a soft dependency of random-splash-image; in turn, you risk being unable to display certain image file types (notably .webp files) if this is disabled.
+
+#+begin_src elisp
+(setq image-use-external-converter t)
+#+end_src
+
+*** Random Splash Images
+
+**** Enable random-splash-image
+
+For the plugin 'random-splash-image' which displays a random splash image on each Emacs startup.
+
+#+begin_src elisp
+(require 'random-splash-image)
+#+end_src
+
+**** Tell random-splash-image what directory to look for images in.
+
+Example:
+
+#+begin_example elisp
+(setq random-splash-image-dir
+      (concat
+       (getenv "HOME")
+       "/.local/share/random-splash-image-dir/example/memes/"))
+#+end_example
+
+I use a more specific one at the moment.
+
+#+begin_src elisp
+(setq random-splash-image-dir
+      (concat
+       (getenv "HOME")
+       "/.local/share/random-splash-image-dir/chosen-splash-images/src/"))
+#+end_src
+
+**** IDEA How to set multiple directories for random-splash-image
+
+I don't know how to do this yet.
+
+*** Set a random splash image on Emacs startup
+
+#+begin_src elisp
+(with-eval-after-load 'random-splash-image
+  (random-splash-image-set))
+#+end_src
+*** Toggle line numbers off by default
+
+You can toggle them back on, turn them to a "relative line number" mode, and back off again with ~SPC t l~ (lowercase ~L~).
+
+#+begin_src elisp :results none
+(setq display-line-numbers nil)
 #+end_src
 
 * Works Cited
