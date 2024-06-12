@@ -22,13 +22,13 @@
 
        :completion
        (company
-        +tng)           ; the ultimate code completion backend
+         +tng)           ; the ultimate code completion backend
        ;;helm              ; the *other* search engine for love and life
        ;;ido               ; the other *other* search engine...
        ;;(ivy
-       ;; +prescient)      ; a search engine for love and life
+       ;;  +prescient)      ; a search engine for love and life
        (vertico
-        +icons)           ; the search engine of the future
+         +icons)           ; the search engine of the future
 
        :ui
        ;;deft              ; notational velocity for Emacs
@@ -47,12 +47,12 @@
        ;;neotree           ; a project drawer, like NERDTree for vim
        ophints           ; highlight the region an operation acts on
        (popup
-        +defaults)       ; tame sudden yet inevitable temporary windows
+         +defaults)       ; tame sudden yet inevitable temporary windows
        ;;tabs              ; a tab bar for Emacs
        treemacs          ; a project drawer, like neotree but cooler
        unicode           ; extended unicode support for various languages
        (vc-gutter
-        +pretty)         ; vcs diff in the fringe
+         +pretty)         ; vcs diff in the fringe
        vi-tilde-fringe   ; fringe tildes to mark beyond EOB
        window-select     ; visually switch windows
        workspaces        ; tab emulation, persistence & separate workspaces
@@ -60,7 +60,7 @@
 
        :editor
        (evil
-        +everywhere)     ; come to the dark side, we have cookies
+         +everywhere)     ; come to the dark side, we have cookies
        file-templates    ; auto-snippets for empty files
        fold              ; (nigh) universal code folding
        format
@@ -87,9 +87,10 @@
        vterm             ; the best terminal emulation in Emacs
 
        :checkers
-       (syntax +flyspell)              ; tasing you for every semicolon you forget
+       (syntax
+         +flyspell)              ; tasing you for every semicolon you forget
        (spell
-        +flyspell)         ; tasing you for misspelling mispelling
+         +flyspell)         ; tasing you for misspelling mispelling
        ;;grammar           ; tasing grammar mistake every you make
 
        :tools
@@ -124,8 +125,8 @@
        ;;agda              ; types of types of types of types...
        ;;beancount         ; mind the GAAP
        (cc
-        +lsp
-        +tree-sitter)            ; C > C++ == 1
+         +lsp
+         +tree-sitter)            ; C > C++ == 1
        ;;clojure           ; java with a lisp
        common-lisp       ; if you've seen one lisp, you've seen them all
        ;;coq               ; proofs-as-programs
@@ -146,19 +147,19 @@
        ;;fsharp            ; ML stands for Microsoft's Language
        ;;fstar             ; (dependent) types and (monadic) effects and Z3
        ;;gdscript          ; the language you waited for
-       ;;(go
-       ;; +lsp            ; the hipster dialect
-       ;;(graphql +lsp)    ; Give queries a REST
+       (go
+         +lsp)            ; the hipster dialect
+       (graphql +lsp)    ; Give queries a REST
        (haskell
-        +lsp)            ; a language that's lazier than I am
-       ;;hy                ; readability of scheme w/ speed of python
+         +lsp)            ; a language that's lazier than I am
+       hy                ; readability of scheme w/ speed of python
        ;;idris             ; a language you can depend on
        json              ; At least it ain't XML
        ;;(java
        ;; +lsp            ; the poster child for carpal tunnel syndrome
        ;;(javascript
        ;; +lsp
-       ;; +tree-sitter    ; all(hope(abandon(ye(who(enter(here))))))
+       ;; +tree-sitter)    ; all(hope(abandon(ye(who(enter(here))))))
        ;;julia             ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)
        latex             ; writing papers in Emacs has never been so fun
@@ -170,13 +171,13 @@
        ;;nix               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
        (org
-        +roam2
-        +hugo
-        +pandoc
-        +journal
-        +noter
-        +gnuplot
-        +dragndrop)      ; organize your plain life in plain text
+         +roam2
+         +hugo
+         +pandoc
+         +journal
+         +noter
+         +gnuplot
+         +dragndrop)      ; organize your plain life in plain text
        ;;php               ; perl's insecure younger brother
        plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
