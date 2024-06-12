@@ -1212,7 +1212,6 @@ The ~num-processors~ function is a part of base Emacs: [[https://www.gnu.org/sof
         whisper-recording-timeout 600)
 #+end_src
 
-
 * Works Cited
 ** [[https://gergely.polonkai.eu/blog/2014/10/7/rounding-numbers-to-n-decimals-in-emacs.html][Rounding numbers to N decimals in Emacs]]
 by Gergely Polonkai.
