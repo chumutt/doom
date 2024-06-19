@@ -113,12 +113,6 @@ Set user information.
       erc-user-full-name "Chu the Pup")
 #+end_src
 
-** Achievements in Emacs
-
-#+begin_src elisp :results none
-(achievements-mode)
-#+end_src
-
 ** Editing server (~edit-server~) for Emacs with ~edit-with-emacs~
 #+begin_src elisp
 (require 'edit-server)
@@ -208,7 +202,6 @@ and to run in archive mode."
 #+end_src
 
 ** Org-Mode :org:
-
 *** org TODO state hiding
 
 Write TODO state changes into LOGBOOK drawer. [[https://stackoverflow.com/a/63798475][Thanks, LeeRuns (stackoverflow.com)]].
@@ -647,9 +640,10 @@ Want files tracked in your agenda? Use the ~C-c [~ keybinding in each file to ad
   ;;        ((prog-mode text-mode) . org-tanglesync-watch-mode))
   ;; :custom
   ;; (org-tanglesync-watch-files '("example.org"))
-  :bind
-  (( "C-c M-i" . org-tanglesync-process-buffer-interactive)
-   ( "C-c M-a" . org-tanglesync-process-buffer-automatic)))
+  ;; :bind
+  ;; (( "C-c M-i" . org-tanglesync-process-buffer-interactive)
+  ;;  ( "C-c M-a" . org-tanglesync-process-buffer-automatic))
+)
 #+end_src
 
 *** Org Mode Capture Templates Customization :org:templates:
@@ -689,6 +683,44 @@ Want files tracked in your agenda? Use the ~C-c [~ keybinding in each file to ad
     :hook ((org-roam-db-autosync-mode . vulpea-db-autosync-enable))))
 #+end_src
 
+*** Procedure to tangle a single block at a time
+
+From [[https://stackoverflow.com/a/39628921][joon]]:
+
+#+begin_src elisp :results none
+(defun org-babel-tangle-block ()
+  (interactive)
+  (let ((current-prefix-arg '(4)))
+    (call-interactively 'org-babel-tangle)))
+
+(after! org
+  (map! :map org-mode-map
+        :prefix "C-c C-v"
+        "t" #'org-babel-tangle-block
+        "T" #'org-babel-tangle))
+#+end_src
+
+**** Tangle a single block from within the special edit menu
+
+From [[https://stackoverflow.com/a/68962704][Dennis Proksch]]:
+
+#+begin_src elisp :results none
+(defun org-babel-tangle-from-edit-special ()
+    (interactive)
+    (org-edit-src-exit)
+    (let ((current-prefix-arg '(4)))
+      (call-interactively 'org-babel-tangle))
+    (org-edit-special))
+
+(after! org
+  (map! :map org-src-mode-map
+        "<f9>" #'org-babel-tangle-from-edit-special))
+#+end_src
+
+Do this:
+put pointer in a code block -> m ' -> F9
+to tangle.
+
 ** ~abbrev-mode~
 :PROPERTIES:
 :ID:       573045ef-062a-4bc9-94c8-d9a3f5c9c9d0
@@ -696,14 +728,11 @@ Want files tracked in your agenda? Use the ~C-c [~ keybinding in each file to ad
 
 The mode in the abbrev-mode package allows for user-defined abbreviations that get expanded during typing. I have them turn on when in Org mode or Text mode and have them off otherwise.
 
-#+begin_src elisp
+#+begin_src elisp :results none
 (use-package! abbrev-mode
   :hook (org-mode . abbrev-mode)
         (text-mode . abbrev-mode))
 #+end_src
-
-#+RESULTS:
-| abbrev-mode | +spell-remove-run-together-switch-for-aspell-h | er/add-text-mode-expansions | +word-wrap-mode | highlight-indent-guides-mode | display-line-numbers-mode | vi-tilde-fringe-mode | text-mode-hook-identify | editorconfig-major-mode-hook |
 
 ** Projectile project management
 :PROPERTIES:
@@ -713,29 +742,30 @@ The mode in the abbrev-mode package allows for user-defined abbreviations that g
 
 I prefer ".git".
 
-#+begin_src elisp
-(setq projectile-project-root-files-bottom-up '(".projectile" ".project"))
+#+begin_src elisp :results none
+(after! 'projectile
+  (setq projectile-project-root-files-bottom-up '(".projectile" ".project")))
 #+end_src
 
 *** Projectile don't detect Makefile
 
 I don't really work with Java stuff, so I just keep this default.
 
-#+begin_src elisp
-(setq projectile-project-root-files-top-down-recurring '("compile_commands.json"))
+#+begin_src elisp :results none
+;; (setq projectile-project-root-files-top-down-recurring '("compile_commands.json"))
 #+end_src
 
 *** Correct Projectile sub directory detection
 
-#+begin_src elisp
-(setq projectile-switch-project-action #'projectile-find-dir)
-(setq projectile-find-dir-includes-top-level t)
+#+begin_src elisp :results none
+;; (setq projectile-switch-project-action #'projectile-find-dir)
+;; (setq projectile-find-dir-includes-top-level t)
 #+end_src
 
 *** Disable automatic project detection as a whole
 
-#+begin_src elisp
-(setq projectile-project-root-functions nil)
+#+begin_src elisp :results none
+;; (setq projectile-project-root-functions nil)
 #+end_src
 
 *** RipGrep "rg" fast search to handle Projectile project files
@@ -804,88 +834,6 @@ Ange-FTP defaults to =~/.netrc=  so you need to add this to your init script:
   (setq tramp-verbose 0)
   (setq tramp-chunksize 2000)
   (setq tramp-use-ssh-controlmaster-options nil))
-#+end_src
-
-** Round numbers to N decimals in Elisp
-
-from [[https://gergely.polonkai.eu/blog/2014/10/7/rounding-numbers-to-n-decimals-in-emacs.html][Rounding numbers to N decimals in Emacs]] by Gergely Polonkai
-
-#+begin_src elisp
-(defun get-number-at-point ()
-  (interactive)
-  (skip-chars-backward "0123456789.-")
-  (or (looking-at "[0123456789.-]+")
-      (error "No number at point"))
-  (string-to-number (match-string 0)))
-
-(defun round-number-at-point-to-decimals (decimal-count)
-  (interactive "NDecimal count: ")
-  (let ((mult (expt 10 decimal-count)))
-    (replace-match (number-to-string
-              (/
-               (fround
-                (*
-                 mult
-                 (get-number-at-point)))
-                mult)))))
-#+end_src
-
-** Alpha background transparency function :function:
-
-Requires a compositor.
-
-[[https://kristofferbalintona.me/posts/202206071000/][True Emacs Transparency | Kristoffer Balintona]]
-
-#+begin_src elisp :tangle no
-(defun kb/toggle-window-transparency ()
-  "Toggle transparency."
-  (interactive)
-  (let ((alpha-transparency 75))
-    (pcase (frame-parameter nil 'alpha-background)
-      (alpha-transparency (set-frame-parameter nil 'alpha-background 100))
-      (t (set-frame-parameter nil 'alpha-background alpha-transparency)))))
-#+end_src
-
-#+begin_src elisp :results none
-(defun toggle-transparency ()
-  "Toggle TOTAL EMACS X11 transparency. Might need to be called a couple of times in a row to work."
-  (interactive)
-  (let ((alpha (frame-parameter nil 'alpha)))
-    (if (eq
-     (if (numberp alpha)
-         alpha
-       (cdr alpha)) ; may also be nil
-     100)
-    (set-frame-parameter nil 'alpha '(85 . 50))
-      (set-frame-parameter nil 'alpha '(100 . 100)))))
-#+end_src
-
-#+begin_src elisp :results none
-(defun toggle-background-transparency ()
-  "Toggle background transparency, wherein text and other elements in frame are still displayed but a background isn't."
-  (interactive)
-  (if (get 'toggle-background-transparency 'state)
-      (progn
-        (set-frame-parameter nil 'alpha-background 100)
-        (put 'toggle-background-transparency 'state nil))
-    (progn
-      (set-frame-parameter nil 'alpha-background 60)
-      (put 'toggle-background-transparency 'state t))))
-#+end_src
-
-*** TODO add a binding for SPC t B to toggle background transparency
-
-** Inhibit Xresources being loaded by Emacs
-
-#+begin_src elisp
-(setq inhibit-x-resources t) ; inhibit .xresources file from being loaded on emacs init
-#+end_src
-
-** Literate Calc mode
-
-#+begin_src elisp
-(use-package! literate-calc-mode
-  :defer t)
 #+end_src
 
 ** Common Lisp
@@ -1097,8 +1045,65 @@ The ~num-processors~ function is a part of base Emacs: [[https://www.gnu.org/sof
         whisper-recording-timeout 600)
 #+end_src
 
+** Achievements in Emacs
+
+#+begin_src elisp :results none
+(achievements-mode)
+#+end_src
+
 ** Visual Changes
-** Fix alpha transparency issues
+*** Inhibit Xresources being loaded by Emacs
+
+#+begin_src elisp
+(setq inhibit-x-resources t) ; inhibit .xresources file from being loaded on emacs init
+#+end_src
+
+*** Alpha background transparency function :function:
+
+Requires a compositor.
+
+[[https://kristofferbalintona.me/posts/202206071000/][True Emacs Transparency | Kristoffer Balintona]]
+
+#+begin_src elisp :tangle no
+(defun kb/toggle-window-transparency ()
+  "Toggle transparency."
+  (interactive)
+  (let ((alpha-transparency 75))
+    (pcase (frame-parameter nil 'alpha-background)
+      (alpha-transparency (set-frame-parameter nil 'alpha-background 100))
+      (t (set-frame-parameter nil 'alpha-background alpha-transparency)))))
+#+end_src
+
+#+begin_src elisp :results none
+(defun toggle-transparency ()
+  "Toggle TOTAL EMACS X11 transparency. Might need to be called a couple of times in a row to work."
+  (interactive)
+  (let ((alpha (frame-parameter nil 'alpha)))
+    (if (eq
+     (if (numberp alpha)
+         alpha
+       (cdr alpha)) ; may also be nil
+     100)
+    (set-frame-parameter nil 'alpha '(85 . 50))
+      (set-frame-parameter nil 'alpha '(100 . 100)))))
+#+end_src
+
+#+begin_src elisp :results none
+(defun toggle-background-transparency ()
+  "Toggle background transparency, wherein text and other elements in frame are still displayed but a background isn't."
+  (interactive)
+  (if (get 'toggle-background-transparency 'state)
+      (progn
+        (set-frame-parameter nil 'alpha-background 100)
+        (put 'toggle-background-transparency 'state nil))
+    (progn
+      (set-frame-parameter nil 'alpha-background 60)
+      (put 'toggle-background-transparency 'state t))))
+#+end_src
+
+**** TODO add a binding for SPC t B to toggle background transparency
+
+*** Fix alpha transparency issues
 
 Sometimes Emacs has issues with transparency. In my case, it goes unusably transparent if I make use of an Xresources file.
 
@@ -1144,7 +1149,7 @@ from [[https://www.emacswiki.org/emacs/TransparentEmacs][EmacsWiki: Transparent 
 
 You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs loading your Xresources file.]]
 
-*** Font
+**** Font
 
 I use the default LARBS monospace font instead of Fira Mono for consistency's sake.
 
@@ -1160,7 +1165,7 @@ The following ensures correct font size without affecting the font used:
 
 You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs loading your Xresources file.]]
 
-*** Temporarily convert images that Emacs cannot otherwise display
+**** Temporarily convert images that Emacs cannot otherwise display
 
 This will Set Emacs to convert images if they are going to be shown in the GUI. It detects when Emacs is unable to display the image due to lack of compatibility and temporarily converts it, pushing the converted version into memory during display (it gets cleaned up by the garbage collector).
 
@@ -1170,9 +1175,9 @@ Note: This is a soft dependency of random-splash-image; in turn, you risk being 
 (setq image-use-external-converter t)
 #+end_src
 
-*** Random Splash Images
+**** Random Splash Images
 
-**** Enable random-splash-image
+***** Enable random-splash-image
 
 For the plugin 'random-splash-image' which displays a random splash image on each Emacs startup.
 
@@ -1180,7 +1185,7 @@ For the plugin 'random-splash-image' which displays a random splash image on eac
 (require 'random-splash-image)
 #+end_src
 
-**** Tell random-splash-image what directory to look for images in.
+***** Tell random-splash-image what directory to look for images in.
 
 Example:
 
@@ -1200,17 +1205,17 @@ I use a more specific one at the moment.
        "/.local/share/random-splash-image-dir/chosen-splash-images/src/"))
 #+end_src
 
-**** IDEA How to set multiple directories for random-splash-image
+***** IDEA How to set multiple directories for random-splash-image
 
 I don't know how to do this yet.
 
-*** Set a random splash image on Emacs startup
+**** Set a random splash image on Emacs startup
 
 #+begin_src elisp
 (with-eval-after-load 'random-splash-image
   (random-splash-image-set))
 #+end_src
-*** Toggle line numbers off by default
+**** Toggle line numbers off by default
 
 You can toggle them back on, turn them to a "relative line number" mode, and back off again with ~SPC t l~ (lowercase ~L~).
 

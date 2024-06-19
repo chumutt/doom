@@ -69,7 +69,7 @@
 
 (package! org-fragtog)
 
-;; (package! org-tanglesync)
+(package! org-tanglesync)
 
 (package! org-heatmap
   :recipe (:host github
