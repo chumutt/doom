@@ -103,102 +103,176 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
       user-mail-address "chufilthymutt@gmail.com")
 #+end_src
 
-** Emacs Relay Chat (~erc~) for Internet Relay Chat (IRC) :irc:
+** Visual Changes
+*** Inhibit Xresources being loaded by Emacs
 
-Set user information.
+#+begin_src elisp
+(setq inhibit-x-resources t) ; inhibit .xresources file from being loaded on emacs init
+#+end_src
+
+*** Alpha background transparency function :function:
+
+Requires a compositor.
+
+[[https://kristofferbalintona.me/posts/202206071000/][True Emacs Transparency | Kristoffer Balintona]]
+
+#+begin_src elisp :tangle no
+(defun kb/toggle-window-transparency ()
+  "Toggle transparency."
+  (interactive)
+  (let ((alpha-transparency 75))
+    (pcase (frame-parameter nil 'alpha-background)
+      (alpha-transparency (set-frame-parameter nil 'alpha-background 100))
+      (t (set-frame-parameter nil 'alpha-background alpha-transparency)))))
+#+end_src
 
 #+begin_src elisp :results none
-(setq erc-server "localhost"
-      erc-nick "chuthepup"
-      erc-user-full-name "Chu the Pup")
+(defun toggle-transparency ()
+  "Toggle TOTAL EMACS X11 transparency. Might need to be called a couple of times in a row to work."
+  (interactive)
+  (let ((alpha (frame-parameter nil 'alpha)))
+    (if (eq
+     (if (numberp alpha)
+         alpha
+       (cdr alpha)) ; may also be nil
+     100)
+    (set-frame-parameter nil 'alpha '(85 . 50))
+      (set-frame-parameter nil 'alpha '(100 . 100)))))
 #+end_src
-
-** Editing server (~edit-server~) for Emacs with ~edit-with-emacs~
-#+begin_src elisp
-(require 'edit-server)
-(edit-server-start)
-#+end_src
-
-** Dictionary
 
 #+begin_src elisp :results none
-(after! 'org
-  (setq ispell-alternate-dictionary "/usr/share/dict"))
+(defun toggle-background-transparency ()
+  "Toggle background transparency, wherein text and other elements in frame are still displayed but a background isn't."
+  (interactive)
+  (if (get 'toggle-background-transparency 'state)
+      (progn
+        (set-frame-parameter nil 'alpha-background 100)
+        (put 'toggle-background-transparency 'state nil))
+    (progn
+      (set-frame-parameter nil 'alpha-background 60)
+      (put 'toggle-background-transparency 'state t))))
 #+end_src
 
-** Palimpsest prog mode hook
+**** TODO add a binding for SPC t B to toggle background transparency
 
-#+begin_src elisp
-(use-package! palimpsest-mode
-  :hook (prog-mode . palimpsest-mode))
-#+end_src
+*** Fix alpha transparency issues
 
-** ~auth-source-save-behavior~
+Sometimes Emacs has issues with transparency. In my case, it goes unusably transparent if I make use of an Xresources file.
 
-#+begin_src elisp
-(setq auth-source-save-behavior nil)
-#+end_src
+You can specify frames to use different levels of transparency depending on whether or not you have Emacs focused (active) or if you've clicked off to another application (inactive).
 
-** ~emms~ :emms:music:
+#+begin_example elisp
+(set-frame-parameter (selected-frame) 'alpha '(<active> . <inactive>))
+#+end_example
 
-#+begin_src elisp
-(setq emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
-#+end_src
+Or you can just use one number, as so:
 
-#+begin_src elisp
-(setq emms-source-file-default-directory "~/Music/")
-#+end_src
+#+begin_example elisp
+(set-frame-parameter (selected-frame) 'alpha <both>)
+#+end_example
 
-** ~nov.el~ for reading epub files in Emacs
-:PROPERTIES:
-:ID:       246c5efa-98ea-4285-b52a-39fbb914ea9f
-:END:
+Here's the settings I currently use:
 
-This is a hook to activate the ~nov.el~ mode (nov-mode) whenever you open a file ending in ".epub" within Emacs.
+Set current Emacs frame's opacity to 100%:
 
 #+begin_src elisp :results none
-(add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
+(set-frame-parameter (selected-frame) 'alpha 100)
 #+end_src
 
-** ~dired~ director editor (Emacs file manager) settings :dired:
+Set all Emacs frames opacity from this point on to 100%:
 
-Have Dired ask to back files up prior to overwriting them.
-
-Make sure you know where your Emacs cache backup directory actually resides before putting this in your Emacs's initialization file (unless you use gio trash, which'll put your trash in $XDG_DATA_DIR/Trash/files)
-
-#+begin_src elisp
-(setq dired-backup-overwrite t)
+#+begin_src elisp :results none
+(add-to-list 'default-frame-alist '(alpha 100))
 #+end_src
 
-*** dired-rsync :dired:rsync:
+Set Emacs's background opacity to 92%:
 
-**** dired-rsync-skip-newer custom rsync function :dired:custom:rsync:
-
-#+begin_src elisp
-(defun dired-rsync-skip-newer (dest)
-  "Asynchronously copy files in dired to `DEST' using rsync
-set to resolve symlinks, skip files that are newer in `DEST',
-and to run in archive mode."
-  (interactive
-   (list (read-file-name "rsync to: " (dired-dwim-target-directory)
-                              nil nil nil 'file-directory-p)))
-  (let ((dired-rsync-options "-aLuz --info=progress2"))
-        (dired-rsync dest)))
+#+begin_src elisp :results none
+(set-frame-parameter nil 'alpha-background 92)
 #+end_src
 
-**** ~dired-rsync-skip-newer~ binding map :dired:binds:custom:rsync:
+Set all Emacs frames from this point on to have a background opacity of 92%:
 
-#+begin_src elisp
-(after! dired
-  (map! :map dired-mode-map
-        :prefix "C-c C-d"
-        "C-r" #'dired-rsync-skip-newer))
+#+begin_src elisp :results none
+(add-to-list 'default-frame-alist '(alpha-background . 92))
 #+end_src
 
-*** Trash instead of delete :dired:
+from [[https://www.emacswiki.org/emacs/TransparentEmacs][EmacsWiki: Transparent Emacs]]
+
+You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs loading your Xresources file.]]
+
+**** Font
+
+I use the default LARBS monospace font instead of Fira Mono for consistency's sake.
 
 #+begin_src elisp
-(setq delete-by-moving-to-trash t)
+(setq doom-font (font-spec :family "Mono" :size 12))
+#+end_src
+
+The following ensures correct font size without affecting the font used:
+
+#+begin_example elisp
+(setq doom-font (font-spec :size 12))
+#+end_example
+
+You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs loading your Xresources file.]]
+
+**** Temporarily convert images that Emacs cannot otherwise display
+
+This will Set Emacs to convert images if they are going to be shown in the GUI. It detects when Emacs is unable to display the image due to lack of compatibility and temporarily converts it, pushing the converted version into memory during display (it gets cleaned up by the garbage collector).
+
+Note: This is a soft dependency of random-splash-image; in turn, you risk being unable to display certain image file types (notably .webp files) if this is disabled.
+
+#+begin_src elisp
+(setq image-use-external-converter t)
+#+end_src
+
+**** Random Splash Images
+
+***** Enable random-splash-image
+
+For the plugin 'random-splash-image' which displays a random splash image on each Emacs startup.
+
+#+begin_src elisp
+(require 'random-splash-image)
+#+end_src
+
+***** Tell random-splash-image what directory to look for images in.
+
+Example:
+
+#+begin_example elisp
+(setq random-splash-image-dir
+      (concat
+       (getenv "HOME")
+       "/.local/share/random-splash-image-dir/example/memes/"))
+#+end_example
+
+I use a more specific one at the moment.
+
+#+begin_src elisp
+(setq random-splash-image-dir
+      (concat
+       (getenv "HOME")
+       "/.local/share/random-splash-image-dir/chosen-splash-images/src/"))
+#+end_src
+
+***** IDEA How to set multiple directories for random-splash-image
+
+I don't know how to do this yet.
+
+**** Set a random splash image on Emacs startup
+
+#+begin_src elisp
+(with-eval-after-load 'random-splash-image
+  (random-splash-image-set))
+#+end_src
+**** Toggle line numbers off by default
+
+You can toggle them back on, turn them to a "relative line number" mode, and back off again with ~SPC t l~ (lowercase ~L~).
+
+#+begin_src elisp :results none
+(setq display-line-numbers nil)
 #+end_src
 
 ** Org-Mode :org:
@@ -721,6 +795,87 @@ Do this:
 put pointer in a code block -> m ' -> F9
 to tangle.
 
+** Emacs Relay Chat (~erc~) for Internet Relay Chat (IRC) :irc:
+
+Set user information.
+
+#+begin_src elisp :results none
+(setq erc-server "localhost"
+      erc-nick "chuthepup"
+      erc-user-full-name "Chu the Pup")
+#+end_src
+
+** Editing server (~edit-server~) for Emacs with ~edit-with-emacs~
+#+begin_src elisp
+(require 'edit-server)
+(edit-server-start)
+#+end_src
+
+** Dictionary
+
+#+begin_src elisp :results none
+(after! 'org
+  (setq ispell-alternate-dictionary "/usr/share/dict"))
+#+end_src
+
+** ~auth-source-save-behavior~
+
+#+begin_src elisp
+(setq auth-source-save-behavior nil)
+#+end_src
+
+** ~nov.el~ for reading epub files in Emacs
+:PROPERTIES:
+:ID:       246c5efa-98ea-4285-b52a-39fbb914ea9f
+:END:
+
+This is a hook to activate the ~nov.el~ mode (nov-mode) whenever you open a file ending in ".epub" within Emacs.
+
+#+begin_src elisp :results none
+(add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
+#+end_src
+
+** ~dired~ director editor (Emacs file manager) settings :dired:
+
+Have Dired ask to back files up prior to overwriting them.
+
+Make sure you know where your Emacs cache backup directory actually resides before putting this in your Emacs's initialization file (unless you use gio trash, which'll put your trash in $XDG_DATA_DIR/Trash/files)
+
+#+begin_src elisp
+(setq dired-backup-overwrite t)
+#+end_src
+
+*** dired-rsync :dired:rsync:
+
+**** dired-rsync-skip-newer custom rsync function :dired:custom:rsync:
+
+#+begin_src elisp
+(defun dired-rsync-skip-newer (dest)
+  "Asynchronously copy files in dired to `DEST' using rsync
+set to resolve symlinks, skip files that are newer in `DEST',
+and to run in archive mode."
+  (interactive
+   (list (read-file-name "rsync to: " (dired-dwim-target-directory)
+                              nil nil nil 'file-directory-p)))
+  (let ((dired-rsync-options "-aLuz --info=progress2"))
+        (dired-rsync dest)))
+#+end_src
+
+**** ~dired-rsync-skip-newer~ binding map :dired:binds:custom:rsync:
+
+#+begin_src elisp
+(after! dired
+  (map! :map dired-mode-map
+        :prefix "C-c C-d"
+        "C-r" #'dired-rsync-skip-newer))
+#+end_src
+
+*** Trash instead of delete :dired:
+
+#+begin_src elisp
+(setq delete-by-moving-to-trash t)
+#+end_src
+
 ** ~abbrev-mode~
 :PROPERTIES:
 :ID:       573045ef-062a-4bc9-94c8-d9a3f5c9c9d0
@@ -785,6 +940,16 @@ Use the faster searcher to handle project files: ripgrep "rg"
           (concat "rg -0 --files --color=never --hidden" rg-cmd " " rg-ignorefile))))
 #+end_src
 
+** ~emms~ :emms:music:
+
+#+begin_src elisp
+(setq emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
+#+end_src
+
+#+begin_src elisp
+(setq emms-source-file-default-directory "~/Music/")
+#+end_src
+
 ** Enable active presence on Discord for Emacs
 :PROPERTIES:
 :ID:       a948faf0-c278-4481-bd1b-c857644a4c90
@@ -809,6 +974,13 @@ Disabled for now.
   (let ((str (read-passwd
               (concat (replace-regexp-in-string "%22" "\""
                       (replace-regexp-in-string "%0A" "\n" desc)) prompt ": ")))) str))
+#+end_src
+
+** Palimpsest prog mode hook
+
+#+begin_src elisp
+(use-package! palimpsest-mode
+  :hook (prog-mode . palimpsest-mode))
 #+end_src
 
 ** Tramp :tramp:ssh:
@@ -1049,178 +1221,6 @@ The ~num-processors~ function is a part of base Emacs: [[https://www.gnu.org/sof
 
 #+begin_src elisp :results none
 (achievements-mode)
-#+end_src
-
-** Visual Changes
-*** Inhibit Xresources being loaded by Emacs
-
-#+begin_src elisp
-(setq inhibit-x-resources t) ; inhibit .xresources file from being loaded on emacs init
-#+end_src
-
-*** Alpha background transparency function :function:
-
-Requires a compositor.
-
-[[https://kristofferbalintona.me/posts/202206071000/][True Emacs Transparency | Kristoffer Balintona]]
-
-#+begin_src elisp :tangle no
-(defun kb/toggle-window-transparency ()
-  "Toggle transparency."
-  (interactive)
-  (let ((alpha-transparency 75))
-    (pcase (frame-parameter nil 'alpha-background)
-      (alpha-transparency (set-frame-parameter nil 'alpha-background 100))
-      (t (set-frame-parameter nil 'alpha-background alpha-transparency)))))
-#+end_src
-
-#+begin_src elisp :results none
-(defun toggle-transparency ()
-  "Toggle TOTAL EMACS X11 transparency. Might need to be called a couple of times in a row to work."
-  (interactive)
-  (let ((alpha (frame-parameter nil 'alpha)))
-    (if (eq
-     (if (numberp alpha)
-         alpha
-       (cdr alpha)) ; may also be nil
-     100)
-    (set-frame-parameter nil 'alpha '(85 . 50))
-      (set-frame-parameter nil 'alpha '(100 . 100)))))
-#+end_src
-
-#+begin_src elisp :results none
-(defun toggle-background-transparency ()
-  "Toggle background transparency, wherein text and other elements in frame are still displayed but a background isn't."
-  (interactive)
-  (if (get 'toggle-background-transparency 'state)
-      (progn
-        (set-frame-parameter nil 'alpha-background 100)
-        (put 'toggle-background-transparency 'state nil))
-    (progn
-      (set-frame-parameter nil 'alpha-background 60)
-      (put 'toggle-background-transparency 'state t))))
-#+end_src
-
-**** TODO add a binding for SPC t B to toggle background transparency
-
-*** Fix alpha transparency issues
-
-Sometimes Emacs has issues with transparency. In my case, it goes unusably transparent if I make use of an Xresources file.
-
-You can specify frames to use different levels of transparency depending on whether or not you have Emacs focused (active) or if you've clicked off to another application (inactive).
-
-#+begin_example elisp
-(set-frame-parameter (selected-frame) 'alpha '(<active> . <inactive>))
-#+end_example
-
-Or you can just use one number, as so:
-
-#+begin_example elisp
-(set-frame-parameter (selected-frame) 'alpha <both>)
-#+end_example
-
-Here's the settings I currently use:
-
-Set current Emacs frame's opacity to 100%:
-
-#+begin_src elisp :results none
-(set-frame-parameter (selected-frame) 'alpha 100)
-#+end_src
-
-Set all Emacs frames opacity from this point on to 100%:
-
-#+begin_src elisp :results none
-(add-to-list 'default-frame-alist '(alpha 100))
-#+end_src
-
-Set Emacs's background opacity to 92%:
-
-#+begin_src elisp :results none
-(set-frame-parameter nil 'alpha-background 92)
-#+end_src
-
-Set all Emacs frames from this point on to have a background opacity of 92%:
-
-#+begin_src elisp :results none
-(add-to-list 'default-frame-alist '(alpha-background . 92))
-#+end_src
-
-from [[https://www.emacswiki.org/emacs/TransparentEmacs][EmacsWiki: Transparent Emacs]]
-
-You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs loading your Xresources file.]]
-
-**** Font
-
-I use the default LARBS monospace font instead of Fira Mono for consistency's sake.
-
-#+begin_src elisp
-(setq doom-font (font-spec :family "Mono" :size 12))
-#+end_src
-
-The following ensures correct font size without affecting the font used:
-
-#+begin_example elisp
-(setq doom-font (font-spec :size 12))
-#+end_example
-
-You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs loading your Xresources file.]]
-
-**** Temporarily convert images that Emacs cannot otherwise display
-
-This will Set Emacs to convert images if they are going to be shown in the GUI. It detects when Emacs is unable to display the image due to lack of compatibility and temporarily converts it, pushing the converted version into memory during display (it gets cleaned up by the garbage collector).
-
-Note: This is a soft dependency of random-splash-image; in turn, you risk being unable to display certain image file types (notably .webp files) if this is disabled.
-
-#+begin_src elisp
-(setq image-use-external-converter t)
-#+end_src
-
-**** Random Splash Images
-
-***** Enable random-splash-image
-
-For the plugin 'random-splash-image' which displays a random splash image on each Emacs startup.
-
-#+begin_src elisp
-(require 'random-splash-image)
-#+end_src
-
-***** Tell random-splash-image what directory to look for images in.
-
-Example:
-
-#+begin_example elisp
-(setq random-splash-image-dir
-      (concat
-       (getenv "HOME")
-       "/.local/share/random-splash-image-dir/example/memes/"))
-#+end_example
-
-I use a more specific one at the moment.
-
-#+begin_src elisp
-(setq random-splash-image-dir
-      (concat
-       (getenv "HOME")
-       "/.local/share/random-splash-image-dir/chosen-splash-images/src/"))
-#+end_src
-
-***** IDEA How to set multiple directories for random-splash-image
-
-I don't know how to do this yet.
-
-**** Set a random splash image on Emacs startup
-
-#+begin_src elisp
-(with-eval-after-load 'random-splash-image
-  (random-splash-image-set))
-#+end_src
-**** Toggle line numbers off by default
-
-You can toggle them back on, turn them to a "relative line number" mode, and back off again with ~SPC t l~ (lowercase ~L~).
-
-#+begin_src elisp :results none
-(setq display-line-numbers nil)
 #+end_src
 
 * Works Cited
