@@ -120,7 +120,7 @@ Requires a compositor.
 (defun kb/toggle-window-transparency ()
   "Toggle transparency."
   (interactive)
-  (let ((alpha-transparency 75))
+  (let ((alpha-transparency 85))
     (pcase (frame-parameter nil 'alpha-background)
       (alpha-transparency (set-frame-parameter nil 'alpha-background 100))
       (t (set-frame-parameter nil 'alpha-background alpha-transparency)))))
@@ -149,7 +149,7 @@ Requires a compositor.
         (set-frame-parameter nil 'alpha-background 100)
         (put 'toggle-background-transparency 'state nil))
     (progn
-      (set-frame-parameter nil 'alpha-background 60)
+      (set-frame-parameter nil 'alpha-background 85)
       (put 'toggle-background-transparency 'state t))))
 #+end_src
 
@@ -1051,7 +1051,7 @@ Ange-FTP defaults to =~/.netrc=  so you need to add this to your init script:
   ;; Refresh mail using isync every 10 minutes
   (setq mu4e-update-interval (* 10 60))
   (setq mu4e-get-mail-command "mbsync -a")
-  (setq mu4e-maildir "~/.local/share/mail")
+  (setq mu4e-maildir "~/.local/share/mail/")
   (setq mu4e-drafts-folder "/[Gmail]/Drafts")
   (setq mu4e-sent-folder   "/[Gmail]/Sent Mail")
   (setq mu4e-refile-folder "/[Gmail]/All Mail")
@@ -1099,104 +1099,105 @@ Ange-FTP defaults to =~/.netrc=  so you need to add this to your init script:
                     (mu4e-sent-folder . "/gmail.com/chufilthymutt/[Gmail]/Sent Mail")
                     (mu4e-drafts-folder . "/gmail.com/chufilthymutt/[Gmail]/Drafts")
                     (mu4e-trash-folder . "/gmail.com/chufilthymutt/[Gmail]/Trash")))
-          ,(make-mu4e-context
-            :name "Ccalebkeown@gmail.com"
-            :enter-func (lambda () (mu4e-message "Entering calebkeown@gmail.com context"))
-            :leave-func (lambda () (mu4e-message "Leaving calebkeown@gmail.com context"))
-            :match-func (lambda (msg)
-                          (when msg
-                            (string-match-p "^/gmail.com/calebkeown"
-                                            (mu4e-message-field msg :maildir))))
-            :vars '((user-mail-address . "calebkeown@gmail.com")
-                    (user-full-name . "Caleb Keown")
-                    (message-signature . nil)
-                    (mu4e-sent-folder . "/gmail.com/calebkeown/[Gmail]/Sent Mail")
-                    (mu4e-drafts-folder . "/gmail.com/calebkeown/[Gmail]/Drafts")
-                    (mu4e-trash-folder . "/gmail.com/calebkeown/[Gmail]/Trash")))
-           ,(make-mu4e-context
-            :name "Dformulaicjohnston@gmail.com"
-            :enter-func (lambda () (mu4e-message "Entering formulaicjohnston@gmail.com context"))
-            :leave-func (lambda () (mu4e-message "Leaving formulaicjohnston@gmail.com context"))
-            :match-func (lambda (msg)
-                          (when msg
-                            (string-match-p "^/gmail.com/formulaicjohnston"
-                                            (mu4e-message-field msg :maildir))))
-            :vars '((user-mail-address . "formulaicjohnston@gmail.com")
-                    (user-full-name . "Caleb Keown")
-                    (message-signature . nil)
-                    (mu4e-sent-folder . "/gmail.com/formulaicjohnston/[Gmail]/Sent Mail")
-                    (mu4e-drafts-folder . "/gmail.com/formulaicjohnston/[Gmail]/Drafts")
-                    (mu4e-trash-folder . "/gmail.com/formulaicjohnston/[Gmail]/Trash")))
-           ,(make-mu4e-context
-            :name "Ethreepersonapocalypse@gmail.com"
-            :enter-func (lambda () (mu4e-message "Entering threepersonapocalypse@gmail.com context"))
-            :leave-func (lambda () (mu4e-message "Leaving threepersonapocalypse@gmail.com context"))
-            :match-func (lambda (msg)
-                          (when msg
-                            (string-match-p "^/gmail.com/threepersonapocalypse"
-                                            (mu4e-message-field msg :maildir))))
-            :vars '((user-mail-address . "threepersonapocalypse@gmail.com")
-                    (user-full-name . "Strips McKinsey")
-                    (message-signature . nil)
-                    (mu4e-sent-folder . "/gmail.com/threepersonapocalypse/[Gmail]/Sent Mail")
-                    (mu4e-drafts-folder . "/gmail.com/threepersonapocalypse/[Gmail]/Drafts")
-                    (mu4e-trash-folder . "/gmail.com/threepersonapocalypse/[Gmail]/Trash")))
-           ,(make-mu4e-context
-            :name "Fmarkhenswiner@gmail.com"
-            :enter-func (lambda () (mu4e-message "Entering markhenswiner@gmail.com context"))
-            :leave-func (lambda () (mu4e-message "Leaving markhenswiner@gmail.com context"))
-            :match-func (lambda (msg)
-                          (when msg
-                            (string-match-p "^/gmail.com/markhenswiner"
-                                            (mu4e-message-field msg :maildir))))
-            :vars '((user-mail-address . "markhenswiner@gmail.com")
-                    (user-full-name . "Marks Henswiner")
-                    (message-signature . nil)
-                    (mu4e-sent-folder . "/gmail.com/markhenswiner/[Gmail]/Sent Mail")
-                    (mu4e-drafts-folder . "/gmail.com/markhenswiner/[Gmail]/Drafts")
-                    (mu4e-trash-folder . "/gmail.com/markhenswiner/[Gmail]/Trash")))
-           ,(make-mu4e-context
-            :name "Gdoubledeanart@gmail.com"
-            :enter-func (lambda () (mu4e-message "Entering doubledeanart@gmail.com context"))
-            :leave-func (lambda () (mu4e-message "Leaving doubledeanart@gmail.com context"))
-            :match-func (lambda (msg)
-                          (when msg
-                            (string-match-p "^/gmail.com/doubledeanart"
-                                            (mu4e-message-field msg :maildir))))
-            :vars '((user-mail-address . "doubledeanart@gmail.com")
-                    (user-full-name . "Double Dean Art")
-                    (message-signature . nil)
-                    (mu4e-sent-folder . "/gmail.com/doubledeanart/[Gmail]/Sent Mail")
-                    (mu4e-drafts-folder . "/gmail.com/doubledeanart/[Gmail]/Drafts")
-                    (mu4e-trash-folder . "/gmail.com/doubledeanart/[Gmail]/Trash")))
-           ,(make-mu4e-context
-            :name "Hnetworkcholanger@gmail.com"
-            :enter-func (lambda () (mu4e-message "Entering networkcholanger@gmail.com context"))
-            :leave-func (lambda () (mu4e-message "Leaving networkcholanger@gmail.com context"))
-            :match-func (lambda (msg)
-                          (when msg
-                            (string-match-p "^/gmail.com/networkcholanger"
-                                            (mu4e-message-field msg :maildir))))
-            :vars '((user-mail-address . "networkcholanger@gmail.com")
-                    (user-full-name . "N. Cholanger")
-                    (message-signature . nil)
-                    (mu4e-sent-folder . "/gmail.com/networkcholanger/[Gmail]/Sent Mail")
-                    (mu4e-drafts-folder . "/gmail.com/networkcholanger/[Gmail]/Drafts")
-                    (mu4e-trash-folder . "/gmail.com/networkcholanger/[Gmail]/Trash")))
-           ,(make-mu4e-context
-            :name "Ideafelbow@gmail.com"
-            :enter-func (lambda () (mu4e-message "Entering deafelbow@gmail.com context"))
-            :leave-func (lambda () (mu4e-message "Leaving deafelbow@gmail.com context"))
-            :match-func (lambda (msg)
-                          (when msg
-                            (string-match-p "^/gmail.com/deafelbow"
-                                            (mu4e-message-field msg :maildir))))
-            :vars '((user-mail-address . "deafelbow@gmail.com")
-                    (user-full-name . "Deaf Elbow")
-                    (message-signature . nil)
-                    (mu4e-sent-folder . "/gmail.com/deafelbow/[Gmail]/Sent Mail")
-                    (mu4e-drafts-folder . "/gmail.com/deafelbow/[Gmail]/Drafts")
-                    (mu4e-trash-folder . "/gmail.com/deafelbow/[Gmail]/Trash"))))))
+          ;; ,(make-mu4e-context
+          ;;   :name "Ccalebkeown@gmail.com"
+          ;;   :enter-func (lambda () (mu4e-message "Entering calebkeown@gmail.com context"))
+          ;;   :leave-func (lambda () (mu4e-message "Leaving calebkeown@gmail.com context"))
+          ;;   :match-func (lambda (msg)
+          ;;                 (when msg
+          ;;                   (string-match-p "^/gmail.com/calebkeown"
+          ;;                                   (mu4e-message-field msg :maildir))))
+          ;;   :vars '((user-mail-address . "calebkeown@gmail.com")
+          ;;           (user-full-name . "Caleb Keown")
+          ;;           (message-signature . nil)
+          ;;           (mu4e-sent-folder . "/gmail.com/calebkeown/[Gmail]/Sent Mail")
+          ;;           (mu4e-drafts-folder . "/gmail.com/calebkeown/[Gmail]/Drafts")
+          ;;           (mu4e-trash-folder . "/gmail.com/calebkeown/[Gmail]/Trash")))
+          ;;  ,(make-mu4e-context
+          ;;   :name "Dformulaicjohnston@gmail.com"
+          ;;   :enter-func (lambda () (mu4e-message "Entering formulaicjohnston@gmail.com context"))
+          ;;   :leave-func (lambda () (mu4e-message "Leaving formulaicjohnston@gmail.com context"))
+          ;;   :match-func (lambda (msg)
+          ;;                 (when msg
+          ;;                   (string-match-p "^/gmail.com/formulaicjohnston"
+          ;;                                   (mu4e-message-field msg :maildir))))
+          ;;   :vars '((user-mail-address . "formulaicjohnston@gmail.com")
+          ;;           (user-full-name . "Caleb Keown")
+          ;;           (message-signature . nil)
+          ;;           (mu4e-sent-folder . "/gmail.com/formulaicjohnston/[Gmail]/Sent Mail")
+          ;;           (mu4e-drafts-folder . "/gmail.com/formulaicjohnston/[Gmail]/Drafts")
+          ;;           (mu4e-trash-folder . "/gmail.com/formulaicjohnston/[Gmail]/Trash")))
+          ;;  ,(make-mu4e-context
+          ;;   :name "Ethreepersonapocalypse@gmail.com"
+          ;;   :enter-func (lambda () (mu4e-message "Entering threepersonapocalypse@gmail.com context"))
+          ;;   :leave-func (lambda () (mu4e-message "Leaving threepersonapocalypse@gmail.com context"))
+          ;;   :match-func (lambda (msg)
+          ;;                 (when msg
+          ;;                   (string-match-p "^/gmail.com/threepersonapocalypse"
+          ;;                                   (mu4e-message-field msg :maildir))))
+          ;;   :vars '((user-mail-address . "threepersonapocalypse@gmail.com")
+          ;;           (user-full-name . "Strips McKinsey")
+          ;;           (message-signature . nil)
+          ;;           (mu4e-sent-folder . "/gmail.com/threepersonapocalypse/[Gmail]/Sent Mail")
+          ;;           (mu4e-drafts-folder . "/gmail.com/threepersonapocalypse/[Gmail]/Drafts")
+          ;;           (mu4e-trash-folder . "/gmail.com/threepersonapocalypse/[Gmail]/Trash")))
+          ;;  ,(make-mu4e-context
+          ;;   :name "Fmarkhenswiner@gmail.com"
+          ;;   :enter-func (lambda () (mu4e-message "Entering markhenswiner@gmail.com context"))
+          ;;   :leave-func (lambda () (mu4e-message "Leaving markhenswiner@gmail.com context"))
+          ;;   :match-func (lambda (msg)
+          ;;                 (when msg
+          ;;                   (string-match-p "^/gmail.com/markhenswiner"
+          ;;                                   (mu4e-message-field msg :maildir))))
+          ;;   :vars '((user-mail-address . "markhenswiner@gmail.com")
+          ;;           (user-full-name . "Marks Henswiner")
+          ;;           (message-signature . nil)
+          ;;           (mu4e-sent-folder . "/gmail.com/markhenswiner/[Gmail]/Sent Mail")
+          ;;           (mu4e-drafts-folder . "/gmail.com/markhenswiner/[Gmail]/Drafts")
+          ;;           (mu4e-trash-folder . "/gmail.com/markhenswiner/[Gmail]/Trash")))
+          ;;  ,(make-mu4e-context
+          ;;   :name "Gdoubledeanart@gmail.com"
+          ;;   :enter-func (lambda () (mu4e-message "Entering doubledeanart@gmail.com context"))
+          ;;   :leave-func (lambda () (mu4e-message "Leaving doubledeanart@gmail.com context"))
+          ;;   :match-func (lambda (msg)
+          ;;                 (when msg
+          ;;                   (string-match-p "^/gmail.com/doubledeanart"
+          ;;                                   (mu4e-message-field msg :maildir))))
+          ;;   :vars '((user-mail-address . "doubledeanart@gmail.com")
+          ;;           (user-full-name . "Double Dean Art")
+          ;;           (message-signature . nil)
+          ;;           (mu4e-sent-folder . "/gmail.com/doubledeanart/[Gmail]/Sent Mail")
+          ;;           (mu4e-drafts-folder . "/gmail.com/doubledeanart/[Gmail]/Drafts")
+          ;;           (mu4e-trash-folder . "/gmail.com/doubledeanart/[Gmail]/Trash")))
+          ;;  ,(make-mu4e-context
+          ;;   :name "Hnetworkcholanger@gmail.com"
+          ;;   :enter-func (lambda () (mu4e-message "Entering networkcholanger@gmail.com context"))
+          ;;   :leave-func (lambda () (mu4e-message "Leaving networkcholanger@gmail.com context"))
+          ;;   :match-func (lambda (msg)
+          ;;                 (when msg
+          ;;                   (string-match-p "^/gmail.com/networkcholanger"
+          ;;                                   (mu4e-message-field msg :maildir))))
+          ;;   :vars '((user-mail-address . "networkcholanger@gmail.com")
+          ;;           (user-full-name . "N. Cholanger")
+          ;;           (message-signature . nil)
+          ;;           (mu4e-sent-folder . "/gmail.com/networkcholanger/[Gmail]/Sent Mail")
+          ;;           (mu4e-drafts-folder . "/gmail.com/networkcholanger/[Gmail]/Drafts")
+          ;;           (mu4e-trash-folder . "/gmail.com/networkcholanger/[Gmail]/Trash")))
+          ;;  ,(make-mu4e-context
+          ;;   :name "Ideafelbow@gmail.com"
+          ;;   :enter-func (lambda () (mu4e-message "Entering deafelbow@gmail.com context"))
+          ;;   :leave-func (lambda () (mu4e-message "Leaving deafelbow@gmail.com context"))
+          ;;   :match-func (lambda (msg)
+          ;;                 (when msg
+          ;;                   (string-match-p "^/gmail.com/deafelbow"
+          ;;                                   (mu4e-message-field msg :maildir))))
+          ;;   :vars '((user-mail-address . "deafelbow@gmail.com")
+          ;;           (user-full-name . "Deaf Elbow")
+          ;;           (message-signature . nil)
+          ;;           (mu4e-sent-folder . "/gmail.com/deafelbow/[Gmail]/Sent Mail")
+          ;;           (mu4e-drafts-folder . "/gmail.com/deafelbow/[Gmail]/Drafts")
+          ;;           (mu4e-trash-folder . "/gmail.com/deafelbow/[Gmail]/Trash")))))
+)))
 #+end_src
 
 ** ~whisper~ Voice transcription (speech to text)

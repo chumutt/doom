@@ -83,7 +83,7 @@
 
 (package! command-log-mode)
 
-;; (package! elcord)
+(package! elcord)
 
 (package! nov) ;; for reading .epub documents
 
