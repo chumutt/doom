@@ -126,6 +126,7 @@ Requires a compositor.
       (t (set-frame-parameter nil 'alpha-background alpha-transparency)))))
 #+end_src
 
+
 #+begin_src elisp :results none
 (defun toggle-transparency ()
   "Toggle TOTAL EMACS X11 transparency. Might need to be called a couple of times in a row to work."
@@ -149,7 +150,7 @@ Requires a compositor.
         (set-frame-parameter nil 'alpha-background 100)
         (put 'toggle-background-transparency 'state nil))
     (progn
-      (set-frame-parameter nil 'alpha-background 85)
+      (set-frame-parameter nil 'alpha-background 70)
       (put 'toggle-background-transparency 'state t))))
 #+end_src
 
