@@ -110,52 +110,6 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
 (setq inhibit-x-resources t) ; inhibit .xresources file from being loaded on emacs init
 #+end_src
 
-*** Alpha background transparency function :function:
-
-Requires a compositor.
-
-[[https://kristofferbalintona.me/posts/202206071000/][True Emacs Transparency | Kristoffer Balintona]]
-
-#+begin_src elisp :tangle no
-(defun kb/toggle-window-transparency ()
-  "Toggle transparency."
-  (interactive)
-  (let ((alpha-transparency 85))
-    (pcase (frame-parameter nil 'alpha-background)
-      (alpha-transparency (set-frame-parameter nil 'alpha-background 100))
-      (t (set-frame-parameter nil 'alpha-background alpha-transparency)))))
-#+end_src
-
-
-#+begin_src elisp :results none
-(defun toggle-transparency ()
-  "Toggle TOTAL EMACS X11 transparency. Might need to be called a couple of times in a row to work."
-  (interactive)
-  (let ((alpha (frame-parameter nil 'alpha)))
-    (if (eq
-     (if (numberp alpha)
-         alpha
-       (cdr alpha)) ; may also be nil
-     100)
-    (set-frame-parameter nil 'alpha '(85 . 50))
-      (set-frame-parameter nil 'alpha '(100 . 100)))))
-#+end_src
-
-#+begin_src elisp :results none
-(defun toggle-background-transparency ()
-  "Toggle background transparency, wherein text and other elements in frame are still displayed but a background isn't."
-  (interactive)
-  (if (get 'toggle-background-transparency 'state)
-      (progn
-        (set-frame-parameter nil 'alpha-background 100)
-        (put 'toggle-background-transparency 'state nil))
-    (progn
-      (set-frame-parameter nil 'alpha-background 70)
-      (put 'toggle-background-transparency 'state t))))
-#+end_src
-
-**** TODO add a binding for SPC t B to toggle background transparency
-
 *** Fix alpha transparency issues
 
 Sometimes Emacs has issues with transparency. In my case, it goes unusably transparent if I make use of an Xresources file.
@@ -274,6 +228,50 @@ You can toggle them back on, turn them to a "relative line number" mode, and bac
 
 #+begin_src elisp :results none
 (setq display-line-numbers nil)
+#+end_src
+
+*** Alpha background transparency function :function:
+
+Requires a compositor.
+
+[[https://kristofferbalintona.me/posts/202206071000/][True Emacs Transparency | Kristoffer Balintona]]
+
+#+begin_src elisp :tangle no
+(defun kb/toggle-window-transparency ()
+  "Toggle transparency."
+  (interactive)
+  (let ((alpha-transparency 85))
+    (pcase (frame-parameter nil 'alpha-background)
+      (alpha-transparency (set-frame-parameter nil 'alpha-background 100))
+      (t (set-frame-parameter nil 'alpha-background alpha-transparency)))))
+#+end_src
+
+
+#+begin_src elisp :results none
+(defun toggle-transparency ()
+  "Toggle TOTAL EMACS X11 transparency. Might need to be called a couple of times in a row to work."
+  (interactive)
+  (let ((alpha (frame-parameter nil 'alpha)))
+    (if (eq
+     (if (numberp alpha)
+         alpha
+       (cdr alpha)) ; may also be nil
+     100)
+    (set-frame-parameter nil 'alpha '(85 . 50))
+      (set-frame-parameter nil 'alpha '(100 . 100)))))
+#+end_src
+
+#+begin_src elisp :results none
+(defun toggle-background-transparency ()
+  "Toggle background transparency, wherein text and other elements in frame are still displayed but a background isn't."
+  (interactive)
+  (if (get 'toggle-background-transparency 'state)
+      (progn
+        (set-frame-parameter nil 'alpha-background 100)
+        (put 'toggle-background-transparency 'state nil))
+    (progn
+      (set-frame-parameter nil 'alpha-background 75)
+      (put 'toggle-background-transparency 'state t))))
 #+end_src
 
 ** Org-Mode :org:
