@@ -958,6 +958,7 @@ Use the faster searcher to handle project files: ripgrep "rg"
 #+begin_src elisp
 (use-package! elcord-mode
   :defer t)
+(elcord-mode)
 #+end_src
 
 ** EPG: Letting Emacs query for GPG passwords
