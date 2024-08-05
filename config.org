@@ -917,7 +917,7 @@ I prefer ".git".
 
 *** Disable automatic project detection as a whole
 
-#+begin_src elisp :results none
+#+begin_src elisp :results none :tangle no
 (setq projectile-project-root-functions nil)
 #+end_src
 
