@@ -79,15 +79,11 @@
   :recipe (:host github
            :repo "theophilusx/icsorg"))
 
-;; (package! literate-calc-mode)
-
 (package! command-log-mode)
 
 (package! elcord)
 
 (package! nov) ;; for reading .epub documents
-
-;; (package! rainbow-blocks)
 
 (package! achievements)
 
@@ -128,14 +124,6 @@
 (package! clhs) ;; common lisp hyper-spec
 
 (package! sicp) ;; structure and interpretation of computer programs
-
-;; (package! paredit)
-
-;; (package! evil-cleverparens)
-
-;; (package! stopwatch
-;;   :recipe (:host github
-;;            :repo "asnr/stopwatch"))
 
 (package! edit-server)
 
