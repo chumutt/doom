@@ -966,11 +966,10 @@ Use the faster searcher to handle project files: ripgrep "rg"
 Allow Emacs to handle queries for gpg passwords.
 
 #+begin_src elisp
-(setf epg-pinentry-mode 'loopback)
+;; (setf epg-pinentry-mode 'loopback)
 (defun pinentry-emacs (desc prompt ok error)
-  (let ((str (read-passwd
-              (concat (replace-regexp-in-string "%22" "\""
-                      (replace-regexp-in-string "%0A" "\n" desc)) prompt ": ")))) str))
+  (let ((str (read-passwd (concat (replace-regexp-in-string "%22" "\"" (replace-regexp-in-string "%0A" "\n" desc)) prompt ": "))))
+    str))
 #+end_src
 
 ** Palimpsest prog mode hook
