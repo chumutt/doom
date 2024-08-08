@@ -915,6 +915,14 @@ I prefer ".git".
 (setq projectile-find-dir-includes-top-level t)
 #+end_src
 
+*** Disable automatic project detection as a whole
+
+Off (not being tangled).
+
+#+begin_src elisp :results none :tangle no
+(setq projectile-project-root-functions nil)
+#+end_src
+
 *** RipGrep "rg" fast search to handle Projectile project files
 
 Use the faster searcher to handle project files: ripgrep "rg"
