@@ -898,14 +898,14 @@ I prefer ".git".
 
 #+begin_src elisp :results none
 ;; (after! 'projectile
-  (setq projectile-project-root-files-bottom-up '(".projectile" ".project"))
+  (setq projectile-project-root-files-bottom-up '(".project"))
   ;; )
 #+end_src
 
 *** Projectile don't look for Makefile
 
 #+begin_src elisp :results none
-(setq projectile-project-root-files-top-down-recurring '("compile_commands.json"))
+(setq projectile-project-root-files-top-down-recurring '(".project"))
 #+end_src
 
 *** Correct Projectile sub directory detection
@@ -913,12 +913,6 @@ I prefer ".git".
 #+begin_src elisp :results none
 (setq projectile-switch-project-action #'projectile-find-dir)
 (setq projectile-find-dir-includes-top-level t)
-#+end_src
-
-*** Disable automatic project detection as a whole
-
-#+begin_src elisp :results none :tangle no
-(setq projectile-project-root-functions nil)
 #+end_src
 
 *** RipGrep "rg" fast search to handle Projectile project files
