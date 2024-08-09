@@ -963,7 +963,7 @@ Use the faster searcher to handle project files: ripgrep "rg"
 (elcord-mode)
 #+end_src
 
-# ** EPG: Letting Emacs query for GPG passwords
+** DEPRECATED: EPG: Letting Emacs query for GPG passwords
 
 # Allow Emacs to handle queries for gpg passwords.
 
@@ -972,6 +972,9 @@ Use the faster searcher to handle project files: ripgrep "rg"
 #   (let ((str (read-passwd (concat (replace-regexp-in-string "%22" "\"" (replace-regexp-in-string "%0A" "\n" desc)) prompt ": "))))
 #     str))
 # #+end_src
+
+# #+RESULTS:
+# : pinentry-emacs
 
 ** Palimpsest prog mode hook
 
@@ -987,7 +990,12 @@ Ange-FTP defaults to =~/.netrc=  so you need to add this to your init script:
 
 #+begin_src elisp
 (setq ange-ftp-netrc-filename "~/.authinfo.gpg")
+(setf epa-pinentry-mode 'loopback)
 #+end_src
+
+#+RESULTS:
+: loopback
+
 
 *** Tramp intregration with dirvish :tramp:ssh:dirvish:
 
@@ -997,10 +1005,10 @@ Ange-FTP defaults to =~/.netrc=  so you need to add this to your init script:
   ;; Enable full-featured Dirvish over TRAMP on certain connections
   ;; https://www.gnu.org/software/tramp/#Improving-performance-of-asynchronous-remote-processes-1.
   (add-to-list 'tramp-connection-properties
-               (list (regexp-quote "/ssh:chunix:")
+               (list (regexp-quote "/ssh:chunix")
                      "direct-async-process" t))
   ;; Tips to speed up connections
-  (setq tramp-verbose 0)
+  (setq tramp-verbose 6)
   (setq tramp-chunksize 2000)
   (setq tramp-use-ssh-controlmaster-options nil))
 #+end_src
