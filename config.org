@@ -222,6 +222,7 @@ I don't know how to do this yet.
 (with-eval-after-load 'random-splash-image
   (random-splash-image-set))
 #+end_src
+
 **** Toggle line numbers off by default
 
 You can toggle them back on, turn them to a "relative line number" mode, and back off again with ~SPC t l~ (lowercase ~L~).
@@ -235,6 +236,8 @@ You can toggle them back on, turn them to a "relative line number" mode, and bac
 Requires a compositor.
 
 [[https://kristofferbalintona.me/posts/202206071000/][True Emacs Transparency | Kristoffer Balintona]]
+
+The original by kb:
 
 #+begin_src elisp :tangle no
 (defun kb/toggle-window-transparency ()
@@ -708,20 +711,18 @@ Want files tracked in your agenda? Use the ~C-c [~ keybinding in each file to ad
 
 #+begin_src elisp :results none
 (use-package! org-tanglesync
-  ;; :hook ((org-mode . org-tanglesync-mode)
-  ;;        ;; enable watch-mode globally:
-  ;;        ((prog-mode text-mode) . org-tanglesync-watch-mode))
-  ;; :custom
-  ;; (org-tanglesync-watch-files '("example.org"))
-  ;; :bind
-  ;; (( "C-c M-i" . org-tanglesync-process-buffer-interactive)
-  ;;  ( "C-c M-a" . org-tanglesync-process-buffer-automatic))
-)
+  :hook ((org-mode . org-tanglesync-mode)
+         ;; enable watch-mode globally:
+         ((prog-mode text-mode) . org-tanglesync-watch-mode))
+  :custom (org-tanglesync-watch-files '("example.org"))
+  :bind
+  (( "C-c M-i" . org-tanglesync-process-buffer-interactive)
+   ( "C-c M-a" . org-tanglesync-process-buffer-automatic)))
 #+end_src
 
 *** Org Mode Capture Templates Customization :org:templates:
 #+begin_src elisp :results none
-(after! org-mode
+(after! 'org
   (setq org-capture-templates
     (("t" "Personal todo" entry
       (file+headline +org-capture-todo-file "Inbox")
@@ -798,7 +799,7 @@ to tangle.
 
 Set user information.
 
-#+begin_src elisp :results none
+#+begin_src elisp
 (setq erc-server "localhost"
       erc-nick "chuthepup"
       erc-user-full-name "Chu the Pup")
@@ -898,29 +899,27 @@ I prefer ".git".
 
 #+begin_src elisp :results none
 ;; (after! 'projectile
-  (setq projectile-project-root-files-bottom-up '(".project"))
+  ;; (setq projectile-project-root-files-bottom-up '(".project"))
   ;; )
 #+end_src
 
 *** Projectile don't look for Makefile
 
 #+begin_src elisp :results none
-(setq projectile-project-root-files-top-down-recurring '(".project"))
+;; (setq projectile-project-root-files-top-down-recurring '(".project"))
 #+end_src
 
 *** Correct Projectile sub directory detection
 
 #+begin_src elisp :results none
-(setq projectile-switch-project-action #'projectile-find-dir)
-(setq projectile-find-dir-includes-top-level t)
+;; (setq projectile-switch-project-action #'projectile-find-dir)
+;; (setq projectile-find-dir-includes-top-level t)
 #+end_src
 
 *** Disable automatic project detection as a whole
 
-Off (not being tangled).
-
-#+begin_src elisp :results none :tangle no
-(setq projectile-project-root-functions nil)
+#+begin_src elisp
+;; (setq projectile-project-root-functions nil)
 #+end_src
 
 *** RipGrep "rg" fast search to handle Projectile project files
@@ -940,6 +939,15 @@ Use the faster searcher to handle project files: ripgrep "rg"
           (concat "rg -0 --files --color=never --hidden" rg-cmd " " rg-ignorefile))))
 #+end_src
 
+#+begin_src elisp
+(setq completion-styles '(orderless basic)
+      completion-category-defaults nil
+      completion-category-overrides '((file (styles basic partial-completion))))
+#+end_src
+
+#+RESULTS:
+| file | (styles basic partial-completion) |
+
 ** ~emms~ :emms:music:
 
 #+begin_src elisp
@@ -955,32 +963,25 @@ Use the faster searcher to handle project files: ripgrep "rg"
 :ID:       a948faf0-c278-4481-bd1b-c857644a4c90
 :END:
 
-*Note:* This will tell anyone on your Discord your current activity status in Emacs—with a pretty hefty amount of detail as well. [[id:8f9bc104-87a1-4fa4-b624-a5ea64210b8a][Remember: you can do the following if you want to disable something]].
+*WARNING*: This will tell anyone on your Discord your current activity status in Emacs—with a pretty hefty amount of detail as well. [[id:8f9bc104-87a1-4fa4-b624-a5ea64210b8a][Remember: you can do the following if you want to disable something]].
 
 #+begin_src elisp
 (use-package! elcord-mode
   :defer t)
+
 (elcord-mode)
 #+end_src
 
-** DEPRECATED: EPG: Letting Emacs query for GPG passwords
+** EPG: Letting Emacs query for GPG passwords
 
-# Allow Emacs to handle queries for gpg passwords.
-
-# #+begin_src elisp
-# (defun pinentry-emacs (desc prompt ok error)
-#   (let ((str (read-passwd (concat (replace-regexp-in-string "%22" "\"" (replace-regexp-in-string "%0A" "\n" desc)) prompt ": "))))
-#     str))
-# #+end_src
-
-# #+RESULTS:
-# : pinentry-emacs
-
-** Palimpsest prog mode hook
+Allow Emacs to handle queries for gpg passwords.
 
 #+begin_src elisp
-(use-package! palimpsest-mode
-  :hook (prog-mode . palimpsest-mode))
+(setq epg-pinentry-mode 'loopback)
+
+(defun pinentry-emacs (desc prompt ok error)
+  (let ((str (read-passwd (concat (replace-regexp-in-string "%22" "\""
+                                  (replace-regexp-in-string "%0A" "\n" desc)) prompt ": ")))) str))
 #+end_src
 
 ** Tramp :tramp:ssh:
@@ -990,27 +991,29 @@ Ange-FTP defaults to =~/.netrc=  so you need to add this to your init script:
 
 #+begin_src elisp
 (setq ange-ftp-netrc-filename "~/.authinfo.gpg")
-(setf epa-pinentry-mode 'loopback)
 #+end_src
-
-#+RESULTS:
-: loopback
-
 
 *** Tramp intregration with dirvish :tramp:ssh:dirvish:
 
-#+begin_src elisp :results none
+#+begin_src elisp
 (use-package tramp
   :config
   ;; Enable full-featured Dirvish over TRAMP on certain connections
   ;; https://www.gnu.org/software/tramp/#Improving-performance-of-asynchronous-remote-processes-1.
   (add-to-list 'tramp-connection-properties
-               (list (regexp-quote "/ssh:chunix")
+               (list (regexp-quote "/ssh:chunix:")
                      "direct-async-process" t))
   ;; Tips to speed up connections
-  (setq tramp-verbose 6)
+  (setq tramp-verbose 0)
   (setq tramp-chunksize 2000)
   (setq tramp-use-ssh-controlmaster-options nil))
+#+end_src
+
+** Palimpsest prog mode hook
+
+#+begin_src elisp
+(use-package! palimpsest-mode
+  :hook (prog-mode . palimpsest-mode))
 #+end_src
 
 ** Common Lisp
