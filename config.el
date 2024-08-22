@@ -372,27 +372,27 @@ exist after each headings's drawers."
 
 (setq dired-backup-overwrite t)
 
-;; (defun dired-rsync-skip-newer (dest)
-;;   "Asynchronously copy files in dired to `DEST' using rsync
-;; set to resolve symlinks, skip files that are newer in `DEST',
-;; and to run in archive mode."
-;;   (interactive
-;;    (list (read-file-name "rsync to: " (dired-dwim-target-directory)
-;;                               nil nil nil 'file-directory-p)))
-;;   (let ((dired-rsync-options "-aLuz --info=progress2"))
-;;         (dired-rsync dest)))
+(defun dired-rsync-skip-newer (dest)
+  "Asynchronously copy files in dired to `DEST' using rsync
+set to resolve symlinks, skip files that are newer in `DEST',
+and to run in archive mode."
+  (interactive
+   (list (read-file-name "rsync to: " (dired-dwim-target-directory)
+                              nil nil nil 'file-directory-p)))
+  (let ((dired-rsync-options "-aLuz --info=progress2"))
+        (dired-rsync dest)))
 
-;; (after! dired
-;;   (map! :map dired-mode-map
-;;         :prefix "C-c C-d"
-;;         "C-r" #'dired-rsync-skip-newer))
+(after! dired
+  (map! :map dired-mode-map
+        :prefix "C-c C-d"
+        "C-r" #'dired-rsync-skip-newer))
 
 (setq delete-by-moving-to-trash t)
 
-(map! :map dired-mode-map "<normal-state> l" #'dired-find-file)
-(map! :map dired-mode-map "<normal-state> h" #'dired-up-directory)
-(map! :map dirvish-mode-map "<normal-state> q" #'dirvish-quit)
-(map! :map general-override-mode-map "<normal-state> SPC o _" #'dirvish)
+;; (map! :map dirvish-mode-map "<normal-state> l" #'dired-find-file)
+;; (map! :map dirvish-mode-map "<normal-state> h" #'dired-up-directory)
+;; (map! :map dirvish-mode-map "<normal-state> q" #'dirvish-quit)
+;; (map! :map general-override-mode-map "<normal-state> SPC o _" #'dirvish)
 
 (use-package! abbrev-mode
   :hook (org-mode . abbrev-mode)
