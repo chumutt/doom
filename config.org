@@ -373,6 +373,8 @@ I use a directory that I sync between computers with a nextcloud server I run bu
         "/nextcloud/documents/org/")))
 #+end_src
 
+#+RESULTS:
+
 **** Custom org bookmark directory :org:
 
 The following will vary, so change it to be whatever your bookmarks file is/what you want it to be.
@@ -710,14 +712,14 @@ Want files tracked in your agenda? Use the ~C-c [~ keybinding in each file to ad
 *** Org Tanglesync :org:tanglesync:
 
 #+begin_src elisp :results none
-(use-package! org-tanglesync
-  :hook ((org-mode . org-tanglesync-mode)
-         ;; enable watch-mode globally:
-         ((prog-mode text-mode) . org-tanglesync-watch-mode))
-  :custom (org-tanglesync-watch-files '("example.org"))
-  :bind
-  (( "C-c M-i" . org-tanglesync-process-buffer-interactive)
-   ( "C-c M-a" . org-tanglesync-process-buffer-automatic)))
+;; (use-package! org-tanglesync
+;;   :hook ((org-mode . org-tanglesync-mode)
+;;          ;; enable watch-mode globally:
+;;          ((prog-mode text-mode) . org-tanglesync-watch-mode))
+;;   :custom (org-tanglesync-watch-files '("example.org"))
+;;   :bind
+;;   (( "C-c M-i" . org-tanglesync-process-buffer-interactive)
+;;    ( "C-c M-a" . org-tanglesync-process-buffer-automatic)))
 #+end_src
 
 *** Org Mode Capture Templates Customization :org:templates:
@@ -850,24 +852,24 @@ Make sure you know where your Emacs cache backup directory actually resides befo
 **** dired-rsync-skip-newer custom rsync function :dired:custom:rsync:
 
 #+begin_src elisp
-(defun dired-rsync-skip-newer (dest)
-  "Asynchronously copy files in dired to `DEST' using rsync
-set to resolve symlinks, skip files that are newer in `DEST',
-and to run in archive mode."
-  (interactive
-   (list (read-file-name "rsync to: " (dired-dwim-target-directory)
-                              nil nil nil 'file-directory-p)))
-  (let ((dired-rsync-options "-aLuz --info=progress2"))
-        (dired-rsync dest)))
+;; (defun dired-rsync-skip-newer (dest)
+;;   "Asynchronously copy files in dired to `DEST' using rsync
+;; set to resolve symlinks, skip files that are newer in `DEST',
+;; and to run in archive mode."
+;;   (interactive
+;;    (list (read-file-name "rsync to: " (dired-dwim-target-directory)
+;;                               nil nil nil 'file-directory-p)))
+;;   (let ((dired-rsync-options "-aLuz --info=progress2"))
+;;         (dired-rsync dest)))
 #+end_src
 
 **** ~dired-rsync-skip-newer~ binding map :dired:binds:custom:rsync:
 
 #+begin_src elisp
-(after! dired
-  (map! :map dired-mode-map
-        :prefix "C-c C-d"
-        "C-r" #'dired-rsync-skip-newer))
+;; (after! dired
+;;   (map! :map dired-mode-map
+;;         :prefix "C-c C-d"
+;;         "C-r" #'dired-rsync-skip-newer))
 #+end_src
 
 *** Trash instead of delete :dired:
@@ -875,6 +877,15 @@ and to run in archive mode."
 #+begin_src elisp
 (setq delete-by-moving-to-trash t)
 #+end_src
+*** Bindings
+#+begin_src elisp
+(map! :map dired-mode-map "<normal-state> l" #'dired-find-file)
+(map! :map dired-mode-map "<normal-state> h" #'dired-up-directory)
+(map! :map dirvish-mode-map "<normal-state> q" #'dirvish-quit)
+(map! :map general-override-mode-map "<normal-state> SPC o _" #'dirvish)
+#+end_src
+
+#+RESULTS:
 
 ** ~abbrev-mode~
 :PROPERTIES:
@@ -919,7 +930,7 @@ I prefer ".git".
 *** Disable automatic project detection as a whole
 
 #+begin_src elisp
-;; (setq projectile-project-root-functions nil)
+(setq projectile-project-root-functions nil)
 #+end_src
 
 *** RipGrep "rg" fast search to handle Projectile project files
@@ -945,17 +956,14 @@ Use the faster searcher to handle project files: ripgrep "rg"
       completion-category-overrides '((file (styles basic partial-completion))))
 #+end_src
 
-#+RESULTS:
-| file | (styles basic partial-completion) |
-
 ** ~emms~ :emms:music:
 
 #+begin_src elisp
-(setq emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
+;; (setq emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
 #+end_src
 
 #+begin_src elisp
-(setq emms-source-file-default-directory "~/Music/")
+;; (setq emms-source-file-default-directory "~/Music/")
 #+end_src
 
 ** Enable active presence on Discord for Emacs
