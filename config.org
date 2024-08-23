@@ -1,7 +1,7 @@
 #+TITLE: Chu's Literate DOOM GNU Emacs Configuration
 #+AUTHOR: chu the pup
 #+DESCRIPTION: Chu's Literate Doom GNU Emacs configuration
-#+PROPERTY: header-args :tangle yes
+#+PROPERTY: header-args :tangle yes :results none
 #+auto_tangle: t
 * Preamble
 
@@ -96,6 +96,7 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
 #+end_example
 
 * Config
+
 ** Private Configuration
 
 #+begin_src elisp :results none
@@ -104,6 +105,7 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
 #+end_src
 
 ** Visual Changes
+
 *** Inhibit Xresources being loaded by Emacs
 
 #+begin_src elisp
@@ -128,28 +130,28 @@ Or you can just use one number, as so:
 
 Here's the settings I currently use:
 
-Set current Emacs frame's opacity to 100%:
+Set current Emacs frame's opacity to:
 
 #+begin_src elisp :results none
 (set-frame-parameter (selected-frame) 'alpha 100)
 #+end_src
 
-Set all Emacs frames opacity from this point on to 100%:
+Set all Emacs frames opacity from this point on to:
 
 #+begin_src elisp :results none
 (add-to-list 'default-frame-alist '(alpha 100))
 #+end_src
 
-Set Emacs's background opacity to 92%:
+Set Emacs's background opacity:
 
 #+begin_src elisp :results none
-(set-frame-parameter nil 'alpha-background 92)
+(set-frame-parameter nil 'alpha-background 100)
 #+end_src
 
-Set all Emacs frames from this point on to have a background opacity of 92%:
+Set all Emacs frames from this point on to have a background opacity of:
 
 #+begin_src elisp :results none
-(add-to-list 'default-frame-alist '(alpha-background . 92))
+(add-to-list 'default-frame-alist '(alpha-background . 100))
 #+end_src
 
 from [[https://www.emacswiki.org/emacs/TransparentEmacs][EmacsWiki: Transparent Emacs]]
@@ -249,6 +251,7 @@ The original by kb:
       (t (set-frame-parameter nil 'alpha-background alpha-transparency)))))
 #+end_src
 
+My version(s):
 
 #+begin_src elisp :results none
 (defun toggle-transparency ()
@@ -313,7 +316,7 @@ For the package org-babel-auto-tangle (see packages.org).
 
 *** Ensure blank lines between headings and before contents
 
-Ensure that blank lines exist between headings and between headings and their contents.  With prefix, operate on whole buffer.  Ensures that blank lines exist after each headings's drawers.
+Ensure that blank lines exist between headings and between headings and their contents.  With prefix (see ~prefix-arg~ emacs variable), operate on whole buffer.  Ensures that blank lines exist after each headings's drawers.
 
 For those who prefer to maintain blank lines between headings, this makes it easy to automatically add them where necessary, to a subtree or the whole buffer. It also adds blank lines after drawers. Works well with ~org-return-dwim~.
 
@@ -352,6 +355,9 @@ For those who prefer to maintain blank lines between headings, this makes it eas
                            nil
                          'tree)))
 #+END_SRC
+
+#+RESULTS:
+: unpackaged/org-fix-blank-lines
 
 by [[https://github.com/alphapapa/unpackaged.el#ensure-blank-lines-between-headings-and-before-contents][Alphapapa]]
 
@@ -796,6 +802,18 @@ From [[https://stackoverflow.com/a/68962704][Dennis Proksch]]:
 Do this:
 put pointer in a code block -> m ' -> F9
 to tangle.
+*** convert markdown buffer to org
+#+begin_src elisp
+(defun markdown-convert-buffer-to-org ()
+  "Convert the current buffer's content from markdown to orgmode format and save it with the current buffer's file name but with .org extension."
+  (interactive)
+  (shell-command-on-region (point-min) (point-max)
+                           (format "pandoc -f markdown -t org -o %s"
+                                   (concat (file-name-sans-extension (buffer-file-name)) ".org"))))
+#+end_src
+
+#+RESULTS:
+: markdown-convert-buffer-to-org
 
 ** Emacs Relay Chat (~erc~) for Internet Relay Chat (IRC) :irc:
 
