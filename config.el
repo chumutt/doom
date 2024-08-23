@@ -9,9 +9,9 @@
 
 (add-to-list 'default-frame-alist '(alpha 100))
 
-(set-frame-parameter nil 'alpha-background 92)
+(set-frame-parameter nil 'alpha-background 100)
 
-(add-to-list 'default-frame-alist '(alpha-background . 92))
+(add-to-list 'default-frame-alist '(alpha-background . 100))
 
 (setq doom-font (font-spec :family "Mono" :size 12))
 
@@ -355,6 +355,13 @@ exist after each headings's drawers."
 (after! org
   (map! :map org-src-mode-map
         "<f9>" #'org-babel-tangle-from-edit-special))
+
+(defun markdown-convert-buffer-to-org ()
+  "Convert the current buffer's content from markdown to orgmode format and save it with the current buffer's file name but with .org extension."
+  (interactive)
+  (shell-command-on-region (point-min) (point-max)
+                           (format "pandoc -f markdown -t org -o %s"
+                                   (concat (file-name-sans-extension (buffer-file-name)) ".org"))))
 
 (setq erc-server "localhost"
       erc-nick "chuthepup"
