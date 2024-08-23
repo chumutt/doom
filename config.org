@@ -163,7 +163,7 @@ You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs lo
 I use the default LARBS monospace font instead of Fira Mono for consistency's sake.
 
 #+begin_src elisp
-(setq doom-font (font-spec :family "Mono" :size 12))
+(setq doom-font (font-spec :family "Mono" :size 10))
 #+end_src
 
 The following ensures correct font size without affecting the font used:
@@ -387,7 +387,6 @@ For the package org-babel-auto-tangle (see packages.org).
                          (insert "\n")))))
     (org-map-entries #'fix t 'tree)))
 #+end_src
-
 
 by [[https://github.com/alphapapa/unpackaged.el#ensure-blank-lines-between-headings-and-before-contents][Alphapapa]]
 
