@@ -163,7 +163,7 @@ You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs lo
 I use the default LARBS monospace font instead of Fira Mono for consistency's sake.
 
 #+begin_src elisp
-(setq doom-font (font-spec :family "Mono" :size 10))
+(setq doom-font (font-spec :family "Mono" :size 12))
 #+end_src
 
 The following ensures correct font size without affecting the font used:
@@ -441,7 +441,7 @@ I use a document that I track with org roam but you don't necessarily have to do
 
 Usually, you just set these using `org-agenda-file-to-front`
 
-**** Custom org journal file location :org:
+**** Custom org capture journal file location :org:
 
 You know the gist by now--change this to whatever you want your file to be.
 
@@ -451,6 +451,16 @@ You know the gist by now--change this to whatever you want your file to be.
         (concat
          (getenv "HOME")
          "/nextcloud/documents/org/roam/20221004222230-journal.org")))
+#+end_src
+
+**** Custom org capture journal location :org:
+
+#+begin_src elisp
+(with-eval-after-load 'org
+  (setq org-journal-dir
+        (concat
+         (getenv "HOME")
+         "/nextcloud/documents/org/roam/journal/")))
 #+end_src
 
 **** Custom org notes file location :org:
@@ -759,7 +769,6 @@ Want files tracked in your agenda? Use the ~C-c [~ keybinding in each file to ad
 
 *** Org Mode Capture Templates Customization :org:templates:
 #+begin_src elisp :results none
-(after! 'org
   (setq org-capture-templates
     (("t" "Personal todo" entry
       (file+headline +org-capture-todo-file "Inbox")
@@ -783,7 +792,7 @@ Want files tracked in your agenda? Use the ~C-c [~ keybinding in each file to ad
     ("o" "Centralized templates for projects")
     ("ot" "Project todo" entry #'+org-capture-central-project-todo-file "* TODO %?\n %i\n %a" :heading "Tasks" :prepend nil)
     ("on" "Project notes" entry #'+org-capture-central-project-notes-file "* %U %?\n %i\n %a" :heading "Notes" :prepend t)
-    ("oc" "Project changelog" entry #'+org-capture-central-project-changelog-file "* %U %?\n %i\n %a" :heading "Changelog" :prepend t))))
+    ("oc" "Project changelog" entry #'+org-capture-central-project-changelog-file "* %U %?\n %i\n %a" :heading "Changelog" :prepend t)))
 #+end_src
 
 *** Vulpea Auto-Sync Org Roam v2 todos from dailies :org:roam:vulpea:
