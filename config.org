@@ -770,7 +770,7 @@ Want files tracked in your agenda? Use the ~C-c [~ keybinding in each file to ad
 *** Org Mode Capture Templates Customization :org:templates:
 #+begin_src elisp :results none
   (setq org-capture-templates
-    (("t" "Personal todo" entry
+    '(("t" "Personal todo" entry
       (file+headline +org-capture-todo-file "Inbox")
     "* [ ] %?\n%i\n%a" :prepend t)
     ("n" "Personal notes" entry
