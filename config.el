@@ -63,39 +63,71 @@
          (sequence "[ ](T)" "[-](S)" "[?](W)" "|" "[X](D)")
          (sequence "|" "OKAY(o)" "YES(y)" "NO(n)")))
 
-;;;###autoload
-(defun unpackaged/org-fix-blank-lines (&optional prefix)
-  "Ensure that blank lines exist between headings and between headings and their contents.
-With prefix, operate on whole buffer. Ensures that blank lines
-exist after each headings's drawers."
+(defun ap/org-fix-blank-lines (prefix)
+  "Fix blank lines (or lack thereof) between entries and between planning-lines/drawers and entry contents in current subtree.
+    With prefix, operate on whole buffer."
   (interactive "P")
-  (org-map-entries (lambda ()
-                     (org-with-wide-buffer
-                      ;; `org-map-entries' narrows the buffer, which prevents us from seeing
-                      ;; newlines before the current heading, so we do this part widened.
-                      (while (not (looking-back "\n\n" nil))
-                        ;; Insert blank lines before heading.
-                        (insert "\n")))
-                     (let ((end (org-entry-end-position)))
-                       ;; Insert blank lines before entry content
+  (save-excursion
+    (when prefix
+      (goto-char (point-min)))
+    (when (org-before-first-heading-p)
+      (outline-next-heading))
+    (ap/org-fix-blank-lines-between-subtree-nodes)
+    (ap/org-fix-blank-lines-after-headings)))
+
+(defun ap/org-fix-blank-lines-between-subtree-nodes ()
+  "Make sure each heading in subtree is separated from the previous heading's content by a blank line."
+  (interactive)
+  (save-excursion
+    (unless (org-at-heading-p)
+      (org-back-to-heading))
+    (ignore-errors
+      ;; Try to work on the parent-level heading to fix all siblings
+      ;; of current heading, but if we're at a top-level heading,
+      ;; ignore the error.
+      (outline-up-heading 1))
+    (let ((m (point-marker)))
+      (cl-flet ((fix nil (while (not (looking-back "\n\n"))
+                           (insert-before-markers "\n"))))
+        (org-map-entries #'fix t 'tree))
+      ;; Inserting blank lines may move the point, depending on whether
+      ;; it was at the beginning of a heading line or somewhere else.
+      ;; Use the marker to make sure we are at the same position.
+      (goto-char m)
+      (org-with-wide-buffer
+       ;; `org-map-entries' narrows the buffer, so `looking-back'
+       ;; can't see newlines before the top heading, which may cause
+       ;; extra newlines to be inserted.  Now we clean them up.
+       (outline-back-to-heading)
+       (while (looking-back (rx (>= 3 "\n")))
+         (delete-char -1 nil)))
+      (set-marker m nil))))
+
+(defun ap/org-fix-blank-lines-after-headings ()
+  "Make sure a blank line exists after a heading's drawers and planning lines, before the entry content."
+  (interactive)
+  (when (org-before-first-heading-p)
+    (user-error "Before first heading."))
+  (cl-flet ((fix nil (let ((end (org-entry-end-position)))
                        (forward-line)
                        (while (and (org-at-planning-p)
                                    (< (point) (point-max)))
                          ;; Skip planning lines
                          (forward-line))
                        (while (re-search-forward org-drawer-regexp end t)
-                         ;; Skip drawers. You might think that `org-at-drawer-p' would suffice, but
-                         ;; for some reason it doesn't work correctly when operating on hidden text.
-                         ;; This works, taken from `org-agenda-get-some-entry-text'.
+                         ;; Skip drawers.  You might think that
+                         ;; `org-at-drawer-p' would suffice, but for
+                         ;; some reason it doesn't work correctly
+                         ;; when operating on hidden text.  This
+                         ;; works, taken from
+                         ;; `org-agenda-get-some-entry-text'.
                          (re-search-forward "^[ \t]*:END:.*\n?" end t)
                          (goto-char (match-end 0)))
                        (unless (or (= (point) (point-max))
                                    (org-at-heading-p)
                                    (looking-at-p "\n"))
-                         (insert "\n"))))
-                   t (if prefix
-                         nil
-                       'tree)))
+                         (insert "\n")))))
+    (org-map-entries #'fix t 'tree)))
 
 (after! 'org
   (setq org-directory
@@ -125,6 +157,12 @@ exist after each headings's drawers."
         (concat
          (getenv "HOME")
          "/nextcloud/documents/org/roam/20221004222230-journal.org")))
+
+(with-eval-after-load 'org
+  (setq org-journal-dir
+        (concat
+         (getenv "HOME")
+         "/nextcloud/documents/org/roam/journal/")))
 
 (with-eval-after-load 'org
   (setq +org-capture-notes-file
@@ -304,31 +342,30 @@ exist after each headings's drawers."
 ;;   (( "C-c M-i" . org-tanglesync-process-buffer-interactive)
 ;;    ( "C-c M-a" . org-tanglesync-process-buffer-automatic)))
 
-(after! 'org
-  (setq org-capture-templates
-    (("t" "Personal todo" entry
-      (file+headline +org-capture-todo-file "Inbox")
-    "* [ ] %?\n%i\n%a" :prepend t)
-    ("n" "Personal notes" entry
-    (file+headline +org-capture-notes-file "Inbox")
-    "* %u %?\n%i\n%a" :prepend t)
-    ("j" "Journal" entry
-    (file+olp+datetree +org-capture-journal-file)
-    "* %U %?\n%i\n%a" :prepend t)
-    ("p" "Templates for projects")
-    ("pt" "Project-local todo" entry
-    (file+headline +org-capture-project-todo-file "Inbox")
-    "* TODO %?\n%i\n%a" :prepend t)
-    ("pn" "Project-local notes" entry
-    (file+headline +org-capture-project-notes-file "Inbox")
-    "* %U %?\n%i\n%a" :prepend t)
-    ("pc" "Project-local changelog" entry
-    (file+headline +org-capture-project-changelog-file "Unreleased")
-    "* %U %?\n%i\n%a" :prepend t)
-    ("o" "Centralized templates for projects")
-    ("ot" "Project todo" entry #'+org-capture-central-project-todo-file "* TODO %?\n %i\n %a" :heading "Tasks" :prepend nil)
-    ("on" "Project notes" entry #'+org-capture-central-project-notes-file "* %U %?\n %i\n %a" :heading "Notes" :prepend t)
-    ("oc" "Project changelog" entry #'+org-capture-central-project-changelog-file "* %U %?\n %i\n %a" :heading "Changelog" :prepend t))))
+(setq org-capture-templates
+  '(("t" "Personal todo" entry
+    (file+headline +org-capture-todo-file "Inbox")
+  "* [ ] %?\n%i\n%a" :prepend t)
+  ("n" "Personal notes" entry
+  (file+headline +org-capture-notes-file "Inbox")
+  "* %u %?\n%i\n%a" :prepend t)
+  ("j" "Journal" entry
+  (file+olp+datetree +org-capture-journal-file)
+  "* %U %?\n%i\n%a" :prepend t)
+  ("p" "Templates for projects")
+  ("pt" "Project-local todo" entry
+  (file+headline +org-capture-project-todo-file "Inbox")
+  "* TODO %?\n%i\n%a" :prepend t)
+  ("pn" "Project-local notes" entry
+  (file+headline +org-capture-project-notes-file "Inbox")
+  "* %U %?\n%i\n%a" :prepend t)
+  ("pc" "Project-local changelog" entry
+  (file+headline +org-capture-project-changelog-file "Unreleased")
+  "* %U %?\n%i\n%a" :prepend t)
+  ("o" "Centralized templates for projects")
+  ("ot" "Project todo" entry #'+org-capture-central-project-todo-file "* TODO %?\n %i\n %a" :heading "Tasks" :prepend nil)
+  ("on" "Project notes" entry #'+org-capture-central-project-notes-file "* %U %?\n %i\n %a" :heading "Notes" :prepend t)
+  ("oc" "Project changelog" entry #'+org-capture-central-project-changelog-file "* %U %?\n %i\n %a" :heading "Changelog" :prepend t)))
 
 (after! 'org
   (use-package! vulpea
