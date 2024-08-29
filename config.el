@@ -416,20 +416,20 @@
 
 (setq dired-backup-overwrite t)
 
-(defun dired-rsync-skip-newer (dest)
-  "Asynchronously copy files in dired to `DEST' using rsync
-set to resolve symlinks, skip files that are newer in `DEST',
-and to run in archive mode."
-  (interactive
-   (list (read-file-name "rsync to: " (dired-dwim-target-directory)
-                              nil nil nil 'file-directory-p)))
-  (let ((dired-rsync-options "-aLuz --info=progress2"))
-        (dired-rsync dest)))
+;; (defun dired-rsync-skip-newer (dest)
+;;   "Asynchronously copy files in dired to `DEST' using rsync
+;; set to resolve symlinks, skip files that are newer in `DEST',
+;; and to run in archive mode."
+;;   (interactive
+;;    (list (read-file-name "rsync to: " (dired-dwim-target-directory)
+;;                               nil nil nil 'file-directory-p)))
+;;   (let ((dired-rsync-options "-aLuz --info=progress2"))
+;;         (dired-rsync dest)))
 
-(after! dired
-  (map! :map dired-mode-map
-        :prefix "C-c C-d"
-        "C-r" #'dired-rsync-skip-newer))
+;; (after! dired
+;;   (map! :map dired-mode-map
+;;         :prefix "C-c C-d"
+;;         "C-r" #'dired-rsync-skip-newer))
 
 (setq delete-by-moving-to-trash t)
 
