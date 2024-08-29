@@ -4,3 +4,4 @@ flycheck_*
 emacs/*
 PKGBUILD
 emacs/keys/*
+*.asc
