@@ -3,6 +3,7 @@
 #+DESCRIPTION: Chu's Literate Doom GNU Emacs configuration
 #+PROPERTY: header-args :tangle yes :results none
 #+auto_tangle: t
+#+startup: show2levels
 * Preamble
 
 Here's the deets:
@@ -18,9 +19,6 @@ header-args :tangle yes
 This tells Emacs to automatically tangle (include) all code blocks in this file when generating the code for the config file (~config.el~), unless the code block explicitly includes `:tangle no` as the above code block does (or if it is a quote or example block).
 
 ** Usage of quote and example blocks
-:PROPERTIES:
-:ID:       8f9bc104-87a1-4fa4-b624-a5ea64210b8a
-:END:
 
 What I am about to explain is typically done in order to debug the configuration on my end. However, the use of quote and example blocks also serves as a way of offering an on/off switch to certain blocks of "settings" (blocks beginning in "#+begin_something" and ending in "#+end_something"):
 
@@ -883,9 +881,6 @@ Set user information.
 #+end_src
 
 ** ~nov.el~ for reading epub files in Emacs
-:PROPERTIES:
-:ID:       246c5efa-98ea-4285-b52a-39fbb914ea9f
-:END:
 
 This is a hook to activate the ~nov.el~ mode (nov-mode) whenever you open a file ending in ".epub" within Emacs.
 
@@ -944,9 +939,6 @@ Make sure you know where your Emacs cache backup directory actually resides befo
 #+RESULTS:
 
 ** ~abbrev-mode~
-:PROPERTIES:
-:ID:       573045ef-062a-4bc9-94c8-d9a3f5c9c9d0
-:END:
 
 The mode in the abbrev-mode package allows for user-defined abbreviations that get expanded during typing. I have them turn on when in Org mode or Text mode and have them off otherwise.
 
@@ -957,36 +949,21 @@ The mode in the abbrev-mode package allows for user-defined abbreviations that g
 #+end_src
 
 ** Projectile project management
-:PROPERTIES:
-:ID:       cb42f656-6a3f-45c3-9eeb-0298b829010d
-:END:
-*** Projectile:  don't look for .ccls_cache
-
-I prefer ".git".
-
-#+begin_src elisp :results none
-;; (after! 'projectile
-  ;; (setq projectile-project-root-files-bottom-up '(".project"))
-  ;; )
-#+end_src
-
-*** Projectile don't look for Makefile
-
-#+begin_src elisp :results none
-;; (setq projectile-project-root-files-top-down-recurring '(".project"))
-#+end_src
-
 *** Correct Projectile sub directory detection
 
 #+begin_src elisp :results none
-;; (setq projectile-switch-project-action #'projectile-find-dir)
-;; (setq projectile-find-dir-includes-top-level t)
+;; (after! 'projectile
+;;   (setq projectile-find-dir-includes-top-level t)
+;;   (setq projectile-switch-project-action #'projectile-find-dir)
+;;   (setq projectile-project-root-files-top-down-recurring '(".project"))
+;;   (setq projectile-project-root-files-bottom-up '(".project"))
+;; )
 #+end_src
 
 *** Disable automatic project detection as a whole
 
 #+begin_src elisp
-(setq projectile-project-root-functions nil)
+;; (setq projectile-project-root-functions nil)
 #+end_src
 
 *** RipGrep "rg" fast search to handle Projectile project files
@@ -994,22 +971,20 @@ I prefer ".git".
 Use the faster searcher to handle project files: ripgrep "rg"
 
 #+begin_src elisp
-(when (and (not (executable-find "fd"))
-           (executable-find "rg"))
-  (setq projectile-generic-command
-        (let ((rg-cmd ""))
-          (dolist (dir projectile-globally-ignored-directories)
-            (setq rg-cmd (format "%s --glob '!%s'" rg-cmd dir)))
-          (setq rg-ignorefile
-                (concat "--ignore-file" " "
-                        (expand-file-name "rg_ignore" user-emacs-directory)))
-          (concat "rg -0 --files --color=never --hidden" rg-cmd " " rg-ignorefile))))
-#+end_src
-
-#+begin_src elisp
-(setq completion-styles '(orderless basic)
-      completion-category-defaults nil
-      completion-category-overrides '((file (styles basic partial-completion))))
+(after! 'projectile
+  (when (and (not (executable-find "fd"))
+             (executable-find "rg"))
+    (setq projectile-generic-command
+          (let ((rg-cmd ""))
+            (dolist (dir projectile-globally-ignored-directories)
+              (setq rg-cmd (format "%s --glob '!%s'" rg-cmd dir)))
+            (setq rg-ignorefile
+                  (concat "--ignore-file" " "
+                          (expand-file-name "rg_ignore" user-emacs-directory)))
+            (concat "rg -0 --files --color=never --hidden" rg-cmd " " rg-ignorefile))))
+  (setq completion-styles '(orderless basic)
+        completion-category-defaults nil
+        completion-category-overrides '((file (styles basic partial-completion)))))
 #+end_src
 
 ** ~emms~ :emms:music:
@@ -1023,9 +998,6 @@ Use the faster searcher to handle project files: ripgrep "rg"
 #+end_src
 
 ** Enable active presence on Discord for Emacs
-:PROPERTIES:
-:ID:       a948faf0-c278-4481-bd1b-c857644a4c90
-:END:
 
 *WARNING*: This will tell anyone on your Discord your current activity status in Emacs—with a pretty hefty amount of detail as well. [[id:8f9bc104-87a1-4fa4-b624-a5ea64210b8a][Remember: you can do the following if you want to disable something]].
 
@@ -1202,7 +1174,7 @@ By Gilbert. Thanks, Gilbert.
 
 ** [[https://github.com/alphapapa/unpackaged.el#ensure-blank-lines-between-headings-and-before-contents][alphapapa/unpackaged.el: A collection of useful Emacs Lisp code that isn't substantial enough to be packaged]]
 
-This is where the '~unpackaged/org-fix-blank-lines~' function was sourced from.
+This is where the '~ap/org-fix-blank-lines~' function was sourced from.
 
 By alphapapa. Thanks, alphapapa.
 
