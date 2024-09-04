@@ -1,4 +1,3 @@
-config.el
 custom.el
 flycheck_*
 emacs/*
