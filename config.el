@@ -442,35 +442,24 @@
   :hook (org-mode . abbrev-mode)
         (text-mode . abbrev-mode))
 
-;; (after! 'projectile
-  ;; (setq projectile-project-root-files-bottom-up '(".project"))
-  ;; )
+(after! 'projectile
+  (when (and (not (executable-find "fd"))
+             (executable-find "rg"))
+    (setq projectile-generic-command
+          (let ((rg-cmd ""))
+            (dolist (dir projectile-globally-ignored-directories)
+              (setq rg-cmd (format "%s --glob '!%s'" rg-cmd dir)))
+            (setq rg-ignorefile
+                  (concat "--ignore-file" " "
+                          (expand-file-name "rg_ignore" user-emacs-directory)))
+            (concat "rg -0 --files --color=never --hidden" rg-cmd " " rg-ignorefile))))
+  (setq completion-styles '(orderless basic)
+        completion-category-defaults nil
+        completion-category-overrides '((file (styles basic partial-completion)))))
 
-;; (setq projectile-project-root-files-top-down-recurring '(".project"))
+(setq emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
 
-;; (setq projectile-switch-project-action #'projectile-find-dir)
-;; (setq projectile-find-dir-includes-top-level t)
-
-(setq projectile-project-root-functions nil)
-
-(when (and (not (executable-find "fd"))
-           (executable-find "rg"))
-  (setq projectile-generic-command
-        (let ((rg-cmd ""))
-          (dolist (dir projectile-globally-ignored-directories)
-            (setq rg-cmd (format "%s --glob '!%s'" rg-cmd dir)))
-          (setq rg-ignorefile
-                (concat "--ignore-file" " "
-                        (expand-file-name "rg_ignore" user-emacs-directory)))
-          (concat "rg -0 --files --color=never --hidden" rg-cmd " " rg-ignorefile))))
-
-(setq completion-styles '(orderless basic)
-      completion-category-defaults nil
-      completion-category-overrides '((file (styles basic partial-completion))))
-
-;; (setq emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
-
-;; (setq emms-source-file-default-directory "~/Music/")
+(setq emms-source-file-default-directory "~/Music/")
 
 (use-package! elcord-mode
   :defer t)
@@ -496,6 +485,9 @@
   (setq tramp-verbose 0)
   (setq tramp-chunksize 2000)
   (setq tramp-use-ssh-controlmaster-options nil))
+
+(require 'tramp-sh)
+(setq tramp-remote-path (append tramp-remote-path '(tramp-own-remote-path)))
 
 (use-package! palimpsest-mode
   :hook (prog-mode . palimpsest-mode))

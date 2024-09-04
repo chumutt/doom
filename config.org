@@ -947,25 +947,7 @@ The mode in the abbrev-mode package allows for user-defined abbreviations that g
   :hook (org-mode . abbrev-mode)
         (text-mode . abbrev-mode))
 #+end_src
-
 ** Projectile project management
-*** Correct Projectile sub directory detection
-
-#+begin_src elisp :results none
-;; (after! 'projectile
-;;   (setq projectile-find-dir-includes-top-level t)
-;;   (setq projectile-switch-project-action #'projectile-find-dir)
-;;   (setq projectile-project-root-files-top-down-recurring '(".project"))
-;;   (setq projectile-project-root-files-bottom-up '(".project"))
-;; )
-#+end_src
-
-*** Disable automatic project detection as a whole
-
-#+begin_src elisp
-;; (setq projectile-project-root-functions nil)
-#+end_src
-
 *** RipGrep "rg" fast search to handle Projectile project files
 
 Use the faster searcher to handle project files: ripgrep "rg"
@@ -990,11 +972,11 @@ Use the faster searcher to handle project files: ripgrep "rg"
 ** ~emms~ :emms:music:
 
 #+begin_src elisp
-;; (setq emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
+(setq emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
 #+end_src
 
 #+begin_src elisp
-;; (setq emms-source-file-default-directory "~/Music/")
+(setq emms-source-file-default-directory "~/Music/")
 #+end_src
 
 ** Enable active presence on Discord for Emacs
@@ -1044,7 +1026,11 @@ Ange-FTP defaults to =~/.netrc=  so you need to add this to your init script:
   (setq tramp-chunksize 2000)
   (setq tramp-use-ssh-controlmaster-options nil))
 #+end_src
-
+*** Tramp issues with nixos - trying a fix
+#+begin_src elisp
+(require 'tramp-sh)
+(setq tramp-remote-path (append tramp-remote-path '(tramp-own-remote-path)))
+#+end_src
 ** Palimpsest prog mode hook
 
 #+begin_src elisp
