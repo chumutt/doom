@@ -443,30 +443,28 @@
         (text-mode . abbrev-mode))
 
 ;; (after! 'projectile
-  ;; (setq projectile-project-root-files-bottom-up '(".project"))
-  ;; )
+;;   (setq projectile-find-dir-includes-top-level t)
+;;   (setq projectile-switch-project-action #'projectile-find-dir)
+;;   (setq projectile-project-root-files-top-down-recurring '(".project"))
+;;   (setq projectile-project-root-files-bottom-up '(".project"))
+;; )
 
-;; (setq projectile-project-root-files-top-down-recurring '(".project"))
+;; (setq projectile-project-root-functions nil)
 
-;; (setq projectile-switch-project-action #'projectile-find-dir)
-;; (setq projectile-find-dir-includes-top-level t)
-
-(setq projectile-project-root-functions nil)
-
-(when (and (not (executable-find "fd"))
-           (executable-find "rg"))
-  (setq projectile-generic-command
-        (let ((rg-cmd ""))
-          (dolist (dir projectile-globally-ignored-directories)
-            (setq rg-cmd (format "%s --glob '!%s'" rg-cmd dir)))
-          (setq rg-ignorefile
-                (concat "--ignore-file" " "
-                        (expand-file-name "rg_ignore" user-emacs-directory)))
-          (concat "rg -0 --files --color=never --hidden" rg-cmd " " rg-ignorefile))))
-
-(setq completion-styles '(orderless basic)
-      completion-category-defaults nil
-      completion-category-overrides '((file (styles basic partial-completion))))
+(after! 'projectile
+  (when (and (not (executable-find "fd"))
+             (executable-find "rg"))
+    (setq projectile-generic-command
+          (let ((rg-cmd ""))
+            (dolist (dir projectile-globally-ignored-directories)
+              (setq rg-cmd (format "%s --glob '!%s'" rg-cmd dir)))
+            (setq rg-ignorefile
+                  (concat "--ignore-file" " "
+                          (expand-file-name "rg_ignore" user-emacs-directory)))
+            (concat "rg -0 --files --color=never --hidden" rg-cmd " " rg-ignorefile))))
+  (setq completion-styles '(orderless basic)
+        completion-category-defaults nil
+        completion-category-overrides '((file (styles basic partial-completion)))))
 
 ;; (setq emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
 
