@@ -752,19 +752,6 @@ By default, using the Org mode archive function 'org-archive-subtree-default' do
 
 Want files tracked in your agenda? Use the ~C-c [~ keybinding in each file to add them to your custom.el to be tracked via your agenda.
 
-*** Org Tanglesync :org:tanglesync:
-
-#+begin_src elisp :results none
-;; (use-package! org-tanglesync
-;;   :hook ((org-mode . org-tanglesync-mode)
-;;          ;; enable watch-mode globally:
-;;          ((prog-mode text-mode) . org-tanglesync-watch-mode))
-;;   :custom (org-tanglesync-watch-files '("example.org"))
-;;   :bind
-;;   (( "C-c M-i" . org-tanglesync-process-buffer-interactive)
-;;    ( "C-c M-a" . org-tanglesync-process-buffer-automatic)))
-#+end_src
-
 *** Org Mode Capture Templates Customization :org:templates:
 #+begin_src elisp :results none
   (setq org-capture-templates
@@ -850,7 +837,18 @@ to tangle.
 
 #+RESULTS:
 : markdown-convert-buffer-to-org
-
+*** org-krita
+#+begin_src elisp
+(use-package! org-krita
+  :config
+  (add-hook 'org-mode-hook 'org-krita-mode))
+#+end_src
+*** org-xournalpp
+#+begin_src elisp
+(use-package! org-xournalpp
+  :config
+  (add-hook 'org-mode-hook 'org-xournalpp-mode))
+#+end_src
 ** Emacs Relay Chat (~erc~) for Internet Relay Chat (IRC) :irc:
 
 Set user information.
