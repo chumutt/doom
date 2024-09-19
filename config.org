@@ -94,7 +94,6 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
 #+end_example
 
 * Config
-
 ** Private Configuration
 
 #+begin_src elisp :results none
@@ -426,15 +425,29 @@ I use a document that I track with org roam but you don't necessarily have to do
 
 #+begin_src elisp
 (setq org-agenda-files
-      '("/home/chu/nextcloud/documents/org/roam/20220726210347-important_dates.org"
-        "/home/chu/nextcloud/documents/org/roam/20221004221831-todo.org"
-        "/home/chu/nextcloud/documents/org/roam/20220823133456-precalculus_algebra.org"
-        "/home/chu/nextcloud/documents/org/roam/20220826102105-chem_1115.org"
-        "/home/chu/nextcloud/documents/org/roam/20221004222241-notes.org"
-        "/home/chu/nextcloud/documents/org/roam/20221004222237-journal.org"
-        "/home/chu/nextcloud/documents/org/roam/20221004222234-projects.org"
-        "/home/chu/nextcloud/documents/org/roam/20220822103211-engl_1030.org"
-        "/home/chu/nextcloud/documents/org/roam/20221002161631-my_conlang.org"))
+   '("/home/chu/nextcloud/documents/org/roam/20220726210346-important_dates.org"
+     "/home/chu/nextcloud/documents/org/roam/20220822103211-engl_1030.org"
+     "/home/chu/nextcloud/documents/org/roam/20220823133456-precalculus_algebra.org"
+     "/home/chu/nextcloud/documents/org/roam/20220826102105-chem_1115.org"
+     "/home/chu/nextcloud/documents/org/roam/20221002161631-my_conlang.org"
+     "/home/chu/nextcloud/documents/org/roam/20221002190906-furry.org"
+     "/home/chu/nextcloud/documents/org/roam/20221004221829-todo.org"
+     "/home/chu/nextcloud/documents/org/roam/20221004221831-todo.org"
+     "/home/chu/nextcloud/documents/org/roam/20221004222234-projects.org"
+     "/home/chu/nextcloud/documents/org/roam/20221004222237-journal.org"
+     "/home/chu/nextcloud/documents/org/roam/20221004222241-notes.org"
+     "/home/chu/nextcloud/documents/org/roam/20240201170253-albums_to_download.org"
+     "/home/chu/nextcloud/documents/org/roam/20240326161621-livestreaming.org"
+     "/home/chu/nextcloud/documents/org/roam/asm/20240830094040-assembly.org"
+     "/home/chu/nextcloud/documents/org/roam/c++/20240116111203-cpp.org"
+     "/home/chu/nextcloud/documents/org/roam/daily/2024-05-08.org"
+     "/home/chu/nextcloud/documents/org/roam/engl/engl-2020/20240116095712-engl_2020.org"
+     "/home/chu/nextcloud/documents/org/roam/hist/hist-2320/20240116133242-hist_2320.org"
+     "/home/chu/nextcloud/documents/org/roam/lisp/scheme/sicp/README.org"
+     "/home/chu/nextcloud/documents/org/roam/math/20220821114043-mathematics.org"
+     "/home/chu/nextcloud/documents/org/roam/math/20240903162832-linear_algebra.org"
+     "/home/chu/nextcloud/documents/org/roam/math/20240905211621-calculus_ii.org"
+     "/home/chu/nextcloud/documents/org/roam/20220726210347-important_dates.org"))
 #+end_src
 
 Usually, you just set these using `org-agenda-file-to-front`
@@ -574,6 +587,10 @@ Citation Style Language (CSL) files can be used with org-cite.
       (concat
        (getenv "HOME")
        "/nextcloud/documents/org/latex/citeproc-formatters/"))
+#+end_src
+**** org archive location
+#+begin_src elisp
+(setq org-archive-location "archives/%s_archive::")
 #+end_src
 
 *** Download/capture for Org mode
@@ -837,18 +854,6 @@ to tangle.
 
 #+RESULTS:
 : markdown-convert-buffer-to-org
-*** org-krita
-#+begin_src elisp
-(use-package! org-krita
-  :config
-  (add-hook 'org-mode-hook 'org-krita-mode))
-#+end_src
-*** org-xournalpp
-#+begin_src elisp
-(use-package! org-xournalpp
-  :config
-  (add-hook 'org-mode-hook 'org-xournalpp-mode))
-#+end_src
 ** Emacs Relay Chat (~erc~) for Internet Relay Chat (IRC) :irc:
 
 Set user information.
@@ -1145,6 +1150,38 @@ The ~num-processors~ function is a part of base Emacs: [[https://www.gnu.org/sof
         whisper-use-threads (/ (num-processors) 2))
         ;; turn off after 600 seconds of silence
         whisper-recording-timeout 600)
+#+end_src
+
+** custom.el Inbox
+#+begin_src elisp
+ ;; (org-format-latex-header
+ ;;   "\\documentclass{article}\12\\usepackage[usenames]{color}\12\\usepackage{amsmath}\12[DEFAULT-PACKAGES]\12[PACKAGES]\12\\pagestyle{empty}             % do not remove\12% The settings below are copied from fullpage.sty\12\\setlength{\\textwidth}{\\paperwidth}\12\\addtolength{\\textwidth}{-3cm}\12\\setlength{\\oddsidemargin}{1.5cm}\12\\addtolength{\\oddsidemargin}{-2.54cm}\12\\setlength{\\evensidemargin}{\\oddsidemargin}\12\\setlength{\\textheight}{\\paperheight}\12\\addtolength{\\textheight}{-\\headheight}\12\\addtolength{\\textheight}{-\\headsep}\12\\addtolength{\\textheight}{-\\footskip}\12\\addtolength{\\textheight}{-3cm}\12\\setlength{\\topmargin}{1.5cm}\12\\addtolength{\\topmargin}{-2.54cm}")
+ ;; (org-latex-classes
+ ;;   (("org-plain-latex" "\\documentclass{article}\12           [NO-DEFAULT-PACKAGES]\12           [PACKAGES]\12           [EXTRA]"
+ ;;      ("\\section{%s}" . "\\section*{%s}")
+ ;;      ("\\subsection{%s}" . "\\subsection*{%s}")
+ ;;      ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+ ;;      ("\\paragraph{%s}" . "\\paragraph*{%s}")
+ ;;      ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+ ;;     ("article" "\\documentclass[11pt]{article}"
+ ;;      ("\\section{%s}" . "\\section*{%s}")
+ ;;      ("\\subsection{%s}" . "\\subsection*{%s}")
+ ;;      ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+ ;;      ("\\paragraph{%s}" . "\\paragraph*{%s}")
+ ;;      ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+ ;;     ("report" "\\documentclass[11pt]{report}"
+ ;;      ("\\part{%s}" . "\\part*{%s}")
+ ;;      ("\\chapter{%s}" . "\\chapter*{%s}")
+ ;;      ("\\section{%s}" . "\\section*{%s}")
+ ;;      ("\\subsection{%s}" . "\\subsection*{%s}")
+ ;;      ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
+ ;;     ("book" "\\documentclass[11pt]{book}"
+ ;;      ("\\part{%s}" . "\\part*{%s}")
+ ;;      ("\\chapter{%s}" . "\\chapter*{%s}")
+ ;;      ("\\section{%s}" . "\\section*{%s}")
+ ;;      ("\\subsection{%s}" . "\\subsection*{%s}")
+ ;;      ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
+ ;; (org-latex-prefer-user-labels t)
 #+end_src
 
 * Works Cited

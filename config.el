@@ -142,15 +142,29 @@
          "/nextcloud/documents/org/roam/20221004090130-bookmarks.org")))
 
 (setq org-agenda-files
-      '("/home/chu/nextcloud/documents/org/roam/20220726210347-important_dates.org"
-        "/home/chu/nextcloud/documents/org/roam/20221004221831-todo.org"
-        "/home/chu/nextcloud/documents/org/roam/20220823133456-precalculus_algebra.org"
-        "/home/chu/nextcloud/documents/org/roam/20220826102105-chem_1115.org"
-        "/home/chu/nextcloud/documents/org/roam/20221004222241-notes.org"
-        "/home/chu/nextcloud/documents/org/roam/20221004222237-journal.org"
-        "/home/chu/nextcloud/documents/org/roam/20221004222234-projects.org"
-        "/home/chu/nextcloud/documents/org/roam/20220822103211-engl_1030.org"
-        "/home/chu/nextcloud/documents/org/roam/20221002161631-my_conlang.org"))
+   '("/home/chu/nextcloud/documents/org/roam/20220726210346-important_dates.org"
+     "/home/chu/nextcloud/documents/org/roam/20220822103211-engl_1030.org"
+     "/home/chu/nextcloud/documents/org/roam/20220823133456-precalculus_algebra.org"
+     "/home/chu/nextcloud/documents/org/roam/20220826102105-chem_1115.org"
+     "/home/chu/nextcloud/documents/org/roam/20221002161631-my_conlang.org"
+     "/home/chu/nextcloud/documents/org/roam/20221002190906-furry.org"
+     "/home/chu/nextcloud/documents/org/roam/20221004221829-todo.org"
+     "/home/chu/nextcloud/documents/org/roam/20221004221831-todo.org"
+     "/home/chu/nextcloud/documents/org/roam/20221004222234-projects.org"
+     "/home/chu/nextcloud/documents/org/roam/20221004222237-journal.org"
+     "/home/chu/nextcloud/documents/org/roam/20221004222241-notes.org"
+     "/home/chu/nextcloud/documents/org/roam/20240201170253-albums_to_download.org"
+     "/home/chu/nextcloud/documents/org/roam/20240326161621-livestreaming.org"
+     "/home/chu/nextcloud/documents/org/roam/asm/20240830094040-assembly.org"
+     "/home/chu/nextcloud/documents/org/roam/c++/20240116111203-cpp.org"
+     "/home/chu/nextcloud/documents/org/roam/daily/2024-05-08.org"
+     "/home/chu/nextcloud/documents/org/roam/engl/engl-2020/20240116095712-engl_2020.org"
+     "/home/chu/nextcloud/documents/org/roam/hist/hist-2320/20240116133242-hist_2320.org"
+     "/home/chu/nextcloud/documents/org/roam/lisp/scheme/sicp/README.org"
+     "/home/chu/nextcloud/documents/org/roam/math/20220821114043-mathematics.org"
+     "/home/chu/nextcloud/documents/org/roam/math/20240903162832-linear_algebra.org"
+     "/home/chu/nextcloud/documents/org/roam/math/20240905211621-calculus_ii.org"
+     "/home/chu/nextcloud/documents/org/roam/20220726210347-important_dates.org"))
 
 (with-eval-after-load 'org
   (setq +org-capture-journal-file
@@ -220,6 +234,8 @@
       (concat
        (getenv "HOME")
        "/nextcloud/documents/org/latex/citeproc-formatters/"))
+
+(setq org-archive-location "archives/%s_archive::")
 
 (with-eval-after-load 'org
   (require 'org-download)
@@ -332,15 +348,6 @@
 
 (after! 'org-archive
   (setq org-archive-default-command 'org-archive-subtree-hierarchical))
-
-;; (use-package! org-tanglesync
-;;   :hook ((org-mode . org-tanglesync-mode)
-;;          ;; enable watch-mode globally:
-;;          ((prog-mode text-mode) . org-tanglesync-watch-mode))
-;;   :custom (org-tanglesync-watch-files '("example.org"))
-;;   :bind
-;;   (( "C-c M-i" . org-tanglesync-process-buffer-interactive)
-;;    ( "C-c M-a" . org-tanglesync-process-buffer-automatic)))
 
 (setq org-capture-templates
   '(("t" "Personal todo" entry
@@ -574,3 +581,32 @@
         whisper-use-threads (/ (num-processors) 2))
         ;; turn off after 600 seconds of silence
         whisper-recording-timeout 600)
+
+;; (org-format-latex-header
+;;   "\\documentclass{article}\12\\usepackage[usenames]{color}\12\\usepackage{amsmath}\12[DEFAULT-PACKAGES]\12[PACKAGES]\12\\pagestyle{empty}             % do not remove\12% The settings below are copied from fullpage.sty\12\\setlength{\\textwidth}{\\paperwidth}\12\\addtolength{\\textwidth}{-3cm}\12\\setlength{\\oddsidemargin}{1.5cm}\12\\addtolength{\\oddsidemargin}{-2.54cm}\12\\setlength{\\evensidemargin}{\\oddsidemargin}\12\\setlength{\\textheight}{\\paperheight}\12\\addtolength{\\textheight}{-\\headheight}\12\\addtolength{\\textheight}{-\\headsep}\12\\addtolength{\\textheight}{-\\footskip}\12\\addtolength{\\textheight}{-3cm}\12\\setlength{\\topmargin}{1.5cm}\12\\addtolength{\\topmargin}{-2.54cm}")
+;; (org-latex-classes
+;;   (("org-plain-latex" "\\documentclass{article}\12           [NO-DEFAULT-PACKAGES]\12           [PACKAGES]\12           [EXTRA]"
+;;      ("\\section{%s}" . "\\section*{%s}")
+;;      ("\\subsection{%s}" . "\\subsection*{%s}")
+;;      ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+;;      ("\\paragraph{%s}" . "\\paragraph*{%s}")
+;;      ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+;;     ("article" "\\documentclass[11pt]{article}"
+;;      ("\\section{%s}" . "\\section*{%s}")
+;;      ("\\subsection{%s}" . "\\subsection*{%s}")
+;;      ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+;;      ("\\paragraph{%s}" . "\\paragraph*{%s}")
+;;      ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+;;     ("report" "\\documentclass[11pt]{report}"
+;;      ("\\part{%s}" . "\\part*{%s}")
+;;      ("\\chapter{%s}" . "\\chapter*{%s}")
+;;      ("\\section{%s}" . "\\section*{%s}")
+;;      ("\\subsection{%s}" . "\\subsection*{%s}")
+;;      ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
+;;     ("book" "\\documentclass[11pt]{book}"
+;;      ("\\part{%s}" . "\\part*{%s}")
+;;      ("\\chapter{%s}" . "\\chapter*{%s}")
+;;      ("\\section{%s}" . "\\section*{%s}")
+;;      ("\\subsection{%s}" . "\\subsection*{%s}")
+;;      ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
+;; (org-latex-prefer-user-labels t)
