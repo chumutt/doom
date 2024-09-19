@@ -69,8 +69,6 @@
 
 (package! org-fragtog)
 
-(package! org-tanglesync)
-
 (package! org-heatmap
   :recipe (:host github
            :repo "Elilif/org-heatmap"))
@@ -130,3 +128,13 @@
 (package! whisper
   :recipe (:host github
            :repo "natrys/whisper.el"))
+
+(package! org-krita
+  :recipe (:host github
+           :repo "lepisma/org-krita"
+           :files ("resources" "resources" "*.el" "*.el")))
+
+(package! org-xournalpp
+  :recipe (:host gitlab
+           :repo "vherrmann/org-xournalpp"
+           :files ("resources" "*.el")))
