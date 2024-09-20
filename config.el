@@ -27,8 +27,6 @@
 (with-eval-after-load 'random-splash-image
   (random-splash-image-set))
 
-(setq display-line-numbers nil)
-
 (defun toggle-transparency ()
   "Toggle TOTAL EMACS X11 transparency. Might need to be called a couple of times in a row to work."
   (interactive)
@@ -424,6 +422,8 @@
 
 (setq dired-backup-overwrite t)
 
+(setq delete-by-moving-to-trash t)
+
 ;; (defun dired-rsync-skip-newer (dest)
 ;;   "Asynchronously copy files in dired to `DEST' using rsync
 ;; set to resolve symlinks, skip files that are newer in `DEST',
@@ -444,24 +444,26 @@
 ;; (map! :map dirvish-mode-map "<normal-state> q" #'dirvish-quit)
 ;; (map! :map general-override-mode-map "<normal-state> SPC o _" #'dirvish)
 
-(use-package! abbrev-mode
-  :hook (org-mode . abbrev-mode)
-        (text-mode . abbrev-mode))
+(setq dirvish-reuse-session nil)
 
-(after! 'projectile
-  (when (and (not (executable-find "fd"))
-             (executable-find "rg"))
-    (setq projectile-generic-command
-          (let ((rg-cmd ""))
-            (dolist (dir projectile-globally-ignored-directories)
-              (setq rg-cmd (format "%s --glob '!%s'" rg-cmd dir)))
-            (setq rg-ignorefile
-                  (concat "--ignore-file" " "
-                          (expand-file-name "rg_ignore" user-emacs-directory)))
-            (concat "rg -0 --files --color=never --hidden" rg-cmd " " rg-ignorefile))))
-  (setq completion-styles '(orderless basic)
-        completion-category-defaults nil
-        completion-category-overrides '((file (styles basic partial-completion)))))
+;; (use-package! abbrev-mode
+;;   :hook (org-mode . abbrev-mode)
+;;         (text-mode . abbrev-mode))
+
+;; (after! 'projectile
+;;   (when (and (not (executable-find "fd"))
+;;              (executable-find "rg"))
+;;     (setq projectile-generic-command
+;;           (let ((rg-cmd ""))
+;;             (dolist (dir projectile-globally-ignored-directories)
+;;               (setq rg-cmd (format "%s --glob '!%s'" rg-cmd dir)))
+;;             (setq rg-ignorefile
+;;                   (concat "--ignore-file" " "
+;;                           (expand-file-name "rg_ignore" user-emacs-directory)))
+;;             (concat "rg -0 --files --color=never --hidden" rg-cmd " " rg-ignorefile))))
+;;   (setq completion-styles '(orderless basic)
+;;         completion-category-defaults nil
+;;         completion-category-overrides '((file (styles basic partial-completion)))))
 
 (setq emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
 
@@ -580,32 +582,3 @@
         whisper-use-threads (/ (num-processors) 2))
         ;; turn off after 600 seconds of silence
         whisper-recording-timeout 600)
-
-;; (org-format-latex-header
-;;   "\\documentclass{article}\12\\usepackage[usenames]{color}\12\\usepackage{amsmath}\12[DEFAULT-PACKAGES]\12[PACKAGES]\12\\pagestyle{empty}             % do not remove\12% The settings below are copied from fullpage.sty\12\\setlength{\\textwidth}{\\paperwidth}\12\\addtolength{\\textwidth}{-3cm}\12\\setlength{\\oddsidemargin}{1.5cm}\12\\addtolength{\\oddsidemargin}{-2.54cm}\12\\setlength{\\evensidemargin}{\\oddsidemargin}\12\\setlength{\\textheight}{\\paperheight}\12\\addtolength{\\textheight}{-\\headheight}\12\\addtolength{\\textheight}{-\\headsep}\12\\addtolength{\\textheight}{-\\footskip}\12\\addtolength{\\textheight}{-3cm}\12\\setlength{\\topmargin}{1.5cm}\12\\addtolength{\\topmargin}{-2.54cm}")
-;; (org-latex-classes
-;;   (("org-plain-latex" "\\documentclass{article}\12           [NO-DEFAULT-PACKAGES]\12           [PACKAGES]\12           [EXTRA]"
-;;      ("\\section{%s}" . "\\section*{%s}")
-;;      ("\\subsection{%s}" . "\\subsection*{%s}")
-;;      ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-;;      ("\\paragraph{%s}" . "\\paragraph*{%s}")
-;;      ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
-;;     ("article" "\\documentclass[11pt]{article}"
-;;      ("\\section{%s}" . "\\section*{%s}")
-;;      ("\\subsection{%s}" . "\\subsection*{%s}")
-;;      ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-;;      ("\\paragraph{%s}" . "\\paragraph*{%s}")
-;;      ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
-;;     ("report" "\\documentclass[11pt]{report}"
-;;      ("\\part{%s}" . "\\part*{%s}")
-;;      ("\\chapter{%s}" . "\\chapter*{%s}")
-;;      ("\\section{%s}" . "\\section*{%s}")
-;;      ("\\subsection{%s}" . "\\subsection*{%s}")
-;;      ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
-;;     ("book" "\\documentclass[11pt]{book}"
-;;      ("\\part{%s}" . "\\part*{%s}")
-;;      ("\\chapter{%s}" . "\\chapter*{%s}")
-;;      ("\\section{%s}" . "\\section*{%s}")
-;;      ("\\subsection{%s}" . "\\subsection*{%s}")
-;;      ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
-;; (org-latex-prefer-user-labels t)
