@@ -67,8 +67,8 @@
        word-wrap         ; soft wrapping with language-aware indent
 
        :emacs
-       ;;(dired +icons +dirvish)
-       dired ; dirvish doesn't feel ready yet to me...
+       (dired +icons +dirvish)
+       ;; dired
        electric          ; smarter, keyword-based electric-indent
        ;;ibuffer         ; interactive buffer management
        undo              ; persistent, smarter undo for your inevitable mistakes

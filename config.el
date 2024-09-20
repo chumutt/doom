@@ -239,7 +239,8 @@
 
 (with-eval-after-load 'org
   (require 'org-download)
-  (add-hook 'dired-mode-hook 'org-download-enable))
+  ;; (add-hook 'dired-mode-hook 'org-download-enable) ; TODO See if we actually need this line.
+  )
 
 (setq org-image-actual-width nil)
 
@@ -437,8 +438,6 @@
 ;;   (map! :map dired-mode-map
 ;;         :prefix "C-c C-d"
 ;;         "C-r" #'dired-rsync-skip-newer))
-
-(setq delete-by-moving-to-trash t)
 
 ;; (map! :map dirvish-mode-map "<normal-state> l" #'dired-find-file)
 ;; (map! :map dirvish-mode-map "<normal-state> h" #'dired-up-directory)
