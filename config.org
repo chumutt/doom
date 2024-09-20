@@ -278,7 +278,7 @@ My version(s):
 #+end_src
 
 ** Org-Mode :org:
-*** org TODO state hiding
+*** Org TODO state hiding
 
 Write TODO state changes into LOGBOOK drawer. [[https://stackoverflow.com/a/63798475][Thanks, LeeRuns (stackoverflow.com)]].
 
@@ -598,7 +598,8 @@ Citation Style Language (CSL) files can be used with org-cite.
 #+begin_src elisp
 (with-eval-after-load 'org
   (require 'org-download)
-  (add-hook 'dired-mode-hook 'org-download-enable))
+  ;; (add-hook 'dired-mode-hook 'org-download-enable) ; TODO See if we actually need this line.
+  )
 #+end_src
 
 *** Org-download image width attribute tag
@@ -842,7 +843,7 @@ From [[https://stackoverflow.com/a/68962704][Dennis Proksch]]:
 Do this:
 put pointer in a code block -> m ' -> F9
 to tangle.
-*** convert markdown buffer to org
+*** Convert markdown buffer to org
 #+begin_src elisp
 (defun markdown-convert-buffer-to-org ()
   "Convert the current buffer's content from markdown to orgmode format and save it with the current buffer's file name but with .org extension."
@@ -891,7 +892,7 @@ This is a hook to activate the ~nov.el~ mode (nov-mode) whenever you open a file
 (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
 #+end_src
 
-** ~dired~ director editor (Emacs file manager) settings :dired:
+** ~dired~ directory editor (Emacs file manager) settings :dired:
 
 Have Dired ask to back files up prior to overwriting them.
 
@@ -917,7 +918,7 @@ Make sure you know where your Emacs cache backup directory actually resides befo
 ;;         (dired-rsync dest)))
 #+end_src
 
-**** ~dired-rsync-skip-newer~ binding map :dired:binds:custom:rsync:
+**** ~dired-rsync-skip-newer~ key binding map :dired:binds:custom:rsync:
 
 #+begin_src elisp
 ;; (after! dired
@@ -926,20 +927,13 @@ Make sure you know where your Emacs cache backup directory actually resides befo
 ;;         "C-r" #'dired-rsync-skip-newer))
 #+end_src
 
-*** Trash instead of delete :dired:
-
-#+begin_src elisp
-(setq delete-by-moving-to-trash t)
-#+end_src
-*** Bindings
+*** Dirvish Bindings :dirvish:dired:
 #+begin_src elisp
 ;; (map! :map dirvish-mode-map "<normal-state> l" #'dired-find-file)
 ;; (map! :map dirvish-mode-map "<normal-state> h" #'dired-up-directory)
 ;; (map! :map dirvish-mode-map "<normal-state> q" #'dirvish-quit)
 ;; (map! :map general-override-mode-map "<normal-state> SPC o _" #'dirvish)
 #+end_src
-
-#+RESULTS:
 
 ** ~abbrev-mode~
 
@@ -950,6 +944,7 @@ The mode in the abbrev-mode package allows for user-defined abbreviations that g
   :hook (org-mode . abbrev-mode)
         (text-mode . abbrev-mode))
 #+end_src
+
 ** Projectile project management
 *** RipGrep "rg" fast search to handle Projectile project files
 
