@@ -27,8 +27,6 @@
 (with-eval-after-load 'random-splash-image
   (random-splash-image-set))
 
-(setq display-line-numbers nil)
-
 (defun toggle-transparency ()
   "Toggle TOTAL EMACS X11 transparency. Might need to be called a couple of times in a row to work."
   (interactive)
@@ -142,15 +140,29 @@
          "/nextcloud/documents/org/roam/20221004090130-bookmarks.org")))
 
 (setq org-agenda-files
-      '("/home/chu/nextcloud/documents/org/roam/20220726210347-important_dates.org"
-        "/home/chu/nextcloud/documents/org/roam/20221004221831-todo.org"
-        "/home/chu/nextcloud/documents/org/roam/20220823133456-precalculus_algebra.org"
-        "/home/chu/nextcloud/documents/org/roam/20220826102105-chem_1115.org"
-        "/home/chu/nextcloud/documents/org/roam/20221004222241-notes.org"
-        "/home/chu/nextcloud/documents/org/roam/20221004222237-journal.org"
-        "/home/chu/nextcloud/documents/org/roam/20221004222234-projects.org"
-        "/home/chu/nextcloud/documents/org/roam/20220822103211-engl_1030.org"
-        "/home/chu/nextcloud/documents/org/roam/20221002161631-my_conlang.org"))
+   '("/home/chu/nextcloud/documents/org/roam/20220726210346-important_dates.org"
+     "/home/chu/nextcloud/documents/org/roam/20220822103211-engl_1030.org"
+     "/home/chu/nextcloud/documents/org/roam/20220823133456-precalculus_algebra.org"
+     "/home/chu/nextcloud/documents/org/roam/20220826102105-chem_1115.org"
+     "/home/chu/nextcloud/documents/org/roam/20221002161631-my_conlang.org"
+     "/home/chu/nextcloud/documents/org/roam/20221002190906-furry.org"
+     "/home/chu/nextcloud/documents/org/roam/20221004221829-todo.org"
+     "/home/chu/nextcloud/documents/org/roam/20221004221831-todo.org"
+     "/home/chu/nextcloud/documents/org/roam/20221004222234-projects.org"
+     "/home/chu/nextcloud/documents/org/roam/20221004222237-journal.org"
+     "/home/chu/nextcloud/documents/org/roam/20221004222241-notes.org"
+     "/home/chu/nextcloud/documents/org/roam/20240201170253-albums_to_download.org"
+     "/home/chu/nextcloud/documents/org/roam/20240326161621-livestreaming.org"
+     "/home/chu/nextcloud/documents/org/roam/asm/20240830094040-assembly.org"
+     "/home/chu/nextcloud/documents/org/roam/c++/20240116111203-cpp.org"
+     "/home/chu/nextcloud/documents/org/roam/daily/2024-05-08.org"
+     "/home/chu/nextcloud/documents/org/roam/engl/engl-2020/20240116095712-engl_2020.org"
+     "/home/chu/nextcloud/documents/org/roam/hist/hist-2320/20240116133242-hist_2320.org"
+     "/home/chu/nextcloud/documents/org/roam/lisp/scheme/sicp/README.org"
+     "/home/chu/nextcloud/documents/org/roam/math/20220821114043-mathematics.org"
+     "/home/chu/nextcloud/documents/org/roam/math/20240903162832-linear_algebra.org"
+     "/home/chu/nextcloud/documents/org/roam/math/20240905211621-calculus_ii.org"
+     "/home/chu/nextcloud/documents/org/roam/20220726210347-important_dates.org"))
 
 (with-eval-after-load 'org
   (setq +org-capture-journal-file
@@ -221,9 +233,12 @@
        (getenv "HOME")
        "/nextcloud/documents/org/latex/citeproc-formatters/"))
 
+(setq org-archive-location "archives/%s_archive::")
+
 (with-eval-after-load 'org
   (require 'org-download)
-  (add-hook 'dired-mode-hook 'org-download-enable))
+  ;; (add-hook 'dired-mode-hook 'org-download-enable) ; TODO See if we actually need this line.
+  )
 
 (setq org-image-actual-width nil)
 
@@ -333,15 +348,6 @@
 (after! 'org-archive
   (setq org-archive-default-command 'org-archive-subtree-hierarchical))
 
-;; (use-package! org-tanglesync
-;;   :hook ((org-mode . org-tanglesync-mode)
-;;          ;; enable watch-mode globally:
-;;          ((prog-mode text-mode) . org-tanglesync-watch-mode))
-;;   :custom (org-tanglesync-watch-files '("example.org"))
-;;   :bind
-;;   (( "C-c M-i" . org-tanglesync-process-buffer-interactive)
-;;    ( "C-c M-a" . org-tanglesync-process-buffer-automatic)))
-
 (setq org-capture-templates
   '(("t" "Personal todo" entry
     (file+headline +org-capture-todo-file "Inbox")
@@ -416,6 +422,8 @@
 
 (setq dired-backup-overwrite t)
 
+(setq delete-by-moving-to-trash t)
+
 ;; (defun dired-rsync-skip-newer (dest)
 ;;   "Asynchronously copy files in dired to `DEST' using rsync
 ;; set to resolve symlinks, skip files that are newer in `DEST',
@@ -431,17 +439,14 @@
 ;;         :prefix "C-c C-d"
 ;;         "C-r" #'dired-rsync-skip-newer))
 
-(setq delete-by-moving-to-trash t)
-
 ;; (map! :map dirvish-mode-map "<normal-state> l" #'dired-find-file)
 ;; (map! :map dirvish-mode-map "<normal-state> h" #'dired-up-directory)
 ;; (map! :map dirvish-mode-map "<normal-state> q" #'dirvish-quit)
 ;; (map! :map general-override-mode-map "<normal-state> SPC o _" #'dirvish)
 
-(use-package! abbrev-mode
-  :hook (org-mode . abbrev-mode)
-        (text-mode . abbrev-mode))
+(setq dirvish-reuse-session nil)
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 ;; (after! 'projectile
 ;;   (setq projectile-find-dir-includes-top-level t)
@@ -485,6 +490,26 @@
   (setq completion-styles '(orderless basic)
         completion-category-defaults nil
         completion-category-overrides '((file (styles basic partial-completion)))))
+=======
+;; (use-package! abbrev-mode
+;;   :hook (org-mode . abbrev-mode)
+;;         (text-mode . abbrev-mode))
+
+;; (after! 'projectile
+;;   (when (and (not (executable-find "fd"))
+;;              (executable-find "rg"))
+;;     (setq projectile-generic-command
+;;           (let ((rg-cmd ""))
+;;             (dolist (dir projectile-globally-ignored-directories)
+;;               (setq rg-cmd (format "%s --glob '!%s'" rg-cmd dir)))
+;;             (setq rg-ignorefile
+;;                   (concat "--ignore-file" " "
+;;                           (expand-file-name "rg_ignore" user-emacs-directory)))
+;;             (concat "rg -0 --files --color=never --hidden" rg-cmd " " rg-ignorefile))))
+;;   (setq completion-styles '(orderless basic)
+;;         completion-category-defaults nil
+;;         completion-category-overrides '((file (styles basic partial-completion)))))
+>>>>>>> daaf8d6 (formatting, fixes, changes)
 
 (setq emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
 

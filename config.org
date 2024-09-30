@@ -4,6 +4,7 @@
 #+PROPERTY: header-args :tangle yes :results none
 #+auto_tangle: t
 #+startup: show2levels
+
 * Preamble
 
 Here's the deets:
@@ -96,7 +97,7 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
 * Config
 ** Private Configuration
 
-#+begin_src elisp :results none
+#+begin_src elisp
 (setq user-full-name "chu the pup"
       user-mail-address "chufilthymutt@gmail.com")
 #+end_src
@@ -129,25 +130,25 @@ Here's the settings I currently use:
 
 Set current Emacs frame's opacity to:
 
-#+begin_src elisp :results none
+#+begin_src elisp
 (set-frame-parameter (selected-frame) 'alpha 100)
 #+end_src
 
 Set all Emacs frames opacity from this point on to:
 
-#+begin_src elisp :results none
+#+begin_src elisp
 (add-to-list 'default-frame-alist '(alpha 100))
 #+end_src
 
 Set Emacs's background opacity:
 
-#+begin_src elisp :results none
+#+begin_src elisp
 (set-frame-parameter nil 'alpha-background 100)
 #+end_src
 
 Set all Emacs frames from this point on to have a background opacity of:
 
-#+begin_src elisp :results none
+#+begin_src elisp
 (add-to-list 'default-frame-alist '(alpha-background . 100))
 #+end_src
 
@@ -222,14 +223,6 @@ I don't know how to do this yet.
   (random-splash-image-set))
 #+end_src
 
-**** Toggle line numbers off by default
-
-You can toggle them back on, turn them to a "relative line number" mode, and back off again with ~SPC t l~ (lowercase ~L~).
-
-#+begin_src elisp :results none
-(setq display-line-numbers nil)
-#+end_src
-
 *** Alpha background transparency function :function:
 
 Requires a compositor.
@@ -250,7 +243,7 @@ The original by kb:
 
 My version(s):
 
-#+begin_src elisp :results none
+#+begin_src elisp
 (defun toggle-transparency ()
   "Toggle TOTAL EMACS X11 transparency. Might need to be called a couple of times in a row to work."
   (interactive)
@@ -264,7 +257,7 @@ My version(s):
       (set-frame-parameter nil 'alpha '(100 . 100)))))
 #+end_src
 
-#+begin_src elisp :results none
+#+begin_src elisp
 (defun toggle-background-transparency ()
   "Toggle background transparency, wherein text and other elements in frame are still displayed but a background isn't."
   (interactive)
@@ -277,8 +270,10 @@ My version(s):
       (put 'toggle-background-transparency 'state t))))
 #+end_src
 
+**** TODO Clean this section up.
 ** Org-Mode :org:
-*** org TODO state hiding
+
+*** Org TODO state hiding
 
 Write TODO state changes into LOGBOOK drawer. [[https://stackoverflow.com/a/63798475][Thanks, LeeRuns (stackoverflow.com)]].
 
@@ -302,7 +297,7 @@ For the package org-babel-auto-tangle (see packages.org).
 (add-hook 'org-mode-hook 'org-fragtog-mode)
 #+end_src
 
-*** Custom org-todo-keywords
+*** Custom Org TODO keywords
 
 #+begin_src elisp
 (setq org-todo-keywords
@@ -387,11 +382,11 @@ For the package org-babel-auto-tangle (see packages.org).
 
 by [[https://github.com/alphapapa/unpackaged.el#ensure-blank-lines-between-headings-and-before-contents][Alphapapa]]
 
-*** Custom org directories and files :org:
+*** Org directories and files :org:
 
 If you use `org' and don't want your org files in the default location below, change `org-directory'. It must be set before org loads!
 
-**** Custom org root directory :org:
+**** Org root directory :org:
 
 The following will vary, so change it to be whatever your org root directory is/what you want it to be.
 
@@ -405,9 +400,7 @@ I use a directory that I sync between computers with a nextcloud server I run bu
         "/nextcloud/documents/org/")))
 #+end_src
 
-#+RESULTS:
-
-**** Custom org bookmark directory :org:
+**** Org bookmark directory :org:
 
 The following will vary, so change it to be whatever your bookmarks file is/what you want it to be.
 
@@ -421,24 +414,38 @@ I use a document that I track with org roam but you don't necessarily have to do
          "/nextcloud/documents/org/roam/20221004090130-bookmarks.org")))
 #+end_src
 
-**** Custom org agenda files :org:
+**** Org agenda files :org:
 
 #+begin_src elisp
 (setq org-agenda-files
-      '("/home/chu/nextcloud/documents/org/roam/20220726210347-important_dates.org"
-        "/home/chu/nextcloud/documents/org/roam/20221004221831-todo.org"
-        "/home/chu/nextcloud/documents/org/roam/20220823133456-precalculus_algebra.org"
-        "/home/chu/nextcloud/documents/org/roam/20220826102105-chem_1115.org"
-        "/home/chu/nextcloud/documents/org/roam/20221004222241-notes.org"
-        "/home/chu/nextcloud/documents/org/roam/20221004222237-journal.org"
-        "/home/chu/nextcloud/documents/org/roam/20221004222234-projects.org"
-        "/home/chu/nextcloud/documents/org/roam/20220822103211-engl_1030.org"
-        "/home/chu/nextcloud/documents/org/roam/20221002161631-my_conlang.org"))
+   '("/home/chu/nextcloud/documents/org/roam/20220726210346-important_dates.org"
+     "/home/chu/nextcloud/documents/org/roam/20220822103211-engl_1030.org"
+     "/home/chu/nextcloud/documents/org/roam/20220823133456-precalculus_algebra.org"
+     "/home/chu/nextcloud/documents/org/roam/20220826102105-chem_1115.org"
+     "/home/chu/nextcloud/documents/org/roam/20221002161631-my_conlang.org"
+     "/home/chu/nextcloud/documents/org/roam/20221002190906-furry.org"
+     "/home/chu/nextcloud/documents/org/roam/20221004221829-todo.org"
+     "/home/chu/nextcloud/documents/org/roam/20221004221831-todo.org"
+     "/home/chu/nextcloud/documents/org/roam/20221004222234-projects.org"
+     "/home/chu/nextcloud/documents/org/roam/20221004222237-journal.org"
+     "/home/chu/nextcloud/documents/org/roam/20221004222241-notes.org"
+     "/home/chu/nextcloud/documents/org/roam/20240201170253-albums_to_download.org"
+     "/home/chu/nextcloud/documents/org/roam/20240326161621-livestreaming.org"
+     "/home/chu/nextcloud/documents/org/roam/asm/20240830094040-assembly.org"
+     "/home/chu/nextcloud/documents/org/roam/c++/20240116111203-cpp.org"
+     "/home/chu/nextcloud/documents/org/roam/daily/2024-05-08.org"
+     "/home/chu/nextcloud/documents/org/roam/engl/engl-2020/20240116095712-engl_2020.org"
+     "/home/chu/nextcloud/documents/org/roam/hist/hist-2320/20240116133242-hist_2320.org"
+     "/home/chu/nextcloud/documents/org/roam/lisp/scheme/sicp/README.org"
+     "/home/chu/nextcloud/documents/org/roam/math/20220821114043-mathematics.org"
+     "/home/chu/nextcloud/documents/org/roam/math/20240903162832-linear_algebra.org"
+     "/home/chu/nextcloud/documents/org/roam/math/20240905211621-calculus_ii.org"
+     "/home/chu/nextcloud/documents/org/roam/20220726210347-important_dates.org"))
 #+end_src
 
 Usually, you just set these using `org-agenda-file-to-front`
 
-**** Custom org capture journal file location :org:
+**** Org capture journal file location :org:
 
 You know the gist by now--change this to whatever you want your file to be.
 
@@ -450,7 +457,7 @@ You know the gist by now--change this to whatever you want your file to be.
          "/nextcloud/documents/org/roam/20221004222230-journal.org")))
 #+end_src
 
-**** Custom org capture journal location :org:
+**** Org capture journal location :org:
 
 #+begin_src elisp
 (with-eval-after-load 'org
@@ -460,7 +467,7 @@ You know the gist by now--change this to whatever you want your file to be.
          "/nextcloud/documents/org/roam/journal/")))
 #+end_src
 
-**** Custom org notes file location :org:
+**** Org notes file location :org:
 
 #+begin_src elisp
 (with-eval-after-load 'org
@@ -470,7 +477,7 @@ You know the gist by now--change this to whatever you want your file to be.
          "/nextcloud/documents/org/roam/20221004222235-notes.org")))
 #+end_src
 
-**** Custom org projects file location :org:
+**** Org projects file location :org:
 
 #+begin_src elisp
 (with-eval-after-load 'org
@@ -480,7 +487,7 @@ You know the gist by now--change this to whatever you want your file to be.
          "/nextcloud/documents/org/roam/20221004222226-projects.org")))
 #+end_src
 
-**** Custom org todo file location :org:
+**** Org todo file location :org:
 
 I primarily use a "todo" file rather than an "agenda" file, for agenda ("TODO") items.
 
@@ -492,7 +499,7 @@ I primarily use a "todo" file rather than an "agenda" file, for agenda ("TODO") 
          "/nextcloud/documents/org/roam/20221004221829-todo.org")))
 #+end_src
 
-**** Org roam v2 directories and files :org:roam:
+**** Org Roam v2 directories and files :org:roam:
 
 #+begin_src elisp
 (with-eval-after-load 'org
@@ -502,7 +509,7 @@ I primarily use a "todo" file rather than an "agenda" file, for agenda ("TODO") 
          "/nextcloud/documents/org/roam/")))
 #+end_src
 
-**** Org roam v2 dailies directory :org:roam:
+**** Org Roam v2 dailies directory :org:roam:
 
 Path to daily-notes. This path is relative to org-roam-directory.
 
@@ -510,7 +517,7 @@ Path to daily-notes. This path is relative to org-roam-directory.
 (setq org-roam-dailies-directory "daily/")
 #+end_src
 
-**** Org roam v2 dailies capture template :org:roam:
+**** Org Roam v2 dailies capture template :org:roam:
 
 #+begin_src elisp
 (setq org-roam-dailies-capture-templates
@@ -522,17 +529,21 @@ Path to daily-notes. This path is relative to org-roam-directory.
 
 **** org-roam-protocol test :org:roam:protocols:
 
+(I don't remember why I put this here.)
+
 #+begin_src elisp
 (require 'org-roam-protocol)
 #+end_src
 
 **** org-roam-export test :org:roam:
 
+(I don't remember why I put this here, either.)
+
 #+begin_src elisp
 (require 'org-roam-export)
 #+end_src
 
-**** Org id custom id location :org:
+**** Org ID: Custom ID Location :org:
 
 #+begin_src elisp
 (setq org-id-locations-file
@@ -552,7 +563,7 @@ Path to daily-notes. This path is relative to org-roam-directory.
 
 **** Org-Cite (oc.el) :org:cite:
 
-***** Org-Cite (oc.el) bibliography location :org:cite:bib:
+***** Org-Cite (oc.el) Bibliography Location :org:cite:bib:
 
 #+begin_src elisp
 (setq org-cite-global-bibliography
@@ -564,7 +575,7 @@ Path to daily-notes. This path is relative to org-roam-directory.
 
 See also [[https://orgmode.org/manual/Citations.html#Citations-1][the org mode manual section on org-cite, the citation module that is native to emacs org mode]] in order to specify per-file bibliography files with .bib or .json files.
 
-***** Org-Cite (oc.el) CiteProc formatter file directory location :org:cite:citeproc:
+***** Org-Cite (oc.el) CiteProc Formatter File Directory Location :org:cite:citeproc:
 
 Citation Style Language (CSL) files can be used with org-cite.
 
@@ -575,12 +586,19 @@ Citation Style Language (CSL) files can be used with org-cite.
        "/nextcloud/documents/org/latex/citeproc-formatters/"))
 #+end_src
 
+**** Org Archive Location
+
+#+begin_src elisp
+(setq org-archive-location "archives/%s_archive::")
+#+end_src
+
 *** Download/capture for Org mode
 
 #+begin_src elisp
 (with-eval-after-load 'org
   (require 'org-download)
-  (add-hook 'dired-mode-hook 'org-download-enable))
+  ;; (add-hook 'dired-mode-hook 'org-download-enable) ; TODO See if we actually need this line.
+  )
 #+end_src
 
 *** Org-download image width attribute tag
@@ -590,8 +608,6 @@ Added automatically when images are attached. Does not affect actual image dimen
 #+begin_src elisp
 (setq org-image-actual-width nil)
 #+end_src
-
-#+RESULTS:
 
 *** LaTeX classes for org mode with org-latex-classes
 
@@ -648,7 +664,7 @@ By default, using the Org mode archive function 'org-archive-subtree-default' do
 
 **** Source code of ~org-archive-subtree-hierarchical~ :org:archive:
 
-#+begin_src elisp :results none
+#+begin_src elisp
 (after! 'org
   (provide 'org-archive-subtree-hierarchical)
   (require 'org-archive)
@@ -742,7 +758,7 @@ By default, using the Org mode archive function 'org-archive-subtree-default' do
 
 **** Change the Default Org Archive Function to be the Not-Stupid One :org:archive:
 
-#+begin_src elisp :results none
+#+begin_src elisp
 (after! 'org-archive
   (setq org-archive-default-command 'org-archive-subtree-hierarchical))
 #+end_src
@@ -751,21 +767,8 @@ By default, using the Org mode archive function 'org-archive-subtree-default' do
 
 Want files tracked in your agenda? Use the ~C-c [~ keybinding in each file to add them to your custom.el to be tracked via your agenda.
 
-*** Org Tanglesync :org:tanglesync:
-
-#+begin_src elisp :results none
-;; (use-package! org-tanglesync
-;;   :hook ((org-mode . org-tanglesync-mode)
-;;          ;; enable watch-mode globally:
-;;          ((prog-mode text-mode) . org-tanglesync-watch-mode))
-;;   :custom (org-tanglesync-watch-files '("example.org"))
-;;   :bind
-;;   (( "C-c M-i" . org-tanglesync-process-buffer-interactive)
-;;    ( "C-c M-a" . org-tanglesync-process-buffer-automatic)))
-#+end_src
-
 *** Org Mode Capture Templates Customization :org:templates:
-#+begin_src elisp :results none
+#+begin_src elisp
   (setq org-capture-templates
     '(("t" "Personal todo" entry
       (file+headline +org-capture-todo-file "Inbox")
@@ -794,17 +797,17 @@ Want files tracked in your agenda? Use the ~C-c [~ keybinding in each file to ad
 
 *** Vulpea Auto-Sync Org Roam v2 todos from dailies :org:roam:vulpea:
 
-#+begin_src elisp :results none
+#+begin_src elisp
 (after! 'org
   (use-package! vulpea
     :hook ((org-roam-db-autosync-mode . vulpea-db-autosync-enable))))
 #+end_src
 
-*** Procedure to tangle a single block at a time
+*** Tangle a single block at a time
 
 From [[https://stackoverflow.com/a/39628921][joon]]:
 
-#+begin_src elisp :results none
+#+begin_src elisp
 (defun org-babel-tangle-block ()
   (interactive)
   (let ((current-prefix-arg '(4)))
@@ -821,7 +824,7 @@ From [[https://stackoverflow.com/a/39628921][joon]]:
 
 From [[https://stackoverflow.com/a/68962704][Dennis Proksch]]:
 
-#+begin_src elisp :results none
+#+begin_src elisp
 (defun org-babel-tangle-from-edit-special ()
     (interactive)
     (org-edit-src-exit)
@@ -837,7 +840,9 @@ From [[https://stackoverflow.com/a/68962704][Dennis Proksch]]:
 Do this:
 put pointer in a code block -> m ' -> F9
 to tangle.
-*** convert markdown buffer to org
+
+*** Convert markdown buffer to org
+
 #+begin_src elisp
 (defun markdown-convert-buffer-to-org ()
   "Convert the current buffer's content from markdown to orgmode format and save it with the current buffer's file name but with .org extension."
@@ -846,9 +851,6 @@ to tangle.
                            (format "pandoc -f markdown -t org -o %s"
                                    (concat (file-name-sans-extension (buffer-file-name)) ".org"))))
 #+end_src
-
-#+RESULTS:
-: markdown-convert-buffer-to-org
 
 ** Emacs Relay Chat (~erc~) for Internet Relay Chat (IRC) :irc:
 
@@ -861,6 +863,7 @@ Set user information.
 #+end_src
 
 ** Editing server (~edit-server~) for Emacs with ~edit-with-emacs~
+
 #+begin_src elisp
 (require 'edit-server)
 (edit-server-start)
@@ -868,7 +871,7 @@ Set user information.
 
 ** Dictionary
 
-#+begin_src elisp :results none
+#+begin_src elisp
 (after! 'org
   (setq ispell-alternate-dictionary "/usr/share/dict"))
 #+end_src
@@ -883,11 +886,11 @@ Set user information.
 
 This is a hook to activate the ~nov.el~ mode (nov-mode) whenever you open a file ending in ".epub" within Emacs.
 
-#+begin_src elisp :results none
+#+begin_src elisp
 (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
 #+end_src
 
-** ~dired~ director editor (Emacs file manager) settings :dired:
+** ~dired~ directory editor (Emacs file manager) settings :dired:
 
 Have Dired ask to back files up prior to overwriting them.
 
@@ -895,6 +898,12 @@ Make sure you know where your Emacs cache backup directory actually resides befo
 
 #+begin_src elisp
 (setq dired-backup-overwrite t)
+#+end_src
+
+*** Trash instead of delete :dired:
+
+#+begin_src elisp
+(setq delete-by-moving-to-trash t)
 #+end_src
 
 *** dired-rsync :dired:rsync:
@@ -913,7 +922,7 @@ Make sure you know where your Emacs cache backup directory actually resides befo
 ;;         (dired-rsync dest)))
 #+end_src
 
-**** ~dired-rsync-skip-newer~ binding map :dired:binds:custom:rsync:
+**** ~dired-rsync-skip-newer~ key binding map :dired:binds:custom:rsync:
 
 #+begin_src elisp
 ;; (after! dired
@@ -922,12 +931,10 @@ Make sure you know where your Emacs cache backup directory actually resides befo
 ;;         "C-r" #'dired-rsync-skip-newer))
 #+end_src
 
-*** Trash instead of delete :dired:
+*** Dirvish
 
-#+begin_src elisp
-(setq delete-by-moving-to-trash t)
-#+end_src
-*** Bindings
+**** Dirvish Bindings :dirvish:dired:
+
 #+begin_src elisp
 ;; (map! :map dirvish-mode-map "<normal-state> l" #'dired-find-file)
 ;; (map! :map dirvish-mode-map "<normal-state> h" #'dired-up-directory)
@@ -935,37 +942,43 @@ Make sure you know where your Emacs cache backup directory actually resides befo
 ;; (map! :map general-override-mode-map "<normal-state> SPC o _" #'dirvish)
 #+end_src
 
-#+RESULTS:
+**** Have Dirvish kill all session buffers on quit
+
+#+begin_src elisp
+(setq dirvish-reuse-session nil)
+#+end_src
 
 ** ~abbrev-mode~
 
 The mode in the abbrev-mode package allows for user-defined abbreviations that get expanded during typing. I have them turn on when in Org mode or Text mode and have them off otherwise.
 
-#+begin_src elisp :results none
-(use-package! abbrev-mode
-  :hook (org-mode . abbrev-mode)
-        (text-mode . abbrev-mode))
+#+begin_src elisp
+;; (use-package! abbrev-mode
+;;   :hook (org-mode . abbrev-mode)
+;;         (text-mode . abbrev-mode))
 #+end_src
+
 ** Projectile project management
+
 *** RipGrep "rg" fast search to handle Projectile project files
 
 Use the faster searcher to handle project files: ripgrep "rg"
 
 #+begin_src elisp
-(after! 'projectile
-  (when (and (not (executable-find "fd"))
-             (executable-find "rg"))
-    (setq projectile-generic-command
-          (let ((rg-cmd ""))
-            (dolist (dir projectile-globally-ignored-directories)
-              (setq rg-cmd (format "%s --glob '!%s'" rg-cmd dir)))
-            (setq rg-ignorefile
-                  (concat "--ignore-file" " "
-                          (expand-file-name "rg_ignore" user-emacs-directory)))
-            (concat "rg -0 --files --color=never --hidden" rg-cmd " " rg-ignorefile))))
-  (setq completion-styles '(orderless basic)
-        completion-category-defaults nil
-        completion-category-overrides '((file (styles basic partial-completion)))))
+;; (after! 'projectile
+;;   (when (and (not (executable-find "fd"))
+;;              (executable-find "rg"))
+;;     (setq projectile-generic-command
+;;           (let ((rg-cmd ""))
+;;             (dolist (dir projectile-globally-ignored-directories)
+;;               (setq rg-cmd (format "%s --glob '!%s'" rg-cmd dir)))
+;;             (setq rg-ignorefile
+;;                   (concat "--ignore-file" " "
+;;                           (expand-file-name "rg_ignore" user-emacs-directory)))
+;;             (concat "rg -0 --files --color=never --hidden" rg-cmd " " rg-ignorefile))))
+;;   (setq completion-styles '(orderless basic)
+;;         completion-category-defaults nil
+;;         completion-category-overrides '((file (styles basic partial-completion)))))
 #+end_src
 
 ** ~emms~ :emms:music:
@@ -1002,6 +1015,7 @@ Allow Emacs to handle queries for gpg passwords.
 #+end_src
 
 ** Tramp :tramp:ssh:
+
 *** Tramp FTP doesn't read my ~/.authinfo.gpg :tramp:ssh:
 
 Ange-FTP defaults to =~/.netrc=  so you need to add this to your init script:
@@ -1025,11 +1039,13 @@ Ange-FTP defaults to =~/.netrc=  so you need to add this to your init script:
   (setq tramp-chunksize 2000)
   (setq tramp-use-ssh-controlmaster-options nil))
 #+end_src
+
 *** Tramp issues with nixos - trying a fix
 #+begin_src elisp
 (require 'tramp-sh)
 (setq tramp-remote-path (append tramp-remote-path '(tramp-own-remote-path)))
 #+end_src
+
 ** Palimpsest prog mode hook
 
 #+begin_src elisp
@@ -1038,6 +1054,7 @@ Ange-FTP defaults to =~/.netrc=  so you need to add this to your init script:
 #+end_src
 
 ** Common Lisp
+
 *** Common Lisp find file fix for Roswell compatibility :lisp:
 
 #+begin_src elisp
@@ -1069,7 +1086,8 @@ Ange-FTP defaults to =~/.netrc=  so you need to add this to your init script:
 #+end_src
 
 ** mu4e
-#+begin_src elisp :results none
+
+#+begin_src elisp
 (use-package mu4e
   ;; :ensure nil
   ;; :load-path "/usr/share/emacs/site-lisp/mu4e/"
@@ -1136,7 +1154,7 @@ Personally, I can't get a model other than the ~base~ one to download. I'm an En
 
 The ~num-processors~ function is a part of base Emacs: [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Process-Information.html#index-num_002dprocessors][GNU Emacs Manual 40.6 Process Information]].
 
-#+begin_src elisp :results none
+#+begin_src elisp
 (use-package whisper
   :config
   (setq whisper-install-directory "~/.config/emacs/.local/cache/"
@@ -1149,10 +1167,15 @@ The ~num-processors~ function is a part of base Emacs: [[https://www.gnu.org/sof
 #+end_src
 
 * Works Cited
+
 ** [[https://gergely.polonkai.eu/blog/2014/10/7/rounding-numbers-to-n-decimals-in-emacs.html][Rounding numbers to N decimals in Emacs]]
+
 by Gergely Polonkai.
+
 ** https://blog.lazkani.io/posts/bookmark-with-org-capture/
+
 ** https://orgmode.org/manual/Capture-templates.html
+
 ** [[https://raw.githubusercontent.com/gilbertw1/emacs-literate-starter/master/emacs.org][DOOM Emacs Literate Config]]
 
 By Gilbert. Thanks, Gilbert.

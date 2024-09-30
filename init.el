@@ -67,8 +67,8 @@
        word-wrap         ; soft wrapping with language-aware indent
 
        :emacs
-       ;;(dired +icons +dirvish)
-       dired ; dirvish doesn't feel ready yet to me...
+       (dired +icons +dirvish)
+       ;; dired
        electric          ; smarter, keyword-based electric-indent
        ;;ibuffer         ; interactive buffer management
        undo              ; persistent, smarter undo for your inevitable mistakes
@@ -164,7 +164,8 @@
         +noter
         +gnuplot
         +pomodoro
-        +dragndrop)      ; organize your plain life in plain text
+        +dragndrop
+        +present)      ; organize your plain life in plain text
        ;;php               ; perl's insecure younger brother
        plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional

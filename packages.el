@@ -69,8 +69,6 @@
 
 (package! org-fragtog)
 
-(package! org-tanglesync)
-
 (package! org-heatmap
   :recipe (:host github
            :repo "Elilif/org-heatmap"))
