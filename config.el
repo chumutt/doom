@@ -50,9 +50,11 @@
       (set-frame-parameter nil 'alpha-background 75)
       (put 'toggle-background-transparency 'state t))))
 
-(setq org-log-into-drawer "LOGBOOK")
+(after! org-mode
+  (setq org-log-into-drawer "LOGBOOK"))
 
-(add-hook 'org-mode-hook 'org-auto-tangle-mode)
+(after! org-auto-tangle-mode
+  (add-hook 'org-mode-hook 'org-auto-tangle-mode))
 
 (add-hook 'org-mode-hook 'org-fragtog-mode)
 
@@ -240,20 +242,21 @@
   ;; (add-hook 'dired-mode-hook 'org-download-enable) ; TODO See if we actually need this line.
   )
 
-(setq org-image-actual-width nil)
+(after! org-mode
+  (setq org-image-actual-width nil))
 
 (with-eval-after-load 'ox-latex
-(add-to-list 'org-latex-classes
-             '("org-plain-latex"
-               "\\documentclass{article}
+  (add-to-list 'org-latex-classes
+               '("org-plain-latex"
+                 "\\documentclass{article}
            [NO-DEFAULT-PACKAGES]
            [PACKAGES]
            [EXTRA]"
-               ("\\section{%s}" . "\\section*{%s}")
-               ("\\subsection{%s}" . "\\subsection*{%s}")
-               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-               ("\\paragraph{%s}" . "\\paragraph*{%s}")
-               ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 
 (after! 'org
   (provide 'org-archive-subtree-hierarchical)
@@ -351,30 +354,31 @@
 (setq org-capture-templates
   '(("t" "Personal todo" entry
     (file+headline +org-capture-todo-file "Inbox")
-  "* [ ] %?\n%i\n%a" :prepend t)
-  ("n" "Personal notes" entry
-  (file+headline +org-capture-notes-file "Inbox")
-  "* %u %?\n%i\n%a" :prepend t)
-  ("j" "Journal" entry
-  (file+olp+datetree +org-capture-journal-file)
-  "* %U %?\n%i\n%a" :prepend t)
-  ("p" "Templates for projects")
-  ("pt" "Project-local todo" entry
-  (file+headline +org-capture-project-todo-file "Inbox")
-  "* TODO %?\n%i\n%a" :prepend t)
-  ("pn" "Project-local notes" entry
-  (file+headline +org-capture-project-notes-file "Inbox")
-  "* %U %?\n%i\n%a" :prepend t)
-  ("pc" "Project-local changelog" entry
-  (file+headline +org-capture-project-changelog-file "Unreleased")
-  "* %U %?\n%i\n%a" :prepend t)
-  ("o" "Centralized templates for projects")
-  ("ot" "Project todo" entry #'+org-capture-central-project-todo-file "* TODO %?\n %i\n %a" :heading "Tasks" :prepend nil)
-  ("on" "Project notes" entry #'+org-capture-central-project-notes-file "* %U %?\n %i\n %a" :heading "Notes" :prepend t)
-  ("oc" "Project changelog" entry #'+org-capture-central-project-changelog-file "* %U %?\n %i\n %a" :heading "Changelog" :prepend t)))
+    "* [ ] %?\n%i\n%a" :prepend t)
+    ("n" "Personal notes" entry
+     (file+headline +org-capture-notes-file "Inbox")
+     "* %u %?\n%i\n%a" :prepend t)
+    ("j" "Journal" entry
+     (file+olp+datetree +org-capture-journal-file)
+     "* %U %?\n%i\n%a" :prepend t)
+    ("p" "Templates for projects")
+    ("pt" "Project-local todo" entry
+     (file+headline +org-capture-project-todo-file "Inbox")
+     "* TODO %?\n%i\n%a" :prepend t)
+    ("pn" "Project-local notes" entry
+     (file+headline +org-capture-project-notes-file "Inbox")
+     "* %U %?\n%i\n%a" :prepend t)
+    ("pc" "Project-local changelog" entry
+     (file+headline +org-capture-project-changelog-file "Unreleased")
+     "* %U %?\n%i\n%a" :prepend t)
+    ("o" "Centralized templates for projects")
+    ("ot" "Project todo" entry #'+org-capture-central-project-todo-file "* TODO %?\n %i\n %a" :heading "Tasks" :prepend nil)
+    ("on" "Project notes" entry #'+org-capture-central-project-notes-file "* %U %?\n %i\n %a" :heading "Notes" :prepend t)
+    ("oc" "Project changelog" entry #'+org-capture-central-project-changelog-file "* %U %?\n %i\n %a" :heading "Changelog" :prepend t)))
 
-(after! 'org
+(after! org
   (use-package! vulpea
+    :defer t
     :hook ((org-roam-db-autosync-mode . vulpea-db-autosync-enable))))
 
 (defun org-babel-tangle-block ()
@@ -420,9 +424,11 @@
 
 (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
 
-(setq dired-backup-overwrite t)
+(after! dired
+  (setq dired-backup-overwrite t))
 
-(setq delete-by-moving-to-trash t)
+(after! dired
+  (setq delete-by-moving-to-trash t))
 
 ;; (defun dired-rsync-skip-newer (dest)
 ;;   "Asynchronously copy files in dired to `DEST' using rsync
@@ -444,54 +450,11 @@
 ;; (map! :map dirvish-mode-map "<normal-state> q" #'dirvish-quit)
 ;; (map! :map general-override-mode-map "<normal-state> SPC o _" #'dirvish)
 
-(setq dirvish-reuse-session nil)
+(after! dirvish
+  (setq dirvish-reuse-session nil))
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-;; (after! 'projectile
-;;   (setq projectile-find-dir-includes-top-level t)
-;;   (setq projectile-switch-project-action #'projectile-find-dir)
-;;   (setq projectile-project-root-files-top-down-recurring '(".project"))
-;;   (setq projectile-project-root-files-bottom-up '(".project"))
-;; )
-
-;; (setq projectile-project-root-functions nil)
-
-(after! 'projectile
-  (when (and (not (executable-find "fd"))
-             (executable-find "rg"))
-    (setq projectile-generic-command
-          (let ((rg-cmd ""))
-            (dolist (dir projectile-globally-ignored-directories)
-              (setq rg-cmd (format "%s --glob '!%s'" rg-cmd dir)))
-            (setq rg-ignorefile
-                  (concat "--ignore-file" " "
-                          (expand-file-name "rg_ignore" user-emacs-directory)))
-            (concat "rg -0 --files --color=never --hidden" rg-cmd " " rg-ignorefile))))
-  (setq completion-styles '(orderless basic)
-        completion-category-defaults nil
-        completion-category-overrides '((file (styles basic partial-completion)))))
-
-;; (setq emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
-
-;; (setq emms-source-file-default-directory "~/Music/")
-=======
-(after! 'projectile
-  (when (and (not (executable-find "fd"))
-             (executable-find "rg"))
-    (setq projectile-generic-command
-          (let ((rg-cmd ""))
-            (dolist (dir projectile-globally-ignored-directories)
-              (setq rg-cmd (format "%s --glob '!%s'" rg-cmd dir)))
-            (setq rg-ignorefile
-                  (concat "--ignore-file" " "
-                          (expand-file-name "rg_ignore" user-emacs-directory)))
-            (concat "rg -0 --files --color=never --hidden" rg-cmd " " rg-ignorefile))))
-  (setq completion-styles '(orderless basic)
-        completion-category-defaults nil
-        completion-category-overrides '((file (styles basic partial-completion)))))
-=======
 ;; (use-package! abbrev-mode
+;;   :defer t
 ;;   :hook (org-mode . abbrev-mode)
 ;;         (text-mode . abbrev-mode))
 
@@ -509,17 +472,16 @@
 ;;   (setq completion-styles '(orderless basic)
 ;;         completion-category-defaults nil
 ;;         completion-category-overrides '((file (styles basic partial-completion)))))
->>>>>>> daaf8d6 (formatting, fixes, changes)
 
-(setq emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
+(after! emms
+  (setq emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find))
 
-(setq emms-source-file-default-directory "~/Music/")
->>>>>>> origin/main
+(after! emms
+  (setq emms-source-file-default-directory "~/Music/"))
 
 (use-package! elcord-mode
-  :defer t)
-
-(elcord-mode)
+  :defer 360
+  :config (elcord-mode))
 
 (setq epg-pinentry-mode 'loopback)
 
@@ -527,9 +489,8 @@
   (let ((str (read-passwd (concat (replace-regexp-in-string "%22" "\""
                                   (replace-regexp-in-string "%0A" "\n" desc)) prompt ": ")))) str))
 
-(setq ange-ftp-netrc-filename "~/.authinfo.gpg")
-
 (use-package tramp
+  :defer t
   :config
   ;; Enable full-featured Dirvish over TRAMP on certain connections
   ;; https://www.gnu.org/software/tramp/#Improving-performance-of-asynchronous-remote-processes-1.
@@ -539,27 +500,33 @@
   ;; Tips to speed up connections
   (setq tramp-verbose 0)
   (setq tramp-chunksize 2000)
-  (setq tramp-use-ssh-controlmaster-options nil))
-
-(require 'tramp-sh)
-(setq tramp-remote-path (append tramp-remote-path '(tramp-own-remote-path)))
+  (setq tramp-use-ssh-controlmaster-options nil)
+  ;; Ange-FTP defaults to =~/.netrc=  so you need to add this to your init script:
+  (setq ange-ftp-netrc-filename "~/.authinfo.gpg"))
 
 (use-package! palimpsest-mode
+  :defer t
   :hook (prog-mode . palimpsest-mode))
 
-(defun +lisp/find-file-in-quicklisp ()
-  "Find a file belonging to a library downloaded by Quicklisp."
-  (interactive)
-  (doom-project-find-file "~/.local/share/roswell/lisp/quicklisp/dists"))
+(after! lisp-mode
+  (defun +lisp/find-file-in-quicklisp ()
+    "Find a file belonging to a library downloaded by Quicklisp."
+    (interactive)
+    (doom-project-find-file "~/.local/share/roswell/lisp/quicklisp/dists")))
 
-(load! (expand-file-name "~/.local/share/roswell/helper.el"))
-(setq inferior-lisp-program "ros dynamic-space-size=8000 -Q run")
+(after! lisp-mode
+  (load! (expand-file-name "~/.local/share/roswell/helper.el"))
+  (setq inferior-lisp-program "ros dynamic-space-size=8000 -Q run"))
 
-(use-package! common-lisp-snippets
-  :defer t)
+(after! lisp-mode
+  (use-package! common-lisp-snippets
+    :defer t))
 
 (after! sly
   (setq sly-complete-symbol-function 'sly-flex-completions))
+
+(after! cc-mode
+  (setq c-default-style "doom"))
 
 (use-package mu4e
   ;; :ensure nil
@@ -621,11 +588,12 @@
                     (mu4e-trash-folder . "/gmail.com/chufilthymutt/[Gmail]/Trash"))))))
 
 (use-package whisper
+  :defer t
   :config
   (setq whisper-install-directory "~/.config/emacs/.local/cache/"
         whisper-model "base"
         whisper-language "en"
         whisper-translate nil
         whisper-use-threads (/ (num-processors) 2))
-        ;; turn off after 600 seconds of silence
+        ;; turn off after 600 seconds of silence (regardless of input level)
         whisper-recording-timeout 600)
