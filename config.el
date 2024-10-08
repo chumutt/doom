@@ -410,9 +410,10 @@
                            (format "pandoc -f markdown -t org -o %s"
                                    (concat (file-name-sans-extension (buffer-file-name)) ".org"))))
 
-(setq erc-server "localhost"
-      erc-nick "chuthepup"
-      erc-user-full-name "Chu the Pup")
+(after! erc
+  (setq erc-server "localhost"
+        erc-nick "chuthepup"
+        erc-user-full-name "chu the pup"))
 
 (require 'edit-server)
 (edit-server-start)
