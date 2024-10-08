@@ -861,9 +861,10 @@ to tangle.
 Set user information.
 
 #+begin_src elisp
-(setq erc-server "localhost"
-      erc-nick "chuthepup"
-      erc-user-full-name "Chu the Pup")
+(after! erc
+  (setq erc-server "localhost"
+        erc-nick "chuthepup"
+        erc-user-full-name "chu the pup"))
 #+end_src
 
 ** Editing server (~edit-server~) for Emacs with ~edit-with-emacs~
