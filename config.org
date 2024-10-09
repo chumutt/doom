@@ -1087,6 +1087,10 @@ Ange-FTP defaults to =~/.netrc=  so you need to add this to your init script:
 (after! sly
   (setq sly-complete-symbol-function 'sly-flex-completions))
 #+end_src
+** C++
+#+begin_src elisp
+(setq c-syntactic-indentation nil)
+#+end_src
 ** mu4e
 
 #+begin_src elisp
