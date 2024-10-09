@@ -1087,12 +1087,6 @@ Ange-FTP defaults to =~/.netrc=  so you need to add this to your init script:
 (after! sly
   (setq sly-complete-symbol-function 'sly-flex-completions))
 #+end_src
-** C++
-#+begin_src elisp
-(after! cc-mode
-  (setq c-default-style "doom"))
-#+end_src
-
 ** mu4e
 
 #+begin_src elisp
