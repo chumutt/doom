@@ -50,11 +50,9 @@
       (set-frame-parameter nil 'alpha-background 75)
       (put 'toggle-background-transparency 'state t))))
 
-(after! org-mode
-  (setq org-log-into-drawer "LOGBOOK"))
+(setq org-log-into-drawer "LOGBOOK")
 
-(after! org-auto-tangle-mode
-  (add-hook 'org-mode-hook 'org-auto-tangle-mode))
+(add-hook 'org-mode-hook 'org-auto-tangle-mode)
 
 (add-hook 'org-mode-hook 'org-fragtog-mode)
 
@@ -242,21 +240,20 @@
   ;; (add-hook 'dired-mode-hook 'org-download-enable) ; TODO See if we actually need this line.
   )
 
-(after! org-mode
-  (setq org-image-actual-width nil))
+(setq org-image-actual-width nil)
 
 (with-eval-after-load 'ox-latex
-  (add-to-list 'org-latex-classes
-               '("org-plain-latex"
-                 "\\documentclass{article}
+(add-to-list 'org-latex-classes
+             '("org-plain-latex"
+               "\\documentclass{article}
            [NO-DEFAULT-PACKAGES]
            [PACKAGES]
            [EXTRA]"
-                 ("\\section{%s}" . "\\section*{%s}")
-                 ("\\subsection{%s}" . "\\subsection*{%s}")
-                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+               ("\\section{%s}" . "\\section*{%s}")
+               ("\\subsection{%s}" . "\\subsection*{%s}")
+               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+               ("\\paragraph{%s}" . "\\paragraph*{%s}")
+               ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 
 (after! 'org
   (provide 'org-archive-subtree-hierarchical)
@@ -351,34 +348,33 @@
 (after! 'org-archive
   (setq org-archive-default-command 'org-archive-subtree-hierarchical))
 
-(setq org-capture-templates
-  '(("t" "Personal todo" entry
-    (file+headline +org-capture-todo-file "Inbox")
+  (setq org-capture-templates
+    '(("t" "Personal todo" entry
+      (file+headline +org-capture-todo-file "Inbox")
     "* [ ] %?\n%i\n%a" :prepend t)
     ("n" "Personal notes" entry
-     (file+headline +org-capture-notes-file "Inbox")
-     "* %u %?\n%i\n%a" :prepend t)
+    (file+headline +org-capture-notes-file "Inbox")
+    "* %u %?\n%i\n%a" :prepend t)
     ("j" "Journal" entry
-     (file+olp+datetree +org-capture-journal-file)
-     "* %U %?\n%i\n%a" :prepend t)
+    (file+olp+datetree +org-capture-journal-file)
+    "* %U %?\n%i\n%a" :prepend t)
     ("p" "Templates for projects")
     ("pt" "Project-local todo" entry
-     (file+headline +org-capture-project-todo-file "Inbox")
-     "* TODO %?\n%i\n%a" :prepend t)
+    (file+headline +org-capture-project-todo-file "Inbox")
+    "* TODO %?\n%i\n%a" :prepend t)
     ("pn" "Project-local notes" entry
-     (file+headline +org-capture-project-notes-file "Inbox")
-     "* %U %?\n%i\n%a" :prepend t)
+    (file+headline +org-capture-project-notes-file "Inbox")
+    "* %U %?\n%i\n%a" :prepend t)
     ("pc" "Project-local changelog" entry
-     (file+headline +org-capture-project-changelog-file "Unreleased")
-     "* %U %?\n%i\n%a" :prepend t)
+    (file+headline +org-capture-project-changelog-file "Unreleased")
+    "* %U %?\n%i\n%a" :prepend t)
     ("o" "Centralized templates for projects")
     ("ot" "Project todo" entry #'+org-capture-central-project-todo-file "* TODO %?\n %i\n %a" :heading "Tasks" :prepend nil)
     ("on" "Project notes" entry #'+org-capture-central-project-notes-file "* %U %?\n %i\n %a" :heading "Notes" :prepend t)
     ("oc" "Project changelog" entry #'+org-capture-central-project-changelog-file "* %U %?\n %i\n %a" :heading "Changelog" :prepend t)))
 
-(after! org
+(after! 'org
   (use-package! vulpea
-    :defer t
     :hook ((org-roam-db-autosync-mode . vulpea-db-autosync-enable))))
 
 (defun org-babel-tangle-block ()
@@ -410,10 +406,9 @@
                            (format "pandoc -f markdown -t org -o %s"
                                    (concat (file-name-sans-extension (buffer-file-name)) ".org"))))
 
-(after! erc
-  (setq erc-server "localhost"
-        erc-nick "chuthepup"
-        erc-user-full-name "chu the pup"))
+(setq erc-server "localhost"
+      erc-nick "chuthepup"
+      erc-user-full-name "Chu the Pup")
 
 (require 'edit-server)
 (edit-server-start)
@@ -425,11 +420,9 @@
 
 (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
 
-(after! dired
-  (setq dired-backup-overwrite t))
+(setq dired-backup-overwrite t)
 
-(after! dired
-  (setq delete-by-moving-to-trash t))
+(setq delete-by-moving-to-trash t)
 
 ;; (defun dired-rsync-skip-newer (dest)
 ;;   "Asynchronously copy files in dired to `DEST' using rsync
@@ -451,11 +444,9 @@
 ;; (map! :map dirvish-mode-map "<normal-state> q" #'dirvish-quit)
 ;; (map! :map general-override-mode-map "<normal-state> SPC o _" #'dirvish)
 
-(after! dirvish
-  (setq dirvish-reuse-session nil))
+(setq dirvish-reuse-session nil)
 
 ;; (use-package! abbrev-mode
-;;   :defer t
 ;;   :hook (org-mode . abbrev-mode)
 ;;         (text-mode . abbrev-mode))
 
@@ -474,15 +465,14 @@
 ;;         completion-category-defaults nil
 ;;         completion-category-overrides '((file (styles basic partial-completion)))))
 
-(after! emms
-  (setq emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find))
+(setq emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
 
-(after! emms
-  (setq emms-source-file-default-directory "~/Music/"))
+(setq emms-source-file-default-directory "~/Music/")
 
 (use-package! elcord-mode
-  :defer 360
-  :config (elcord-mode))
+  :defer t)
+
+(elcord-mode)
 
 (setq epg-pinentry-mode 'loopback)
 
@@ -490,8 +480,9 @@
   (let ((str (read-passwd (concat (replace-regexp-in-string "%22" "\""
                                   (replace-regexp-in-string "%0A" "\n" desc)) prompt ": ")))) str))
 
+(setq ange-ftp-netrc-filename "~/.authinfo.gpg")
+
 (use-package tramp
-  :defer t
   :config
   ;; Enable full-featured Dirvish over TRAMP on certain connections
   ;; https://www.gnu.org/software/tramp/#Improving-performance-of-asynchronous-remote-processes-1.
@@ -501,12 +492,12 @@
   ;; Tips to speed up connections
   (setq tramp-verbose 0)
   (setq tramp-chunksize 2000)
-  (setq tramp-use-ssh-controlmaster-options nil)
-  ;; Ange-FTP defaults to =~/.netrc=  so you need to add this to your init script:
-  (setq ange-ftp-netrc-filename "~/.authinfo.gpg"))
+  (setq tramp-use-ssh-controlmaster-options nil))
+
+(require 'tramp-sh)
+(setq tramp-remote-path (append tramp-remote-path '(tramp-own-remote-path)))
 
 (use-package! palimpsest-mode
-  :defer t
   :hook (prog-mode . palimpsest-mode))
 
 (after! lisp-mode
@@ -521,7 +512,7 @@
 
 (after! lisp-mode
   (use-package! common-lisp-snippets
-    :defer t))
+  :defer t))
 
 (after! sly
   (setq sly-complete-symbol-function 'sly-flex-completions))
@@ -589,12 +580,11 @@
                     (mu4e-trash-folder . "/gmail.com/chufilthymutt/[Gmail]/Trash"))))))
 
 (use-package whisper
-  :defer t
   :config
   (setq whisper-install-directory "~/.config/emacs/.local/cache/"
         whisper-model "base"
         whisper-language "en"
         whisper-translate nil
         whisper-use-threads (/ (num-processors) 2))
-        ;; turn off after 600 seconds of silence (regardless of input level)
+        ;; turn off after 600 seconds of silence
         whisper-recording-timeout 600)
