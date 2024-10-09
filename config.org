@@ -1191,7 +1191,6 @@ By Gilbert. Thanks, Gilbert.
 This is where the '~ap/org-fix-blank-lines~' function was sourced from.
 
 By alphapapa. Thanks, alphapapa.
-
 ** [[https://stackoverflow.com/a/35475878/259187][org-archive-subtree-hierarchical.el v0.2]]
 
 By [[https://gist.github.com/kepi/2f4acc3cc93403c75fbba5684c5d852d][Kepi]]. Thanks, Kepi.
