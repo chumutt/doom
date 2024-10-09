@@ -280,8 +280,7 @@ Write TODO state changes into LOGBOOK drawer. [[https://stackoverflow.com/a/6379
 This helps keep Org files tidier and cleaner in the case of recurring / looping tasks. You can fold them, whereas by default, the change in TODO state (e.g. from TODO -> DONE) create separate logs.
 
 #+begin_src elisp
-(after! org-mode
-  (setq org-log-into-drawer "LOGBOOK"))
+(setq org-log-into-drawer "LOGBOOK")
 #+end_src
 
 *** Org Babel Auto-Tangle
@@ -289,8 +288,7 @@ This helps keep Org files tidier and cleaner in the case of recurring / looping 
 For the package org-babel-auto-tangle (see packages.org).
 
 #+begin_src elisp
-(after! org-auto-tangle-mode
-  (add-hook 'org-mode-hook 'org-auto-tangle-mode))
+(add-hook 'org-mode-hook 'org-auto-tangle-mode)
 #+end_src
 
 *** Hook load fragtog
@@ -608,8 +606,7 @@ Citation Style Language (CSL) files can be used with org-cite.
 Added automatically when images are attached. Does not affect actual image dimensions, only how they are shown initially within Emacs.
 
 #+begin_src elisp
-(after! org-mode
-  (setq org-image-actual-width nil))
+(setq org-image-actual-width nil)
 #+end_src
 
 *** LaTeX classes for org mode with org-latex-classes
@@ -618,17 +615,17 @@ Helpful when editing LaTeX documents.
 
 #+begin_src elisp
 (with-eval-after-load 'ox-latex
-  (add-to-list 'org-latex-classes
-               '("org-plain-latex"
-                 "\\documentclass{article}
+(add-to-list 'org-latex-classes
+             '("org-plain-latex"
+               "\\documentclass{article}
            [NO-DEFAULT-PACKAGES]
            [PACKAGES]
            [EXTRA]"
-                 ("\\section{%s}" . "\\section*{%s}")
-                 ("\\subsection{%s}" . "\\subsection*{%s}")
-                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+               ("\\section{%s}" . "\\section*{%s}")
+               ("\\subsection{%s}" . "\\subsection*{%s}")
+               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+               ("\\paragraph{%s}" . "\\paragraph*{%s}")
+               ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 #+end_src
 
 *** A Not-Stupid Way to Archive Sections of Org Documents: Hierarchical Subtree Archival :org:archive:
@@ -775,35 +772,34 @@ Want files tracked in your agenda? Use the ~C-c [~ keybinding in each file to ad
   (setq org-capture-templates
     '(("t" "Personal todo" entry
       (file+headline +org-capture-todo-file "Inbox")
-      "* [ ] %?\n%i\n%a" :prepend t)
-      ("n" "Personal notes" entry
-       (file+headline +org-capture-notes-file "Inbox")
-       "* %u %?\n%i\n%a" :prepend t)
-      ("j" "Journal" entry
-       (file+olp+datetree +org-capture-journal-file)
-       "* %U %?\n%i\n%a" :prepend t)
-      ("p" "Templates for projects")
-      ("pt" "Project-local todo" entry
-       (file+headline +org-capture-project-todo-file "Inbox")
-       "* TODO %?\n%i\n%a" :prepend t)
-      ("pn" "Project-local notes" entry
-       (file+headline +org-capture-project-notes-file "Inbox")
-       "* %U %?\n%i\n%a" :prepend t)
-      ("pc" "Project-local changelog" entry
-       (file+headline +org-capture-project-changelog-file "Unreleased")
-       "* %U %?\n%i\n%a" :prepend t)
-      ("o" "Centralized templates for projects")
-      ("ot" "Project todo" entry #'+org-capture-central-project-todo-file "* TODO %?\n %i\n %a" :heading "Tasks" :prepend nil)
-      ("on" "Project notes" entry #'+org-capture-central-project-notes-file "* %U %?\n %i\n %a" :heading "Notes" :prepend t)
-      ("oc" "Project changelog" entry #'+org-capture-central-project-changelog-file "* %U %?\n %i\n %a" :heading "Changelog" :prepend t)))
+    "* [ ] %?\n%i\n%a" :prepend t)
+    ("n" "Personal notes" entry
+    (file+headline +org-capture-notes-file "Inbox")
+    "* %u %?\n%i\n%a" :prepend t)
+    ("j" "Journal" entry
+    (file+olp+datetree +org-capture-journal-file)
+    "* %U %?\n%i\n%a" :prepend t)
+    ("p" "Templates for projects")
+    ("pt" "Project-local todo" entry
+    (file+headline +org-capture-project-todo-file "Inbox")
+    "* TODO %?\n%i\n%a" :prepend t)
+    ("pn" "Project-local notes" entry
+    (file+headline +org-capture-project-notes-file "Inbox")
+    "* %U %?\n%i\n%a" :prepend t)
+    ("pc" "Project-local changelog" entry
+    (file+headline +org-capture-project-changelog-file "Unreleased")
+    "* %U %?\n%i\n%a" :prepend t)
+    ("o" "Centralized templates for projects")
+    ("ot" "Project todo" entry #'+org-capture-central-project-todo-file "* TODO %?\n %i\n %a" :heading "Tasks" :prepend nil)
+    ("on" "Project notes" entry #'+org-capture-central-project-notes-file "* %U %?\n %i\n %a" :heading "Notes" :prepend t)
+    ("oc" "Project changelog" entry #'+org-capture-central-project-changelog-file "* %U %?\n %i\n %a" :heading "Changelog" :prepend t)))
 #+end_src
 
 *** Vulpea Auto-Sync Org Roam v2 todos from dailies :org:roam:vulpea:
 
 #+begin_src elisp
-(after! org
+(after! 'org
   (use-package! vulpea
-    :defer t
     :hook ((org-roam-db-autosync-mode . vulpea-db-autosync-enable))))
 #+end_src
 
@@ -861,10 +857,9 @@ to tangle.
 Set user information.
 
 #+begin_src elisp
-(after! erc
-  (setq erc-server "localhost"
-        erc-nick "chuthepup"
-        erc-user-full-name "chu the pup"))
+(setq erc-server "localhost"
+      erc-nick "chuthepup"
+      erc-user-full-name "Chu the Pup")
 #+end_src
 
 ** Editing server (~edit-server~) for Emacs with ~edit-with-emacs~
@@ -902,15 +897,13 @@ Have Dired ask to back files up prior to overwriting them.
 Make sure you know where your Emacs cache backup directory actually resides before putting this in your Emacs's initialization file (unless you use gio trash, which'll put your trash in $XDG_DATA_DIR/Trash/files)
 
 #+begin_src elisp
-(after! dired
-  (setq dired-backup-overwrite t))
+(setq dired-backup-overwrite t)
 #+end_src
 
 *** Trash instead of delete :dired:
 
 #+begin_src elisp
-(after! dired
-  (setq delete-by-moving-to-trash t))
+(setq delete-by-moving-to-trash t)
 #+end_src
 
 *** dired-rsync :dired:rsync:
@@ -952,8 +945,7 @@ Make sure you know where your Emacs cache backup directory actually resides befo
 **** Have Dirvish kill all session buffers on quit
 
 #+begin_src elisp
-(after! dirvish
-  (setq dirvish-reuse-session nil))
+(setq dirvish-reuse-session nil)
 #+end_src
 
 ** ~abbrev-mode~
@@ -962,7 +954,6 @@ The mode in the abbrev-mode package allows for user-defined abbreviations that g
 
 #+begin_src elisp
 ;; (use-package! abbrev-mode
-;;   :defer t
 ;;   :hook (org-mode . abbrev-mode)
 ;;         (text-mode . abbrev-mode))
 #+end_src
@@ -993,13 +984,11 @@ Use the faster searcher to handle project files: ripgrep "rg"
 ** ~emms~ :emms:music:
 
 #+begin_src elisp
-(after! emms
-  (setq emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find))
+(setq emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
 #+end_src
 
 #+begin_src elisp
-(after! emms
-  (setq emms-source-file-default-directory "~/Music/"))
+(setq emms-source-file-default-directory "~/Music/")
 #+end_src
 
 ** Enable active presence on Discord for Emacs
@@ -1008,8 +997,9 @@ Use the faster searcher to handle project files: ripgrep "rg"
 
 #+begin_src elisp
 (use-package! elcord-mode
-  :defer 360
-  :config (elcord-mode))
+  :defer t)
+
+(elcord-mode)
 #+end_src
 
 ** EPG: Letting Emacs query for GPG passwords
@@ -1026,11 +1016,18 @@ Allow Emacs to handle queries for gpg passwords.
 
 ** Tramp :tramp:ssh:
 
-*** Tramp intregration with dirvish, fixes :tramp:ssh:dirvish:
+*** Tramp FTP doesn't read my ~/.authinfo.gpg :tramp:ssh:
+
+Ange-FTP defaults to =~/.netrc=  so you need to add this to your init script:
+
+#+begin_src elisp
+(setq ange-ftp-netrc-filename "~/.authinfo.gpg")
+#+end_src
+
+*** Tramp intregration with dirvish :tramp:ssh:dirvish:
 
 #+begin_src elisp
 (use-package tramp
-  :defer t
   :config
   ;; Enable full-featured Dirvish over TRAMP on certain connections
   ;; https://www.gnu.org/software/tramp/#Improving-performance-of-asynchronous-remote-processes-1.
@@ -1040,16 +1037,19 @@ Allow Emacs to handle queries for gpg passwords.
   ;; Tips to speed up connections
   (setq tramp-verbose 0)
   (setq tramp-chunksize 2000)
-  (setq tramp-use-ssh-controlmaster-options nil)
-  ;; Ange-FTP defaults to =~/.netrc=  so you need to add this to your init script:
-  (setq ange-ftp-netrc-filename "~/.authinfo.gpg"))
+  (setq tramp-use-ssh-controlmaster-options nil))
+#+end_src
+
+*** Tramp issues with nixos - trying a fix
+#+begin_src elisp
+(require 'tramp-sh)
+(setq tramp-remote-path (append tramp-remote-path '(tramp-own-remote-path)))
 #+end_src
 
 ** Palimpsest prog mode hook
 
 #+begin_src elisp
 (use-package! palimpsest-mode
-  :defer t
   :hook (prog-mode . palimpsest-mode))
 #+end_src
 
@@ -1078,7 +1078,7 @@ Allow Emacs to handle queries for gpg passwords.
 #+begin_src elisp
 (after! lisp-mode
   (use-package! common-lisp-snippets
-    :defer t))
+  :defer t))
 #+end_src
 
 *** Sly completion fix :lisp:
@@ -1164,14 +1164,13 @@ The ~num-processors~ function is a part of base Emacs: [[https://www.gnu.org/sof
 
 #+begin_src elisp
 (use-package whisper
-  :defer t
   :config
   (setq whisper-install-directory "~/.config/emacs/.local/cache/"
         whisper-model "base"
         whisper-language "en"
         whisper-translate nil
         whisper-use-threads (/ (num-processors) 2))
-        ;; turn off after 600 seconds of silence (regardless of input level)
+        ;; turn off after 600 seconds of silence
         whisper-recording-timeout 600)
 #+end_src
 
