@@ -596,9 +596,7 @@ Citation Style Language (CSL) files can be used with org-cite.
 
 #+begin_src elisp
 (with-eval-after-load 'org
-  (require 'org-download)
-  ;; (add-hook 'dired-mode-hook 'org-download-enable) ; TODO See if we actually need this line.
-  )
+  (require 'org-download))
 #+end_src
 
 *** Org-download image width attribute tag
@@ -906,81 +904,6 @@ Make sure you know where your Emacs cache backup directory actually resides befo
 (setq delete-by-moving-to-trash t)
 #+end_src
 
-*** dired-rsync :dired:rsync:
-
-**** dired-rsync-skip-newer custom rsync function :dired:custom:rsync:
-
-#+begin_src elisp
-;; (defun dired-rsync-skip-newer (dest)
-;;   "Asynchronously copy files in dired to `DEST' using rsync
-;; set to resolve symlinks, skip files that are newer in `DEST',
-;; and to run in archive mode."
-;;   (interactive
-;;    (list (read-file-name "rsync to: " (dired-dwim-target-directory)
-;;                               nil nil nil 'file-directory-p)))
-;;   (let ((dired-rsync-options "-aLuz --info=progress2"))
-;;         (dired-rsync dest)))
-#+end_src
-
-**** ~dired-rsync-skip-newer~ key binding map :dired:binds:custom:rsync:
-
-#+begin_src elisp
-;; (after! dired
-;;   (map! :map dired-mode-map
-;;         :prefix "C-c C-d"
-;;         "C-r" #'dired-rsync-skip-newer))
-#+end_src
-
-*** Dirvish
-
-**** Dirvish Bindings :dirvish:dired:
-
-#+begin_src elisp
-;; (map! :map dirvish-mode-map "<normal-state> l" #'dired-find-file)
-;; (map! :map dirvish-mode-map "<normal-state> h" #'dired-up-directory)
-;; (map! :map dirvish-mode-map "<normal-state> q" #'dirvish-quit)
-;; (map! :map general-override-mode-map "<normal-state> SPC o _" #'dirvish)
-#+end_src
-
-**** Have Dirvish kill all session buffers on quit
-
-#+begin_src elisp
-(setq dirvish-reuse-session nil)
-#+end_src
-
-** ~abbrev-mode~
-
-The mode in the abbrev-mode package allows for user-defined abbreviations that get expanded during typing. I have them turn on when in Org mode or Text mode and have them off otherwise.
-
-#+begin_src elisp
-;; (use-package! abbrev-mode
-;;   :hook (org-mode . abbrev-mode)
-;;         (text-mode . abbrev-mode))
-#+end_src
-
-** Projectile project management
-
-*** RipGrep "rg" fast search to handle Projectile project files
-
-Use the faster searcher to handle project files: ripgrep "rg"
-
-#+begin_src elisp
-;; (after! 'projectile
-;;   (when (and (not (executable-find "fd"))
-;;              (executable-find "rg"))
-;;     (setq projectile-generic-command
-;;           (let ((rg-cmd ""))
-;;             (dolist (dir projectile-globally-ignored-directories)
-;;               (setq rg-cmd (format "%s --glob '!%s'" rg-cmd dir)))
-;;             (setq rg-ignorefile
-;;                   (concat "--ignore-file" " "
-;;                           (expand-file-name "rg_ignore" user-emacs-directory)))
-;;             (concat "rg -0 --files --color=never --hidden" rg-cmd " " rg-ignorefile))))
-;;   (setq completion-styles '(orderless basic)
-;;         completion-category-defaults nil
-;;         completion-category-overrides '((file (styles basic partial-completion)))))
-#+end_src
-
 ** ~emms~ :emms:music:
 
 #+begin_src elisp
@@ -1090,68 +1013,6 @@ Ange-FTP defaults to =~/.netrc=  so you need to add this to your init script:
 ** C++
 #+begin_src elisp
 (setq c-syntactic-indentation nil)
-#+end_src
-** mu4e
-
-#+begin_src elisp
-(use-package mu4e
-  ;; :ensure nil
-  ;; :load-path "/usr/share/emacs/site-lisp/mu4e/"
-  ;; :defer 20 ; Wait until 20 seconds after startup
-  :config
-  ;; This is set to 't' to avoid mail syncing issues when using mbsync
-  (setq mu4e-change-filenames-when-moving t)
-  ;; Refresh mail using isync every 10 minutes
-  (setq mu4e-update-interval (* 10 60))
-  (setq mu4e-get-mail-command "mbsync -a")
-  (setq mu4e-maildir "~/.local/share/mail/")
-  (setq mu4e-drafts-folder "/[Gmail]/Drafts")
-  (setq mu4e-sent-folder   "/[Gmail]/Sent Mail")
-  (setq mu4e-refile-folder "/[Gmail]/All Mail")
-  (setq mu4e-trash-folder  "/[Gmail]/Trash")
-  (setq mu4e-maildir-shortcuts
-        '((:maildir "/Inbox"    :key ?i)
-          (:maildir "/[Gmail]/Sent Mail" :key ?s)
-          (:maildir "/[Gmail]/Trash"     :key ?t)
-          (:maildir "/[Gmail]/Drafts"    :key ?d)
-          (:maildir "/[Gmail]/All Mail"  :key ?a)))
-  (setq +mu4e-backend 'mbsync
-        sendmail-program (executable-find "msmtp")
-        send-mail-function #'smtpmail-send-it
-        message-sendmail-f-is-evil t
-        message-sendmail-extra-arguments '("--read-envelope-from")
-        message-send-mail-function #'message-send-mail-with-sendmail
-        mu4e-context-policy 'pick-first
-        mu4e-contexts
-        `(,(make-mu4e-context
-            :name "Acalebdeanwatson@gmail.com"
-            :enter-func (lambda () (mu4e-message "Entering calebdeanwatson@gmail.com context"))
-            :leave-func (lambda () (mu4e-message "Leaving calebdeanwatson@gmail.com context"))
-            :match-func (lambda (msg)
-                          (when msg
-                            (string-match-p "^/gmail.com/calebdeanwatson"
-                                            (mu4e-message-field msg :maildir))))
-            :vars '((user-mail-address . "calebdeanwatson@gmail.com")
-                    (user-full-name . "Caleb D. Watson")
-                    (message-signature . (concat "Best regards,\n"
-                                                 "Caleb D. Watson\n"))
-                    (mu4e-sent-folder . "/gmail.com/calebdeanwatson/[Gmail]/Sent Mail")
-                    (mu4e-drafts-folder . "/gmail.com/calebdeanwatson/[Gmail]/Drafts")
-                    (mu4e-trash-folder . "/gmail.com/calebdeanwatson/[Gmail]/Trash")))
-          ,(make-mu4e-context
-            :name "Bchufilthymutt@gmail.com"
-            :enter-func (lambda () (mu4e-message "Entering chufilthymutt@gmail.com context"))
-            :leave-func (lambda () (mu4e-message "Leaving chufilthymutt@gmail.com context"))
-            :match-func (lambda (msg)
-                          (when msg
-                            (string-match-p "^/gmail.com/chufilthymutt"
-                                            (mu4e-message-field msg :maildir))))
-            :vars '((user-mail-address . "chufilthymutt@gmail.com")
-                    (user-full-name . "Chu")
-                    (message-signature . nil)
-                    (mu4e-sent-folder . "/gmail.com/chufilthymutt/[Gmail]/Sent Mail")
-                    (mu4e-drafts-folder . "/gmail.com/chufilthymutt/[Gmail]/Drafts")
-                    (mu4e-trash-folder . "/gmail.com/chufilthymutt/[Gmail]/Trash"))))))
 #+end_src
 
 ** ~whisper~ Voice transcription (speech to text)
