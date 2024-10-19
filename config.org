@@ -920,9 +920,12 @@ Make sure you know where your Emacs cache backup directory actually resides befo
 
 #+begin_src elisp
 (use-package! elcord-mode
-  :defer t)
-
-(elcord-mode)
+  :defer t
+  :config
+  (setq elcord-display-buffer-details nil
+        elcord-display-line-numbers nil
+        elcord-quiet t
+        elcord-mode t))
 #+end_src
 
 ** EPG: Letting Emacs query for GPG passwords
@@ -1012,9 +1015,8 @@ Ange-FTP defaults to =~/.netrc=  so you need to add this to your init script:
 #+end_src
 ** C++
 #+begin_src elisp
-(setq c-syntactic-indentation nil)
+;; (setq c-syntactic-indentation nil)
 #+end_src
-
 ** ~whisper~ Voice transcription (speech to text)
 
 Personally, I can't get a model other than the ~base~ one to download. I'm an English speaker, so there's no translation services enabled.
