@@ -968,8 +968,8 @@ Ange-FTP defaults to =~/.netrc=  so you need to add this to your init script:
 
 *** Tramp issues with nixos - trying a fix
 #+begin_src elisp
-(require 'tramp-sh)
-(setq tramp-remote-path (append tramp-remote-path '(tramp-own-remote-path)))
+;; (require 'tramp-sh)
+;; (setq tramp-remote-path (append tramp-remote-path '(tramp-own-remote-path)))
 #+end_src
 
 ** Palimpsest prog mode hook
