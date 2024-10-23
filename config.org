@@ -961,15 +961,9 @@ Ange-FTP defaults to =~/.netrc=  so you need to add this to your init script:
                (list (regexp-quote "/ssh:chunix:")
                      "direct-async-process" t))
   ;; Tips to speed up connections
-  (setq tramp-verbose 0)
-  (setq tramp-chunksize 2000)
-  (setq tramp-use-ssh-controlmaster-options nil))
-#+end_src
-
-*** Tramp issues with nixos - trying a fix
-#+begin_src elisp
-;; (require 'tramp-sh)
-;; (setq tramp-remote-path (append tramp-remote-path '(tramp-own-remote-path)))
+  (setq tramp-verbose 0
+        tramp-chunksize 2000
+        tramp-use-ssh-controlmaster-options nil))
 #+end_src
 
 ** Palimpsest prog mode hook
@@ -1015,7 +1009,7 @@ Ange-FTP defaults to =~/.netrc=  so you need to add this to your init script:
 #+end_src
 ** C++
 #+begin_src elisp
-;; (setq c-syntactic-indentation nil)
+;;(setq c-syntactic-indentation nil)
 #+end_src
 ** ~whisper~ Voice transcription (speech to text)
 
