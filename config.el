@@ -22,7 +22,7 @@
 (setq random-splash-image-dir
       (concat
        (getenv "HOME")
-       "/.local/share/random-splash-image-dir/chosen-splash-images/src/"))
+       "/.local/share/random-splash-images/"))
 
 (with-eval-after-load 'random-splash-image
   (random-splash-image-set))
