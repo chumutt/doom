@@ -262,6 +262,7 @@
       (beginning-of-line)
       (buffer-substring-no-properties
        (line-beginning-position) (line-end-position))))
+
   (defun org-archive-subtree-hierarchical--org-child-list ()
     "This function returns all children of a heading as a list. "
     (interactive)
@@ -276,6 +277,7 @@
         (while (org-goto-sibling)
           (setq child-list (cons (org-archive-subtree-hierarchical--line-content-as-string) child-list)))
         child-list)))
+
   (defun org-archive-subtree-hierarchical--org-struct-subtree ()
     "This function returns the tree structure in which a subtree belongs as a list."
     (interactive)
@@ -289,6 +291,7 @@
                 (setq archive-tree (list heading))
               (setq archive-tree (cons heading archive-tree))))))
       archive-tree))
+
   (defun org-archive-subtree-hierarchical ()
     "This function archives a subtree hierarchical"
     (interactive)
@@ -333,6 +336,7 @@
           (save-buffer))
         (message "Subtree archived %s"
                  (concat "in file: " (abbreviate-file-name afile))))))
+
   (defun org-insert-struct (struct)
     "TODO"
     (interactive)
@@ -340,6 +344,7 @@
       (insert (car struct))
       (newline)
       (org-insert-struct (cdr struct))))
+
   (defun org-archive-subtree ()
     (org-archive-subtree-hierarchical)))
 
