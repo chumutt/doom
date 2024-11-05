@@ -212,9 +212,7 @@ I use a more specific one at the moment.
        "/.local/share/random-splash-image-dir/chosen-splash-images/src/"))
 #+end_src
 
-***** IDEA How to set multiple directories for random-splash-image
-
-I don't know how to do this yet.
+***** IDEA Find way to set multiple directories for random-splash-image
 
 **** Set a random splash image on Emacs startup
 
@@ -563,7 +561,7 @@ Path to daily-notes. This path is relative to org-roam-directory.
 
 **** Org-Cite (oc.el) :org:cite:
 
-***** Org-Cite (oc.el) Bibliography Location :org:cite:bib:
+***** Bibliography Location :org:cite:bib:
 
 #+begin_src elisp
 (setq org-cite-global-bibliography
@@ -575,7 +573,7 @@ Path to daily-notes. This path is relative to org-roam-directory.
 
 See also [[https://orgmode.org/manual/Citations.html#Citations-1][the org mode manual section on org-cite, the citation module that is native to emacs org mode]] in order to specify per-file bibliography files with .bib or .json files.
 
-***** Org-Cite (oc.el) CiteProc Formatter File Directory Location :org:cite:citeproc:
+***** CiteProc Formatter File Directory Location :org:cite:citeproc:
 
 Citation Style Language (CSL) files can be used with org-cite.
 
@@ -672,6 +670,7 @@ By default, using the Org mode archive function 'org-archive-subtree-default' do
       (beginning-of-line)
       (buffer-substring-no-properties
        (line-beginning-position) (line-end-position))))
+
   (defun org-archive-subtree-hierarchical--org-child-list ()
     "This function returns all children of a heading as a list. "
     (interactive)
@@ -686,6 +685,7 @@ By default, using the Org mode archive function 'org-archive-subtree-default' do
         (while (org-goto-sibling)
           (setq child-list (cons (org-archive-subtree-hierarchical--line-content-as-string) child-list)))
         child-list)))
+
   (defun org-archive-subtree-hierarchical--org-struct-subtree ()
     "This function returns the tree structure in which a subtree belongs as a list."
     (interactive)
@@ -699,6 +699,7 @@ By default, using the Org mode archive function 'org-archive-subtree-default' do
                 (setq archive-tree (list heading))
               (setq archive-tree (cons heading archive-tree))))))
       archive-tree))
+
   (defun org-archive-subtree-hierarchical ()
     "This function archives a subtree hierarchical"
     (interactive)
@@ -743,6 +744,7 @@ By default, using the Org mode archive function 'org-archive-subtree-default' do
           (save-buffer))
         (message "Subtree archived %s"
                  (concat "in file: " (abbreviate-file-name afile))))))
+
   (defun org-insert-struct (struct)
     "TODO"
     (interactive)
@@ -750,6 +752,7 @@ By default, using the Org mode archive function 'org-archive-subtree-default' do
       (insert (car struct))
       (newline)
       (org-insert-struct (cdr struct))))
+
   (defun org-archive-subtree ()
     (org-archive-subtree-hierarchical)))
 #+end_src
@@ -766,6 +769,7 @@ By default, using the Org mode archive function 'org-archive-subtree-default' do
 Want files tracked in your agenda? Use the ~C-c [~ keybinding in each file to add them to your custom.el to be tracked via your agenda.
 
 *** Org Mode Capture Templates Customization :org:templates:
+
 #+begin_src elisp :tangle no
   ;; (setq org-capture-templates
   ;;   '(("t" "Personal todo" entry
@@ -835,9 +839,7 @@ From [[https://stackoverflow.com/a/68962704][Dennis Proksch]]:
         "<f9>" #'org-babel-tangle-from-edit-special))
 #+end_src
 
-Do this:
-put pointer in a code block -> m ' -> F9
-to tangle.
+Do this: put pointer in a code block -> m ' -> F9 to tangle.
 
 *** Convert markdown buffer to org
 
@@ -1007,6 +1009,7 @@ Ange-FTP defaults to =~/.netrc=  so you need to add this to your init script:
 (after! sly
   (setq sly-complete-symbol-function 'sly-flex-completions))
 #+end_src
+
 ** C++
 #+begin_src elisp
 ;;(setq c-syntactic-indentation nil)
