@@ -95,6 +95,7 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
 #+end_example
 
 * Config
+
 ** Private Configuration
 
 #+begin_src elisp
