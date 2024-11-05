@@ -195,27 +195,16 @@ For the plugin 'random-splash-image' which displays a random splash image on eac
 
 ***** Tell random-splash-image what directory to look for images in.
 
-Example:
-
-#+begin_example elisp
-(setq random-splash-image-dir
-      (concat
-       (getenv "HOME")
-       "/.local/share/random-splash-image-dir/example/memes/"))
-#+end_example
-
-I use a more specific one at the moment.
-
 #+begin_src elisp
 (setq random-splash-image-dir
       (concat
        (getenv "HOME")
-       "/.local/share/random-splash-image-dir/chosen-splash-images/src/"))
+       "/.local/share/random-splash-images/"))
 #+end_src
 
 ***** IDEA Find way to set multiple directories for random-splash-image
 
-**** Set a random splash image on Emacs startup
+***** Set a random splash image on Emacs startup
 
 #+begin_src elisp
 (with-eval-after-load 'random-splash-image
