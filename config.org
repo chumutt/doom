@@ -390,14 +390,14 @@ If you use `org' and don't want your org files in the default location below, ch
 
 The following will vary, so change it to be whatever your org root directory is/what you want it to be.
 
-I use a directory that I sync between computers with a nextcloud server I run but you don't necessarily have to do that.
+I use a directory that I sync between computers with a Nextcloud server I run but you don't necessarily have to do that.
 
 #+begin_src elisp
 (after! 'org
   (setq org-directory
         (concat
          (getenv "HOME")
-        "/nextcloud/documents/org/")))
+        "/Nextcloud/Documents/org/")))
 #+end_src
 
 **** Org bookmark directory :org:
@@ -411,36 +411,36 @@ I use a document that I track with org roam but you don't necessarily have to do
   (setq +org-capture-bookmarks-file
         (concat
          (getenv "HOME")
-         "/nextcloud/documents/org/roam/20221004090130-bookmarks.org")))
+         "/Nextcloud/Documents/org/roam/20221004090130-bookmarks.org")))
 #+end_src
 
 **** Org agenda files :org:
 
 #+begin_src elisp
 (setq org-agenda-files
-   '("/home/chu/nextcloud/documents/org/roam/20220726210346-important_dates.org"
-     "/home/chu/nextcloud/documents/org/roam/20220822103211-engl_1030.org"
-     "/home/chu/nextcloud/documents/org/roam/20220823133456-precalculus_algebra.org"
-     "/home/chu/nextcloud/documents/org/roam/20220826102105-chem_1115.org"
-     "/home/chu/nextcloud/documents/org/roam/20221002161631-my_conlang.org"
-     "/home/chu/nextcloud/documents/org/roam/20221002190906-furry.org"
-     "/home/chu/nextcloud/documents/org/roam/20221004221829-todo.org"
-     "/home/chu/nextcloud/documents/org/roam/20221004221831-todo.org"
-     "/home/chu/nextcloud/documents/org/roam/20221004222234-projects.org"
-     "/home/chu/nextcloud/documents/org/roam/20221004222237-journal.org"
-     "/home/chu/nextcloud/documents/org/roam/20221004222241-notes.org"
-     "/home/chu/nextcloud/documents/org/roam/20240201170253-albums_to_download.org"
-     "/home/chu/nextcloud/documents/org/roam/20240326161621-livestreaming.org"
-     "/home/chu/nextcloud/documents/org/roam/asm/20240830094040-assembly.org"
-     "/home/chu/nextcloud/documents/org/roam/c++/20240116111203-cpp.org"
-     "/home/chu/nextcloud/documents/org/roam/daily/2024-05-08.org"
-     "/home/chu/nextcloud/documents/org/roam/engl/engl-2020/20240116095712-engl_2020.org"
-     "/home/chu/nextcloud/documents/org/roam/hist/hist-2320/20240116133242-hist_2320.org"
-     "/home/chu/nextcloud/documents/org/roam/lisp/scheme/sicp/README.org"
-     "/home/chu/nextcloud/documents/org/roam/math/20220821114043-mathematics.org"
-     "/home/chu/nextcloud/documents/org/roam/math/20240903162832-linear_algebra.org"
-     "/home/chu/nextcloud/documents/org/roam/math/20240905211621-calculus_ii.org"
-     "/home/chu/nextcloud/documents/org/roam/20220726210347-important_dates.org"))
+   '("/home/chu/Nextcloud/Documents/org/roam/20220726210346-important_dates.org"
+     "/home/chu/Nextcloud/Documents/org/roam/20220822103211-engl_1030.org"
+     "/home/chu/Nextcloud/Documents/org/roam/20220823133456-precalculus_algebra.org"
+     "/home/chu/Nextcloud/Documents/org/roam/20220826102105-chem_1115.org"
+     "/home/chu/Nextcloud/Documents/org/roam/20221002161631-my_conlang.org"
+     "/home/chu/Nextcloud/Documents/org/roam/20221002190906-furry.org"
+     "/home/chu/Nextcloud/Documents/org/roam/20221004221829-todo.org"
+     "/home/chu/Nextcloud/Documents/org/roam/20221004221831-todo.org"
+     "/home/chu/Nextcloud/Documents/org/roam/20221004222234-projects.org"
+     "/home/chu/Nextcloud/Documents/org/roam/20221004222237-journal.org"
+     "/home/chu/Nextcloud/Documents/org/roam/20221004222241-notes.org"
+     "/home/chu/Nextcloud/Documents/org/roam/20240201170253-albums_to_download.org"
+     "/home/chu/Nextcloud/Documents/org/roam/20240326161621-livestreaming.org"
+     "/home/chu/Nextcloud/Documents/org/roam/asm/20240830094040-assembly.org"
+     "/home/chu/Nextcloud/Documents/org/roam/c++/20240116111203-cpp.org"
+     "/home/chu/Nextcloud/Documents/org/roam/daily/2024-05-08.org"
+     "/home/chu/Nextcloud/Documents/org/roam/engl/engl-2020/20240116095712-engl_2020.org"
+     "/home/chu/Nextcloud/Documents/org/roam/hist/hist-2320/20240116133242-hist_2320.org"
+     "/home/chu/Nextcloud/Documents/org/roam/lisp/scheme/sicp/README.org"
+     "/home/chu/Nextcloud/Documents/org/roam/math/20220821114043-mathematics.org"
+     "/home/chu/Nextcloud/Documents/org/roam/math/20240903162832-linear_algebra.org"
+     "/home/chu/Nextcloud/Documents/org/roam/math/20240905211621-calculus_ii.org"
+     "/home/chu/Nextcloud/Documents/org/roam/20220726210347-important_dates.org"))
 #+end_src
 
 Usually, you just set these using `org-agenda-file-to-front`
@@ -454,7 +454,7 @@ You know the gist by now--change this to whatever you want your file to be.
   (setq +org-capture-journal-file
         (concat
          (getenv "HOME")
-         "/nextcloud/documents/org/roam/20221004222230-journal.org")))
+         "/Nextcloud/Documents/org/roam/20221004222230-journal.org")))
 #+end_src
 
 **** Org capture journal location :org:
@@ -464,7 +464,7 @@ You know the gist by now--change this to whatever you want your file to be.
   (setq org-journal-dir
         (concat
          (getenv "HOME")
-         "/nextcloud/documents/org/roam/journal/")))
+         "/Nextcloud/Documents/org/roam/journal/")))
 #+end_src
 
 **** Org notes file location :org:
@@ -474,7 +474,7 @@ You know the gist by now--change this to whatever you want your file to be.
   (setq +org-capture-notes-file
         (concat
          (getenv "HOME")
-         "/nextcloud/documents/org/roam/20221004222235-notes.org")))
+         "/Nextcloud/Documents/org/roam/20221004222235-notes.org")))
 #+end_src
 
 **** Org projects file location :org:
@@ -484,7 +484,7 @@ You know the gist by now--change this to whatever you want your file to be.
   (setq +org-capture-projects-file
         (concat
          (getenv "HOME")
-         "/nextcloud/documents/org/roam/20221004222226-projects.org")))
+         "/Nextcloud/Documents/org/roam/20221004222226-projects.org")))
 #+end_src
 
 **** Org todo file location :org:
@@ -496,7 +496,7 @@ I primarily use a "todo" file rather than an "agenda" file, for agenda ("TODO") 
   (setq +org-capture-todo-file
         (concat
          (getenv "HOME")
-         "/nextcloud/documents/org/roam/20221004221829-todo.org")))
+         "/Nextcloud/Documents/org/roam/20221004221829-todo.org")))
 #+end_src
 
 **** Org Roam v2 directories and files :org:roam:
@@ -506,7 +506,7 @@ I primarily use a "todo" file rather than an "agenda" file, for agenda ("TODO") 
   (setq org-roam-directory
         (concat
          (getenv "HOME")
-         "/nextcloud/documents/org/roam/")))
+         "/Nextcloud/Documents/org/roam/")))
 #+end_src
 
 **** Org Roam v2 dailies directory :org:roam:
@@ -549,7 +549,7 @@ Path to daily-notes. This path is relative to org-roam-directory.
 (setq org-id-locations-file
       (concat
        (getenv "HOME")
-       "/nextcloud/documents/org/.orgids"))
+       "/Nextcloud/Documents/org/.orgids"))
 #+end_src
 
 **** Org-attach custom directory :org:
@@ -558,7 +558,7 @@ Path to daily-notes. This path is relative to org-roam-directory.
 (setq org-attach-id-dir
       (concat
        (getenv "HOME")
-       "/nextcloud/documents/org/.attach/"))
+       "/Nextcloud/Documents/org/.attach/"))
 #+end_src
 
 **** Org-Cite (oc.el) :org:cite:
@@ -570,7 +570,7 @@ Path to daily-notes. This path is relative to org-roam-directory.
        (list
         (concat
          (getenv "HOME")
-         "/nextcloud/documents/org/roam/bib.bib")))
+         "/Nextcloud/Documents/org/roam/bib.bib")))
 #+end_src
 
 See also [[https://orgmode.org/manual/Citations.html#Citations-1][the org mode manual section on org-cite, the citation module that is native to emacs org mode]] in order to specify per-file bibliography files with .bib or .json files.
@@ -583,7 +583,7 @@ Citation Style Language (CSL) files can be used with org-cite.
 (setq org-cite-csl-styles-dir
       (concat
        (getenv "HOME")
-       "/nextcloud/documents/org/latex/citeproc-formatters/"))
+       "/Nextcloud/Documents/org/latex/citeproc-formatters/"))
 #+end_src
 
 **** Org Archive Location
