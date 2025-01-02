@@ -378,11 +378,34 @@
         "<f9>" #'org-babel-tangle-from-edit-special))
 
 (defun markdown-convert-buffer-to-org ()
-  "Convert the current buffer's content from markdown to orgmode format and save it with the current buffer's file name but with .org extension."
+  "Convert the current buffer's content from markdown to orgmode format
+   and save it with the current buffer's file name but with .org extension."
   (interactive)
-  (shell-command-on-region (point-min) (point-max)
+  (shell-command-on-region (point-min)
+                           (point-max)
                            (format "pandoc -f markdown -t org -o %s"
-                                   (concat (file-name-sans-extension (buffer-file-name)) ".org"))))
+                                   (concat (file-name-sans-extension
+                                            (buffer-file-name)) ".org"))))
+
+(add-to-list 'auto-mode-alist '("\\.\\(asm\\|s\\|S\\)$" . nasm-mode))
+
+(defun ascii-table ()
+  "Display basic ASCII table (0 thru 128)."
+  (interactive)
+  (switch-to-buffer "*ASCII*")
+  (erase-buffer)
+  (setq buffer-read-only nil)        ;; Not need to edit the content, just read mode (added)
+  (local-set-key "q" 'bury-buffer)   ;; Nice to have the option to bury the buffer (added)
+  (save-excursion (let ((i -1))
+    (insert "ASCII characters 0 thru 127.\n\n")
+    (insert " Hex  Dec  Char|  Hex  Dec  Char|  Hex  Dec  Char|  Hex  Dec  Char\n")
+    (while (< i 31)
+      (insert (format "%4x %4d %4s | %4x %4d %4s | %4x %4d %4s | %4x %4d %4s\n"
+                      (setq i (+ 1  i)) i (single-key-description i)
+                      (setq i (+ 32 i)) i (single-key-description i)
+                      (setq i (+ 32 i)) i (single-key-description i)
+                      (setq i (+ 32 i)) i (single-key-description i)))
+      (setq i (- i 96))))))
 
 (setq erc-server "localhost"
       erc-nick "chuthepup"
@@ -398,13 +421,27 @@
 
 (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
 
+;; Ask to back files up prior to overwriting them
 (setq dired-backup-overwrite t)
 
 (setq delete-by-moving-to-trash t)
 
-(setq emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
+(setq dired-listing-switches "-hl -v --group-directories-first")
 
-(setq emms-source-file-default-directory "~/Music/")
+(after! dirvish
+  ;; Hide dotfiles by default
+  (setq dirvish-listing-switches "-hlv --group-directories-first")
+
+  (defun dirvish-toggle-dotfiles ()
+    "Toggle showing dotfiles in Dirvish."
+    (interactive)
+    (if (string-match-p "\\b-a\\b" dirvish-listing-switches)
+        (setq dirvish-listing-switches "-hlv --group-directories-first") ; Hide dotfiles
+      (setq dirvish-listing-switches "-ahlv --group-directories-first")) ; Show dotfiles
+    (dirvish-refresh))
+
+  (map! :map dirvish-mode-map
+        "C-<escape>" #'dirvish-toggle-dotfiles))
 
 (use-package! elcord-mode
   :defer t
@@ -413,6 +450,8 @@
         elcord-display-line-numbers nil
         elcord-quiet t
         elcord-mode t))
+
+(setq emms-source-beets-database "/run/media/root/grandarchive/root/audio/music/library.db")
 
 (setq epg-pinentry-mode 'loopback)
 
@@ -465,3 +504,8 @@
         whisper-use-threads (/ (num-processors) 2))
         ;; turn off after 600 seconds of silence
         whisper-recording-timeout 600)
+
+(after! company
+  (setq +lsp-company-backends '(company-tabnine :separate company-capf company-yasnippet))
+  (setq company-show-numbers t)
+  (setq company-idle-delay 0))

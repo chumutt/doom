@@ -128,3 +128,9 @@
 (package! whisper
   :recipe (:host github
            :repo "natrys/whisper.el"))
+
+(package! company-tabnine)
+
+(package! nasm-mode)
+
+;; (package! djvu) ;; for org noter

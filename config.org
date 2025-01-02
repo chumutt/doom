@@ -213,7 +213,7 @@ For the plugin 'random-splash-image' which displays a random splash image on eac
 
 *** Alpha background transparency function :function:
 
-Requires a compositor.
+Requires a compositor (xcompmgr, picom, compton (maybe (haven't tested compton))).
 
 [[https://kristofferbalintona.me/posts/202206071000/][True Emacs Transparency | Kristoffer Balintona]]
 
@@ -835,11 +835,44 @@ Do this: put pointer in a code block -> m ' -> F9 to tangle.
 
 #+begin_src elisp
 (defun markdown-convert-buffer-to-org ()
-  "Convert the current buffer's content from markdown to orgmode format and save it with the current buffer's file name but with .org extension."
+  "Convert the current buffer's content from markdown to orgmode format
+   and save it with the current buffer's file name but with .org extension."
   (interactive)
-  (shell-command-on-region (point-min) (point-max)
+  (shell-command-on-region (point-min)
+                           (point-max)
                            (format "pandoc -f markdown -t org -o %s"
-                                   (concat (file-name-sans-extension (buffer-file-name)) ".org"))))
+                                   (concat (file-name-sans-extension
+                                            (buffer-file-name)) ".org"))))
+#+end_src
+
+** nasm-mode
+
+#+begin_src elisp
+(add-to-list 'auto-mode-alist '("\\.\\(asm\\|s\\|S\\)$" . nasm-mode))
+#+end_src
+
+** Ascii Table
+
+By [[https://www.emacswiki.org/emacs/Rick_Bielawski][Rick Bielawski]] ([[https://www.emacswiki.org/emacs/AsciiTable][EmacsWiki: Ascii Table]]):
+
+#+begin_src elisp
+  (defun ascii-table ()
+    "Display basic ASCII table (0 thru 128)."
+    (interactive)
+    (switch-to-buffer "*ASCII*")
+    (erase-buffer)
+    (setq buffer-read-only nil)        ;; Not need to edit the content, just read mode (added)
+    (local-set-key "q" 'bury-buffer)   ;; Nice to have the option to bury the buffer (added)
+    (save-excursion (let ((i -1))
+      (insert "ASCII characters 0 thru 127.\n\n")
+      (insert " Hex  Dec  Char|  Hex  Dec  Char|  Hex  Dec  Char|  Hex  Dec  Char\n")
+      (while (< i 31)
+        (insert (format "%4x %4d %4s | %4x %4d %4s | %4x %4d %4s | %4x %4d %4s\n"
+                        (setq i (+ 1  i)) i (single-key-description i)
+                        (setq i (+ 32 i)) i (single-key-description i)
+                        (setq i (+ 32 i)) i (single-key-description i)
+                        (setq i (+ 32 i)) i (single-key-description i)))
+        (setq i (- i 96))))))
 #+end_src
 
 ** Emacs Relay Chat (~erc~) for Internet Relay Chat (IRC) :irc:
@@ -882,11 +915,12 @@ This is a hook to activate the ~nov.el~ mode (nov-mode) whenever you open a file
 
 ** ~dired~ directory editor (Emacs file manager) settings :dired:
 
-Have Dired ask to back files up prior to overwriting them.
+*** Have Dired ask to back files up prior to overwriting them.
 
-Make sure you know where your Emacs cache backup directory actually resides before putting this in your Emacs's initialization file (unless you use gio trash, which'll put your trash in $XDG_DATA_DIR/Trash/files)
+Make sure you know where your Emacs cache backup directory actually resides before putting this in your Emacs's initialization file (unless you use gio trash, which'll put your trash in $XDG_DATA_DIR/Trash/files).
 
 #+begin_src elisp
+;; Ask to back files up prior to overwriting them
 (setq dired-backup-overwrite t)
 #+end_src
 
@@ -896,15 +930,45 @@ Make sure you know where your Emacs cache backup directory actually resides befo
 (setq delete-by-moving-to-trash t)
 #+end_src
 
-** ~emms~ :emms:music:
+*** Dired listing style switches
 
-#+begin_src elisp
-(setq emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
+**** Vanilla Emacs default
+
+#+begin_src elisp :tangle no
+(setq dired-listing-switches "-al")
 #+end_src
 
-#+begin_src elisp
-(setq emms-source-file-default-directory "~/Music/")
+**** DOOM Emacs Default
+
+#+begin_src elisp :tangle no
+(setq dired-listing-switches "-ahl -v --group-directories-first")
 #+end_src
+
+**** Mine
+
+#+begin_src elisp
+(setq dired-listing-switches "-hl -v --group-directories-first")
+#+end_src
+*** Dirvish
+
+#+begin_src elisp
+(after! dirvish
+  ;; Hide dotfiles by default
+  (setq dirvish-listing-switches "-hlv --group-directories-first")
+
+  (defun dirvish-toggle-dotfiles ()
+    "Toggle showing dotfiles in Dirvish."
+    (interactive)
+    (if (string-match-p "\\b-a\\b" dirvish-listing-switches)
+        (setq dirvish-listing-switches "-hlv --group-directories-first") ; Hide dotfiles
+      (setq dirvish-listing-switches "-ahlv --group-directories-first")) ; Show dotfiles
+    (dirvish-refresh))
+
+  (map! :map dirvish-mode-map
+        "C-<escape>" #'dirvish-toggle-dotfiles))
+#+end_src
+
+
 
 ** Enable active presence on Discord for Emacs
 
@@ -918,6 +982,10 @@ Make sure you know where your Emacs cache backup directory actually resides befo
         elcord-display-line-numbers nil
         elcord-quiet t
         elcord-mode t))
+#+end_src
+** emms
+#+begin_src elisp
+(setq emms-source-beets-database "/run/media/root/grandarchive/root/audio/music/library.db")
 #+end_src
 
 ** EPG: Letting Emacs query for GPG passwords
@@ -1021,7 +1089,16 @@ The ~num-processors~ function is a part of base Emacs: [[https://www.gnu.org/sof
         ;; turn off after 600 seconds of silence
         whisper-recording-timeout 600)
 #+end_src
-
+** company-tabnine
+:PROPERTIES:
+:ID:       bf00e5e6-33e9-4db7-ab2a-03118c2f2990
+:END:
+#+begin_src elisp
+(after! company
+  (setq +lsp-company-backends '(company-tabnine :separate company-capf company-yasnippet))
+  (setq company-show-numbers t)
+  (setq company-idle-delay 0))
+#+end_src
 * Works Cited
 
 ** [[https://gergely.polonkai.eu/blog/2014/10/7/rounding-numbers-to-n-decimals-in-emacs.html][Rounding numbers to N decimals in Emacs]]
