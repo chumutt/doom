@@ -381,11 +381,12 @@ The following will vary, so change it to be whatever your org root directory is/
 I use a directory that I sync between computers with a Nextcloud server I run but you don't necessarily have to do that.
 
 #+begin_src elisp
-(after! 'org
+;; (after! 'org
   (setq org-directory
         (concat
          (getenv "HOME")
-        "/Nextcloud/Documents/org/")))
+        "/Nextcloud/Documents/org/"))
+  ;; )
 #+end_src
 
 **** Org bookmark directory :org:

@@ -127,11 +127,12 @@
                          (insert "\n")))))
     (org-map-entries #'fix t 'tree)))
 
-(after! 'org
+;; (after! 'org
   (setq org-directory
         (concat
          (getenv "HOME")
-        "/Nextcloud/Documents/org/")))
+        "/Nextcloud/Documents/org/"))
+  ;; )
 
 (with-eval-after-load 'org
   (setq +org-capture-bookmarks-file
