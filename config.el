@@ -576,3 +576,35 @@
 (achievements-mode)
 
 (parrot-mode)
+
+;; "Set org-file-apps based on the system type"
+;; (when IS-WSL
+  (setq org-file-apps '((remote . emacs)
+                        (auto-mode . emacs)
+                        (directory . emacs)
+                        ("\\.mm\\'" . "wslview \"%s\"")
+                        ("\\.x?html?\\'" . "wslview \"%s\"")
+                        ("\\.pptx?\\'" . "wslview \"%s\"")
+                        ("\\.xlsx?\\'" . "wslview \"%s\"")
+                        ("\\.docx?\\'" . "wslview \"%s\"")
+                        ("\\.pdf\\'" .  "wslview \"%s\"")))
+  ;; need to set explorer for open weblinks and htmls seperately
+  (setq browse-url-generic-program "/mnt/c/Program Files/Mozilla Firefox/firefox.exe")
+;; )
+
+;; Windows 10 blocks Ctrl-Shift-0, So we using powertoy to cheat the system
+;; when we press "C-)", it becomes "C->"
+;; (cond (IS-WSL (map! "C->" #'sp-forward-slurp-sexp))
+;;       (t (map! "C-)" #'sp-forward-slurp-sexp)))
+
+(defun win2wsl-clipped-image()
+  "use powershell to save the clipped image to wsl and load it to xclip"
+  (let* ((powershell "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe")
+         (file-name "//wsl$/Arch/home/chu/tmp/clip_win2wsl.png")
+         (file-name-wsl "~/tmp/clip_win2wsl.png")
+         )
+    (shell-command (concat powershell " -noprofile -command \"(Get-Clipboard -Format Image).Save(\\\"" file-name "\\\")\""))
+    (call-process-shell-command (concat "xclip -selection clipboard -t image/png -i " file-name-wsl))
+    )
+  )
+(advice-add 'org-download-clipboard :before #'win2wsl-clipped-image)
