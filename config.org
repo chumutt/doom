@@ -2,9 +2,7 @@
 #+AUTHOR: chu the pup
 #+DESCRIPTION: Chu's Literate Doom GNU Emacs configuration
 #+PROPERTY: header-args :tangle yes :results none
-#+auto_tangle: t
 #+startup: show2levels
-
 * Preamble
 
 Here's the deets:
@@ -33,11 +31,13 @@ What I am about to explain is typically done in order to debug the configuration
 
 I try to keep the ones seen here (as in, in this configuration) limited to settings saved for reference, debugging, or other posterity purposes, rather than leaving behind a bunch of crud and bug fixes that are no longer necessary.
 
+
 * ~config.el~ lexical binding
 
 #+begin_src elisp
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 #+end_src
+
 
 * DOOM Emacs Documentation
 
@@ -93,6 +93,7 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
 (setq user-full-name "John Doe"
       user-mail-address "example@donut.arpa")
 #+end_example
+
 
 * Config
 
@@ -259,8 +260,15 @@ My version(s):
 #+end_src
 
 **** TODO Clean this section up.
+** remove all blank lines custom script :custom:
+#+begin_src elisp
+(defun chu/remove-all-empty-lines ()
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (flush-lines "^\\s-*$")))
+#+end_src
 ** Org-Mode :org:
-
 *** Org TODO state hiding
 
 Write TODO state changes into LOGBOOK drawer. [[https://stackoverflow.com/a/63798475][Thanks, LeeRuns (stackoverflow.com)]].
@@ -385,7 +393,7 @@ I use a directory that I sync between computers with a Nextcloud server I run bu
   (setq org-directory
         (concat
          (getenv "HOME")
-        "/Nextcloud/Documents/org/"))
+        "/Nextcloud/documents/org/"))
   ;; )
 #+end_src
 
@@ -400,36 +408,36 @@ I use a document that I track with org roam but you don't necessarily have to do
   (setq +org-capture-bookmarks-file
         (concat
          (getenv "HOME")
-         "/Nextcloud/Documents/org/roam/20221004090130-bookmarks.org")))
+         "/Nextcloud/documents/org/roam/20221004090130-bookmarks.org")))
 #+end_src
 
 **** Org agenda files :org:
 
 #+begin_src elisp
 (setq org-agenda-files
-   '("/home/chu/Nextcloud/Documents/org/roam/20220726210346-important_dates.org"
-     "/home/chu/Nextcloud/Documents/org/roam/20220822103211-engl_1030.org"
-     "/home/chu/Nextcloud/Documents/org/roam/20220823133456-precalculus_algebra.org"
-     "/home/chu/Nextcloud/Documents/org/roam/20220826102105-chem_1115.org"
-     "/home/chu/Nextcloud/Documents/org/roam/20221002161631-my_conlang.org"
-     "/home/chu/Nextcloud/Documents/org/roam/20221002190906-furry.org"
-     "/home/chu/Nextcloud/Documents/org/roam/20221004221829-todo.org"
-     "/home/chu/Nextcloud/Documents/org/roam/20221004221831-todo.org"
-     "/home/chu/Nextcloud/Documents/org/roam/20221004222234-projects.org"
-     "/home/chu/Nextcloud/Documents/org/roam/20221004222237-journal.org"
-     "/home/chu/Nextcloud/Documents/org/roam/20221004222241-notes.org"
-     "/home/chu/Nextcloud/Documents/org/roam/20240201170253-albums_to_download.org"
-     "/home/chu/Nextcloud/Documents/org/roam/20240326161621-livestreaming.org"
-     "/home/chu/Nextcloud/Documents/org/roam/asm/20240830094040-assembly.org"
-     "/home/chu/Nextcloud/Documents/org/roam/c++/20240116111203-cpp.org"
-     "/home/chu/Nextcloud/Documents/org/roam/daily/2024-05-08.org"
-     "/home/chu/Nextcloud/Documents/org/roam/engl/engl-2020/20240116095712-engl_2020.org"
-     "/home/chu/Nextcloud/Documents/org/roam/hist/hist-2320/20240116133242-hist_2320.org"
-     "/home/chu/Nextcloud/Documents/org/roam/lisp/scheme/sicp/README.org"
-     "/home/chu/Nextcloud/Documents/org/roam/math/20220821114043-mathematics.org"
-     "/home/chu/Nextcloud/Documents/org/roam/math/20240903162832-linear_algebra.org"
-     "/home/chu/Nextcloud/Documents/org/roam/math/20240905211621-calculus_ii.org"
-     "/home/chu/Nextcloud/Documents/org/roam/20220726210347-important_dates.org"))
+   '("/home/chu/Nextcloud/documents/org/roam/20220726210346-important_dates.org"
+     "/home/chu/Nextcloud/documents/org/roam/20220822103211-engl_1030.org"
+     "/home/chu/Nextcloud/documents/org/roam/20220823133456-precalculus_algebra.org"
+     "/home/chu/Nextcloud/documents/org/roam/20220826102105-chem_1115.org"
+     "/home/chu/Nextcloud/documents/org/roam/20221002161631-my_conlang.org"
+     "/home/chu/Nextcloud/documents/org/roam/20221002190906-furry.org"
+     "/home/chu/Nextcloud/documents/org/roam/20221004221829-todo.org"
+     "/home/chu/Nextcloud/documents/org/roam/20221004221831-todo.org"
+     "/home/chu/Nextcloud/documents/org/roam/20221004222234-projects.org"
+     "/home/chu/Nextcloud/documents/org/roam/20221004222237-journal.org"
+     "/home/chu/Nextcloud/documents/org/roam/20221004222241-notes.org"
+     "/home/chu/Nextcloud/documents/org/roam/20240201170253-albums_to_download.org"
+     "/home/chu/Nextcloud/documents/org/roam/20240326161621-livestreaming.org"
+     "/home/chu/Nextcloud/documents/org/roam/asm/20240830094040-assembly.org"
+     "/home/chu/Nextcloud/documents/org/roam/c++/20240116111203-cpp.org"
+     "/home/chu/Nextcloud/documents/org/roam/daily/2024-05-08.org"
+     "/home/chu/Nextcloud/documents/org/roam/engl/engl-2020/20240116095712-engl_2020.org"
+     "/home/chu/Nextcloud/documents/org/roam/hist/hist-2320/20240116133242-hist_2320.org"
+     "/home/chu/Nextcloud/documents/org/roam/lisp/scheme/sicp/README.org"
+     "/home/chu/Nextcloud/documents/org/roam/math/20220821114043-mathematics.org"
+     "/home/chu/Nextcloud/documents/org/roam/math/20240903162832-linear_algebra.org"
+     "/home/chu/Nextcloud/documents/org/roam/math/20240905211621-calculus_ii.org"
+     "/home/chu/Nextcloud/documents/org/roam/20220726210347-important_dates.org"))
 #+end_src
 
 Usually, you just set these using `org-agenda-file-to-front`
@@ -443,7 +451,7 @@ You know the gist by now--change this to whatever you want your file to be.
   (setq +org-capture-journal-file
         (concat
          (getenv "HOME")
-         "/Nextcloud/Documents/org/roam/20221004222230-journal.org")))
+         "/Nextcloud/documents/org/roam/20221004222230-journal.org")))
 #+end_src
 
 **** Org capture journal location :org:
@@ -453,7 +461,7 @@ You know the gist by now--change this to whatever you want your file to be.
   (setq org-journal-dir
         (concat
          (getenv "HOME")
-         "/Nextcloud/Documents/org/roam/journal/")))
+         "/Nextcloud/documents/org/roam/journal/")))
 #+end_src
 
 **** Org notes file location :org:
@@ -463,7 +471,7 @@ You know the gist by now--change this to whatever you want your file to be.
   (setq +org-capture-notes-file
         (concat
          (getenv "HOME")
-         "/Nextcloud/Documents/org/roam/20221004222235-notes.org")))
+         "/Nextcloud/documents/org/roam/20221004222235-notes.org")))
 #+end_src
 
 **** Org projects file location :org:
@@ -473,7 +481,7 @@ You know the gist by now--change this to whatever you want your file to be.
   (setq +org-capture-projects-file
         (concat
          (getenv "HOME")
-         "/Nextcloud/Documents/org/roam/20221004222226-projects.org")))
+         "/Nextcloud/documents/org/roam/20221004222226-projects.org")))
 #+end_src
 
 **** Org todo file location :org:
@@ -485,17 +493,18 @@ I primarily use a "todo" file rather than an "agenda" file, for agenda ("TODO") 
   (setq +org-capture-todo-file
         (concat
          (getenv "HOME")
-         "/Nextcloud/Documents/org/roam/20221004221829-todo.org")))
+         "/Nextcloud/documents/org/roam/20221004221829-todo.org")))
 #+end_src
 
 **** Org Roam v2 directories and files :org:roam:
 
 #+begin_src elisp
-(with-eval-after-load 'org
+;; (with-eval-after-load 'org
   (setq org-roam-directory
         (concat
          (getenv "HOME")
-         "/Nextcloud/Documents/org/roam/")))
+         "/Nextcloud/documents/org/roam/"))
+;; )
 #+end_src
 
 **** Org Roam v2 dailies directory :org:roam:
@@ -538,7 +547,7 @@ Path to daily-notes. This path is relative to org-roam-directory.
 (setq org-id-locations-file
       (concat
        (getenv "HOME")
-       "/Nextcloud/Documents/org/.orgids"))
+       "/Nextcloud/documents/org/.orgids"))
 #+end_src
 
 **** Org-attach custom directory :org:
@@ -547,7 +556,7 @@ Path to daily-notes. This path is relative to org-roam-directory.
 (setq org-attach-id-dir
       (concat
        (getenv "HOME")
-       "/Nextcloud/Documents/org/.attach/"))
+       "/Nextcloud/documents/org/.attach/"))
 #+end_src
 
 **** Org-Cite (oc.el) :org:cite:
@@ -559,7 +568,7 @@ Path to daily-notes. This path is relative to org-roam-directory.
        (list
         (concat
          (getenv "HOME")
-         "/Nextcloud/Documents/org/roam/bib.bib")))
+         "/Nextcloud/documents/org/roam/bib.bib")))
 #+end_src
 
 See also [[https://orgmode.org/manual/Citations.html#Citations-1][the org mode manual section on org-cite, the citation module that is native to emacs org mode]] in order to specify per-file bibliography files with .bib or .json files.
@@ -572,7 +581,7 @@ Citation Style Language (CSL) files can be used with org-cite.
 (setq org-cite-csl-styles-dir
       (concat
        (getenv "HOME")
-       "/Nextcloud/Documents/org/latex/citeproc-formatters/"))
+       "/Nextcloud/documents/org/latex/citeproc-formatters/"))
 #+end_src
 
 **** Org Archive Location
@@ -760,32 +769,88 @@ By default, using the Org mode archive function 'org-archive-subtree-default' do
 Want files tracked in your agenda? Use the ~C-c [~ keybinding in each file to add them to your custom.el to be tracked via your agenda.
 
 *** Org Mode Capture Templates Customization :org:templates:
+**** default version
+#+begin_example elisp
+(("t" "Personal todo" entry (file+headline +org-capture-todo-file "Inbox")
+  "* [ ] %?\n%i\n%a" :prepend t)
+ ("n" "Personal notes" entry (file+headline +org-capture-notes-file "Inbox")
+  "* %u %?\n%i\n%a" :prepend t)
+ ("j" "Journal" entry (file+olp+datetree +org-capture-journal-file)
+  "* %U %?\n%i\n%a" :prepend t)
+ ("p" "Templates for projects")
+ ("pt" "Project-local todo" entry
+  (file+headline +org-capture-project-todo-file "Inbox") "* TODO %?\n%i\n%a"
+  :prepend t)
+ ("pn" "Project-local notes" entry
+  (file+headline +org-capture-project-notes-file "Inbox") "* %U %?\n%i\n%a"
+  :prepend t)
+ ("pc" "Project-local changelog" entry
+  (file+headline +org-capture-project-changelog-file "Unreleased")
+  "* %U %?\n%i\n%a" :prepend t)
+ ("o" "Centralized templates for projects")
+ ("ot" "Project todo" entry #'+org-capture-central-project-todo-file
+  "* TODO %?\n %i\n %a" :heading "Tasks" :prepend nil)
+ ("on" "Project notes" entry #'+org-capture-central-project-notes-file
+  "* %U %?\n %i\n %a" :heading "Notes" :prepend t)
+ ("oc" "Project changelog" entry #'+org-capture-central-project-changelog-file
+  "* %U %?\n %i\n %a" :heading "Changelog" :prepend t))
+#+end_example
 
-#+begin_src elisp :tangle no
-  ;; (setq org-capture-templates
-  ;;   '(("t" "Personal todo" entry
-  ;;     (file+headline +org-capture-todo-file "Inbox")
-  ;;   "* [ ] %?\n%i\n%a" :prepend t)
-  ;;   ("n" "Personal notes" entry
-  ;;   (file+headline +org-capture-notes-file "Inbox")
-  ;;   "* %u %?\n%i\n%a" :prepend t)
-  ;;   ("j" "Journal" entry
-  ;;   (file+olp+datetree +org-capture-journal-file)
-  ;;   "* %U %?\n%i\n%a" :prepend t)
-  ;;   ("p" "Templates for projects")
-  ;;   ("pt" "Project-local todo" entry
-  ;;   (file+headline +org-capture-project-todo-file "Inbox")
-  ;;   "* TODO %?\n%i\n%a" :prepend t)
-  ;;   ("pn" "Project-local notes" entry
-  ;;   (file+headline +org-capture-project-notes-file "Inbox")
-  ;;   "* %U %?\n%i\n%a" :prepend t)
-  ;;   ("pc" "Project-local changelog" entry
-  ;;   (file+headline +org-capture-project-changelog-file "Unreleased")
-  ;;   "* %U %?\n%i\n%a" :prepend t)
-  ;;   ("o" "Centralized templates for projects")
-  ;;   ("ot" "Project todo" entry #'+org-capture-central-project-todo-file "* TODO %?\n %i\n %a" :heading "Tasks" :prepend nil)
-  ;;   ("on" "Project notes" entry #'+org-capture-central-project-notes-file "* %U %?\n %i\n %a" :heading "Notes" :prepend t)
-  ;;   ("oc" "Project changelog" entry #'+org-capture-central-project-changelog-file "* %U %?\n %i\n %a" :heading "Changelog" :prepend t)))
+**** old version
+#+begin_example elisp
+(setq org-capture-templates
+  '(("t" "Personal todo" entry (file+headline +org-capture-todo-file "Inbox") "* [ ] %?\n%i\n%a" :prepend t)
+  ("n" "Personal notes" entry
+  (file+headline +org-capture-notes-file "Inbox")
+  "* %u %?\n%i\n%a" :prepend t)
+  ("j" "Journal" entry
+  (file+olp+datetree +org-capture-journal-file)
+  "* %U %?\n%i\n%a" :prepend t)
+  ("p" "Templates for projects")
+  ("pt" "Project-local todo" entry
+  (file+headline +org-capture-project-todo-file "Inbox")
+  "* TODO %?\n%i\n%a" :prepend t)
+  ("pn" "Project-local notes" entry
+  (file+headline +org-capture-project-notes-file "Inbox")
+  "* %U %?\n%i\n%a" :prepend t)
+  ("pc" "Project-local changelog" entry
+  (file+headline +org-capture-project-changelog-file "Unreleased")
+  "* %U %?\n%i\n%a" :prepend t)
+  ("o" "Centralized templates for projects")
+  ("ot" "Project todo" entry #'+org-capture-central-project-todo-file "* TODO %?\n %i\n %a" :heading "Tasks" :prepend nil)
+  ("on" "Project notes" entry #'+org-capture-central-project-notes-file "* %U %?\n %i\n %a" :heading "Notes" :prepend t)
+  ("oc" "Project changelog" entry #'+org-capture-central-project-changelog-file "* %U %?\n %i\n %a" :heading "Changelog" :prepend t)))
+#+end_src
+**** TODO new version
+Mon Mar 31 09:50:32 2025
+
+#+begin_quote
+  %a          Annotation, normally the link created with org-store-link.
+  %A          Like %a, but prompt for the description part.
+  %l          Like %a, but only insert the literal link.
+  %L          Like %l, but without brackets (the link content itself).
+#+end_quote
+
+#+begin_quote
+ :prepend            Normally newly captured information will be appended at
+                     the target location (last child, last table line,
+                     last list item...).  Setting this property will
+                     change that.
+#+end_quote
+
+#+begin_src elisp
+(setq org-capture-templates
+  '(("t" "Personal todo" entry (file+headline +org-capture-todo-file "Inbox") "* [ ] %?\n%i\n" :prepend t)
+    ("n" "Personal notes" entry (file+headline +org-capture-notes-file "Inbox") "* %u %?\n%i\n" :prepend t)
+    ("j" "Journal" entry (file+olp+datetree +org-capture-journal-file) "* %U %?\n%i\n" :prepend t)
+    ("p" "Templates for projects")
+    ("pt" "Project-local todo" entry (file+headline +org-capture-project-todo-file "Inbox") "* TODO %?\n%i\n%a" :prepend t)
+    ("pn" "Project-local notes" entry (file+headline +org-capture-project-notes-file "Inbox") "* %U %?\n%i\n%a" :prepend t)
+    ("pc" "Project-local changelog" entry (file+headline +org-capture-project-changelog-file "Unreleased") "* %U %?\n%i\n%a" :prepend t)
+    ("o" "Centralized templates for projects")
+    ("ot" "Project todo" entry #'+org-capture-central-project-todo-file "* TODO %?\n %i\n %a" :heading "Tasks" :prepend nil)
+    ("on" "Project notes" entry #'+org-capture-central-project-notes-file "* %U %?\n %i\n %a" :heading "Notes" :prepend t)
+    ("oc" "Project changelog" entry #'+org-capture-central-project-changelog-file "* %U %?\n %i\n %a" :heading "Changelog" :prepend t)))
 #+end_src
 
 *** Vulpea Auto-Sync Org Roam v2 todos from dailies :org:roam:vulpea:
@@ -845,7 +910,17 @@ Do this: put pointer in a code block -> m ' -> F9 to tangle.
                                    (concat (file-name-sans-extension
                                             (buffer-file-name)) ".org"))))
 #+end_src
-
+*** Custom Command to Show Only DONE Tasks Today
+#+begin_src elisp
+(setq org-agenda-custom-commands
+      '(("d" "Tasks done today"
+         ((agenda ""
+                  ((org-agenda-span 'day)
+                   (org-agenda-start-with-log-mode t)
+                   (org-agenda-log-mode-items '(closed state))
+                   ;;(org-agenda-archives-mode t)
+                   ))))))
+#+end_src
 ** nasm-mode
 
 #+begin_src elisp
@@ -950,6 +1025,7 @@ Make sure you know where your Emacs cache backup directory actually resides befo
 #+begin_src elisp
 (setq dired-listing-switches "-hl -v --group-directories-first")
 #+end_src
+
 *** Dirvish
 
 #+begin_src elisp
@@ -969,8 +1045,6 @@ Make sure you know where your Emacs cache backup directory actually resides befo
         "C-<escape>" #'dirvish-toggle-dotfiles))
 #+end_src
 
-
-
 ** Enable active presence on Discord for Emacs
 
 *WARNING*: This will tell anyone on your Discord your current activity status in Emacs—with a pretty hefty amount of detail as well. [[id:8f9bc104-87a1-4fa4-b624-a5ea64210b8a][Remember: you can do the following if you want to disable something]].
@@ -984,7 +1058,9 @@ Make sure you know where your Emacs cache backup directory actually resides befo
         elcord-quiet t
         elcord-mode t))
 #+end_src
+
 ** emms
+
 #+begin_src elisp
 (setq emms-source-beets-database "/run/media/root/grandarchive/root/audio/music/library.db")
 #+end_src
@@ -1070,9 +1146,11 @@ Ange-FTP defaults to =~/.netrc=  so you need to add this to your init script:
 #+end_src
 
 ** C++
+
 #+begin_src elisp
 ;;(setq c-syntactic-indentation nil)
 #+end_src
+
 ** ~whisper~ Voice transcription (speech to text)
 
 Personally, I can't get a model other than the ~base~ one to download. I'm an English speaker, so there's no translation services enabled.
@@ -1090,16 +1168,154 @@ The ~num-processors~ function is a part of base Emacs: [[https://www.gnu.org/sof
         ;; turn off after 600 seconds of silence
         whisper-recording-timeout 600)
 #+end_src
+
 ** company-tabnine
 :PROPERTIES:
 :ID:       bf00e5e6-33e9-4db7-ab2a-03118c2f2990
 :END:
+
 #+begin_src elisp
 (after! company
   (setq +lsp-company-backends '(company-tabnine :separate company-capf company-yasnippet))
   (setq company-show-numbers t)
   (setq company-idle-delay 0))
 #+end_src
+
+** newline custom
+#+begin_src elisp
+(defun newline-after-comma-in-parens ()
+  "Insert a newline after each comma within the parentheses of the current line and re-indent."
+  (interactive)
+  (save-excursion
+    (let ((start (line-beginning-position))
+          (end (line-end-position)))
+      (goto-char start)
+      (while (re-search-forward ",\\s-*" end t)
+        (replace-match ",\n" t t))
+      (indent-region start (line-end-position)))))
+
+(map! :n "SPC p ," #'newline-after-comma-in-parens) ;; Bind it to a key, like `SPC p ,`
+#+end_src
+** TODO turn ledger-mode into hledger-mode
+
+figuratively, of course
+
+requires hledger to be installed, obviously
+
+#+begin_src elisp
+(setq ledger-binary-path "hledger.sh"
+      ledger-mode-should-check-version nil
+      ledger-report-auto-width nil
+      ledger-report-links-in-register nil
+      ledger-report-native-highlighting-arguments '("--color=always")
+      ledger-default-date-string "%Y-%m-%d")
+
+(add-to-list 'auto-mode-alist '("\\.hledger\\'" . ledger-mode))
+#+end_src
+*** hledger.sh script
+#+begin_src sh :tangle ~/.local/bin/hledger.sh :shebang "#!/bin/bash"
+# hledger.sh
+# Kudos to acarrico for the original script.
+
+# The script is contingent on ledger-default-date-string
+# being set to "%Y-%m-%d", aka ISO date format.
+
+iargs=("$@")
+oargs=()
+j=0;
+date=;
+for((i=0; i<${#iargs[@]}; ++i)); do
+    case ${iargs[i]} in
+        --date-format)
+            # drop --date-format and the next arg
+            i=$((i+1));
+            ;;
+        cleared) # for ledger-di
+            splay-balance-at-point
+            # convert "cleared" to "balance -N -C"
+            oargs[j]=balance; oargs[j+1]=-N; oargs[j+2]=-C; j=$((j+3));
+            ;;
+        xact)
+            # convert "xact" to "print --match"
+            oargs[j]=print; oargs[j+1]=--match; j=$((j+2));
+            # drop xact argument and stash the date argument
+            i=$((i+1));
+            date=${iargs[i]};
+            ;;
+        # NOTE: Reconciliation still doesn't work for other reasons
+        #       so the following filters/conversions are unnecessary for now.
+        # --sort) # for reconcilliation
+        #     # drop --sort and the next arg
+        #     i=$((i+1));
+        #     ;;
+        # --uncleared) # for reconcilliation
+        #     # convert "--uncleared" to "--unmarked --pending"
+        #     oargs[j]=--unmarked; oargs[j+1]=--pending; j=$((j+2))
+        #     ;;
+        ,*)
+            # keep any other args:
+            oargs[j]=${iargs[i]};
+            j=$((j+1));
+            ;;
+    esac
+done
+
+if test "$date"
+then
+    # substitute the given date for the old date:
+    hledger "${oargs[@]}" | sed "1s/....-..-../$date/"
+else
+    # echo "${oargs[@]}"
+    hledger "${oargs[@]}"
+fi
+#+end_src
+
+*** TODO further ledger-mode configuration
+**** TODO Use strict account name checking.
+#+begin_src elisp
+;; (after! 'ledger-mode
+;;   (setq ledger-report-use-strict t))
+#+end_src
+** TODO csv to ledger (c2l) config :ledger:pta:
+#+begin_src elisp
+;; (setq c2l-csv-columns '("date" "_" "posted" "payee" "description" "_" "quantity" "price" "amount"))
+;; (setq c2l-base-account "cdw:assets:checking")
+#+end_src
+** org-tanglesync
+
+org-tanglesync for doom emacs! be careful
+
+#+begin_src elisp
+(after! org
+  (map! :prefix "C-c"
+        "M-i" '(org-tanglesync-process-buffer-interactive :which-key "org-tanglesync-process-buffer-interactive")
+        "M-a" '(org-tanglesync-process-buffer-automatic :which-key "org-tanglesync-process-buffer-automatic")))
+#+end_src
+
+#+begin_example elisp
+(setq! org-tanglesync-watch-files '("~/Nextcloud/documents/org/example.org"))
+#+end_example
+** IDEA workspaces initialization
+#+begin_example elisp
+(+workspace/new-named "agender")
+(org-agenda-list)
+(+workspace/new-named "todo")
+(+workspace/new-named "daily")
+(+workspace/new-named "ledger")
+(+workspace/new)
+#+end_example
+** achievements in emacs
+
+#+begin_src elisp
+(achievements-mode)
+#+end_src
+
+** parrot
+
+#+begin_src elisp
+(parrot-mode)
+#+end_src
+
 * Works Cited
 
 ** [[https://gergely.polonkai.eu/blog/2014/10/7/rounding-numbers-to-n-decimals-in-emacs.html][Rounding numbers to N decimals in Emacs]]

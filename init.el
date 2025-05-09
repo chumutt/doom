@@ -33,7 +33,7 @@
        ;;deft              ; notational velocity for Emacs
        doom              ; what makes DOOM look the way it does
        doom-dashboard    ; a nifty splash screen for Emacs
-       doom-quit         ; DOOM quit-message prompts when you quit Emacs
+       ;;doom-quit         ; DOOM quit-message prompts when you quit Emacs
        (emoji +unicode)  ; 🙂
        hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
        indent-guides     ; highlighted indent columns
@@ -82,7 +82,7 @@
 
        :checkers
        syntax            ; tasing you for every semicolon you forget
-       (spell +flyspell) ; tasing you for misspelling mispelling
+       ;;(spell +flyspell) ; tasing you for misspelling mispelling
        ;;grammar           ; tasing grammar mistake every you make
 
        :tools
@@ -117,7 +117,7 @@
        (cc
         +lsp
         +tree-sitter)            ; C > C++ == 1
-       clojure           ; java with a lisp
+       ;;clojure           ; java with a lisp
        common-lisp       ; if you've seen one lisp, you've seen them all
        ;;coq               ; proofs-as-programs
        ;;crystal           ; ruby at the speed of c
@@ -137,7 +137,7 @@
        ;;fstar             ; (dependent) types and (monadic) effects and Z3
        ;;gdscript          ; the language you waited for
        (go +lsp)         ; the hipster dialect
-       ;;(graphql +lsp)    ; Give queries a REST
+       (graphql +lsp)    ; Give queries a REST
        (haskell +lsp)    ; a language that's lazier than I am
        hy                ; readability of scheme w/ speed of python
        ;;idris             ; a language you can depend on
@@ -155,13 +155,13 @@
        lua               ; one-based indices? one-based indices
        markdown          ; writing docs for people to ignore
        nim               ; python + lisp at the speed of c
-       (nix
-        +tree-sitter
-        +lsp
-        )                ; I hereby declare "nix geht mehr!"
+       ;;(nix
+       ;; +tree-sitter
+       ;; +lsp
+       ;; )                ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
        (org
-        +pretty
+        ;;+pretty
         +roam2
         +hugo
         +pandoc
@@ -172,25 +172,25 @@
         +dragndrop
         +present
         )                ; organize your plain life in plain text
-       php               ; perl's insecure younger brother
+       ;;php               ; perl's insecure younger brother
        plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
-       (python
-        +conda
-        +cython
-        +lsp
-        +poetry
-        +pyenv
-        +pyright
-        +tree-sitter
-        )                ; beautiful is better than ugly
+       ;;(python
+       ;; +conda
+       ;; +cython
+       ;; +lsp
+       ;; +poetry
+       ;; +pyenv
+       ;; +pyright
+       ;; +tree-sitter
+       ;; )                ; beautiful is better than ugly
        qt                ; the 'cutest' gui framework ever
-       racket            ; a DSL for DSLs
+       ;;racket            ; a DSL for DSLs
        ;;raku              ; the artist formerly known as perl6
        ;;rest              ; Emacs as a REST client
        ;;rst               ; ReST in peace
        ;;(ruby +rails)     ; 1.step {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
-       (rust +lsp)       ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
+       ;;(rust +lsp)       ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
        ;;scala             ; java, but good
        (scheme +guile)   ; a fully conniving family of lisps
        sh                ; she sells {ba,z,fi}sh shells on the C xor
@@ -200,7 +200,7 @@
        ;;terra             ; Earth and Moon in alignment for performance.
        web               ; the tubes
        yaml              ; JSON, but readable
-       zig               ; C, but simpler
+       ;;zig               ; C, but simpler
 
        :email
        (mu4e

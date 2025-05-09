@@ -5,7 +5,6 @@
 ;; on the command line, then restart Emacs for the changes to take effect -- or
 ;; use 'M-x doom/reload'.
 
-
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;; (package! some-package)
 
@@ -133,4 +132,81 @@
 
 (package! nasm-mode)
 
-;; (package! djvu) ;; for org noter
+(package! eaf)
+
+;; (package! org-tanglesync) ;; can be dangerous, look before you leap
+
+;;;; tryouts 1
+
+(package! flycheck-hledger)
+
+(package! csv2ledger)
+
+;; visual
+(package! parrot)
+(package! wttrin)
+(package! animate)
+(package! zone-nyan)
+(package! pif)
+(package! boxy-headings)
+(package! on-screen)
+(package! binclock)
+(package! cowsay)
+
+;; games
+(package! typit)
+(package! poker)
+(package! go)
+(package! gnugo)
+(package! slime-volleyball)
+(package! wpuzzle)
+(package! autotetris-mode) ;; undermines the moral integrity of your tetris scores
+(package! minesweeper)
+
+;; novelty
+(package! holy-books)
+(package! horoscope)
+
+;; writing
+(package! altcaps)
+(package! sketch-mode)
+(package! boxes) ;; dependecy: 'boxes'
+
+;; utilities
+(package! osm)
+(package! chatgpt-shell)
+(package! scanner)
+(package! taxy)
+(package! vigenere)
+(package! countdown)
+(package! howdoi)
+
+;;;; tryouts 2
+(package! org-gamedb)
+(package! org-gcal)
+(package! org-generate)
+(package! org-habit-stats)
+(package! org-hyperscheduler)
+(package! org-if)
+(package! org-inline-anim)
+(package! org-inline-pdf)
+(package! org-emms)
+(package! org-drill-table)
+(package! org-easy-img-insert)
+(package! org-drawio)
+(package! org-doing)
+(package! org-contacts)
+(package! org-clock-convenience)
+(package! org-chef)
+(package! org-books)
+(package! org-bookmarks)
+(package! org-bookmarks-extractor)
+(package! org-cite-overlay)
+(package! org-context)
+(package! org-daily-reflection)
+(package! org-mathsheet)
+(package! org-movies)
+(package! org-contrib)
+(package! org-cite-overlay-sidecar)
+(package! org-newtab)
+(package! org-notifications)
