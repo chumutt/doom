@@ -7,7 +7,9 @@
  '(dired-listing-switches "-hl -v --group-directories-first")
  '(ignored-local-variable-values '((eval setq org-export-initial-scope 'subtree)))
  '(org-agenda-files
-   '("/home/chu/Nextcloud/Documents/org/roam/20221004221829-todo.org"))
+   '("~/Nextcloud/documents/org/roam/daily/2025-04-23.org"
+     "/home/chu/Nextcloud/documents/org/roam/20220726210346-important_dates.org"
+     "/home/chu/Nextcloud/documents/org/roam/20221004221829-todo.org"))
  '(package-selected-packages '(djvu eglot)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
