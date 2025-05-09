@@ -131,75 +131,76 @@
   (setq org-directory
         (concat
          (getenv "HOME")
-        "/Nextcloud/Documents/org/"))
+        "/Nextcloud/documents/org/"))
   ;; )
 
 (with-eval-after-load 'org
   (setq +org-capture-bookmarks-file
         (concat
          (getenv "HOME")
-         "/Nextcloud/Documents/org/roam/20221004090130-bookmarks.org")))
+         "/Nextcloud/documents/org/roam/20221004090130-bookmarks.org")))
 
 (setq org-agenda-files
-   '("/home/chu/Nextcloud/Documents/org/roam/20220726210346-important_dates.org"
-     "/home/chu/Nextcloud/Documents/org/roam/20220822103211-engl_1030.org"
-     "/home/chu/Nextcloud/Documents/org/roam/20220823133456-precalculus_algebra.org"
-     "/home/chu/Nextcloud/Documents/org/roam/20220826102105-chem_1115.org"
-     "/home/chu/Nextcloud/Documents/org/roam/20221002161631-my_conlang.org"
-     "/home/chu/Nextcloud/Documents/org/roam/20221002190906-furry.org"
-     "/home/chu/Nextcloud/Documents/org/roam/20221004221829-todo.org"
-     "/home/chu/Nextcloud/Documents/org/roam/20221004221831-todo.org"
-     "/home/chu/Nextcloud/Documents/org/roam/20221004222234-projects.org"
-     "/home/chu/Nextcloud/Documents/org/roam/20221004222237-journal.org"
-     "/home/chu/Nextcloud/Documents/org/roam/20221004222241-notes.org"
-     "/home/chu/Nextcloud/Documents/org/roam/20240201170253-albums_to_download.org"
-     "/home/chu/Nextcloud/Documents/org/roam/20240326161621-livestreaming.org"
-     "/home/chu/Nextcloud/Documents/org/roam/asm/20240830094040-assembly.org"
-     "/home/chu/Nextcloud/Documents/org/roam/c++/20240116111203-cpp.org"
-     "/home/chu/Nextcloud/Documents/org/roam/daily/2024-05-08.org"
-     "/home/chu/Nextcloud/Documents/org/roam/engl/engl-2020/20240116095712-engl_2020.org"
-     "/home/chu/Nextcloud/Documents/org/roam/hist/hist-2320/20240116133242-hist_2320.org"
-     "/home/chu/Nextcloud/Documents/org/roam/lisp/scheme/sicp/README.org"
-     "/home/chu/Nextcloud/Documents/org/roam/math/20220821114043-mathematics.org"
-     "/home/chu/Nextcloud/Documents/org/roam/math/20240903162832-linear_algebra.org"
-     "/home/chu/Nextcloud/Documents/org/roam/math/20240905211621-calculus_ii.org"
-     "/home/chu/Nextcloud/Documents/org/roam/20220726210347-important_dates.org"))
+   '("/home/chu/Nextcloud/documents/org/roam/20220726210346-important_dates.org"
+     "/home/chu/Nextcloud/documents/org/roam/20220822103211-engl_1030.org"
+     "/home/chu/Nextcloud/documents/org/roam/20220823133456-precalculus_algebra.org"
+     "/home/chu/Nextcloud/documents/org/roam/20220826102105-chem_1115.org"
+     "/home/chu/Nextcloud/documents/org/roam/20221002161631-my_conlang.org"
+     "/home/chu/Nextcloud/documents/org/roam/20221002190906-furry.org"
+     "/home/chu/Nextcloud/documents/org/roam/20221004221829-todo.org"
+     "/home/chu/Nextcloud/documents/org/roam/20221004221831-todo.org"
+     "/home/chu/Nextcloud/documents/org/roam/20221004222234-projects.org"
+     "/home/chu/Nextcloud/documents/org/roam/20221004222237-journal.org"
+     "/home/chu/Nextcloud/documents/org/roam/20221004222241-notes.org"
+     "/home/chu/Nextcloud/documents/org/roam/20240201170253-albums_to_download.org"
+     "/home/chu/Nextcloud/documents/org/roam/20240326161621-livestreaming.org"
+     "/home/chu/Nextcloud/documents/org/roam/asm/20240830094040-assembly.org"
+     "/home/chu/Nextcloud/documents/org/roam/c++/20240116111203-cpp.org"
+     "/home/chu/Nextcloud/documents/org/roam/daily/2024-05-08.org"
+     "/home/chu/Nextcloud/documents/org/roam/engl/engl-2020/20240116095712-engl_2020.org"
+     "/home/chu/Nextcloud/documents/org/roam/hist/hist-2320/20240116133242-hist_2320.org"
+     "/home/chu/Nextcloud/documents/org/roam/lisp/scheme/sicp/README.org"
+     "/home/chu/Nextcloud/documents/org/roam/math/20220821114043-mathematics.org"
+     "/home/chu/Nextcloud/documents/org/roam/math/20240903162832-linear_algebra.org"
+     "/home/chu/Nextcloud/documents/org/roam/math/20240905211621-calculus_ii.org"
+     "/home/chu/Nextcloud/documents/org/roam/20220726210347-important_dates.org"))
 
 (with-eval-after-load 'org
   (setq +org-capture-journal-file
         (concat
          (getenv "HOME")
-         "/Nextcloud/Documents/org/roam/20221004222230-journal.org")))
+         "/Nextcloud/documents/org/roam/20221004222230-journal.org")))
 
 (with-eval-after-load 'org
   (setq org-journal-dir
         (concat
          (getenv "HOME")
-         "/Nextcloud/Documents/org/roam/journal/")))
+         "/Nextcloud/documents/org/roam/journal/")))
 
 (with-eval-after-load 'org
   (setq +org-capture-notes-file
         (concat
          (getenv "HOME")
-         "/Nextcloud/Documents/org/roam/20221004222235-notes.org")))
+         "/Nextcloud/documents/org/roam/20221004222235-notes.org")))
 
 (with-eval-after-load 'org
   (setq +org-capture-projects-file
         (concat
          (getenv "HOME")
-         "/Nextcloud/Documents/org/roam/20221004222226-projects.org")))
+         "/Nextcloud/documents/org/roam/20221004222226-projects.org")))
 
 (with-eval-after-load 'org
   (setq +org-capture-todo-file
         (concat
          (getenv "HOME")
-         "/Nextcloud/Documents/org/roam/20221004221829-todo.org")))
+         "/Nextcloud/documents/org/roam/20221004221829-todo.org")))
 
-(with-eval-after-load 'org
+;; (with-eval-after-load 'org
   (setq org-roam-directory
         (concat
          (getenv "HOME")
-         "/Nextcloud/Documents/org/roam/")))
+         "/Nextcloud/documents/org/roam/"))
+;; )
 
 (setq org-roam-dailies-directory "daily/")
 
@@ -216,23 +217,23 @@
 (setq org-id-locations-file
       (concat
        (getenv "HOME")
-       "/Nextcloud/Documents/org/.orgids"))
+       "/Nextcloud/documents/org/.orgids"))
 
 (setq org-attach-id-dir
       (concat
        (getenv "HOME")
-       "/Nextcloud/Documents/org/.attach/"))
+       "/Nextcloud/documents/org/.attach/"))
 
 (setq org-cite-global-bibliography
        (list
         (concat
          (getenv "HOME")
-         "/Nextcloud/Documents/org/roam/bib.bib")))
+         "/Nextcloud/documents/org/roam/bib.bib")))
 
 (setq org-cite-csl-styles-dir
       (concat
        (getenv "HOME")
-       "/Nextcloud/Documents/org/latex/citeproc-formatters/"))
+       "/Nextcloud/documents/org/latex/citeproc-formatters/"))
 
 (setq org-archive-location "archives/%s_archive::")
 
@@ -510,3 +511,16 @@
   (setq +lsp-company-backends '(company-tabnine :separate company-capf company-yasnippet))
   (setq company-show-numbers t)
   (setq company-idle-delay 0))
+
+(defun newline-after-comma-in-parens ()
+  "Insert a newline after each comma within the parentheses of the current line and re-indent."
+  (interactive)
+  (save-excursion
+    (let ((start (line-beginning-position))
+          (end (line-end-position)))
+      (goto-char start)
+      (while (re-search-forward ",\\s-*" end t)
+        (replace-match ",\n" t t))
+      (indent-region start (line-end-position)))))
+
+(map! :n "SPC p ," #'newline-after-comma-in-parens) ;; Bind it to a key, like `SPC p ,`

@@ -134,3 +134,5 @@
 (package! nasm-mode)
 
 ;; (package! djvu) ;; for org noter
+
+(package! eaf)
