@@ -1314,23 +1314,32 @@ fi
          (ledger-post-align-xact (point))))
       (_ (user-error "More than one posting with missing amount")))))
 
-;;;###autoload
-(defun chu/ledger-post-fill (&optional beg end)
-  "Fill missing amounts in current transaction or in region if active."
-  (interactive (if (use-region-p)
-                   (list (region-beginning) (region-end))))
-  (save-excursion
-    (if (and beg end)
-        ;; Region-based: iterate over transactions
-        (progn
-          (goto-char beg)
-          (while (and (< (point) end)
-                      (re-search-forward ledger-transaction-start-regexp end t))
-            (goto-char (match-beginning 0))
-            (chu/ledger-fill-1-xact)
-            (ledger-next-xact)))
-      ;; Single transaction fallback
-      (chu/ledger-fill-1-xact))))
+(with-eval-after-load 'ledger-mode
+  (defun chu/ledger-post-fill (&optional beg end)
+    "Fill missing posting amounts.
+
+If region is active, process all transactions in region.
+Otherwise, process only the current transaction."
+    (interactive (if (use-region-p)
+                     (list (region-beginning) (region-end))))
+    (save-excursion
+      (if (and beg end)
+          ;; Region-based processing
+          (progn
+            (goto-char beg)
+            (while (and (< (point) end)
+                        (re-search-forward ledger-transaction-start-regexp end t))
+              (goto-char (match-beginning 0))
+              (chu/ledger-fill-1-xact)
+              (ledger-next-xact)))
+        ;; Single transaction fallback
+        (chu/ledger-fill-1-xact)))))
+
+;; Optional: keybinding for Doom Emacs
+(with-eval-after-load 'ledger-mode
+  (map! :map ledger-mode-map
+        :localleader
+        "f" #'chu/ledger-post-fill))
 #+end_src
 ** TODO csv to ledger (c2l) config :ledger:pta:
 #+begin_src elisp
