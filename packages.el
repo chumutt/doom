@@ -174,7 +174,6 @@
 
 ;; utilities
 (package! osm)
-(package! chatgpt-shell)
 (package! scanner)
 (package! taxy)
 (package! vigenere)
@@ -210,3 +209,4 @@
 (package! org-cite-overlay-sidecar)
 (package! org-newtab)
 (package! org-notifications)
+(package! gptel)
