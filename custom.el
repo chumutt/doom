@@ -6,7 +6,9 @@
  ;; If there is more than one, they won't work right.
  '(ignored-local-variable-values '((eval setq org-export-initial-scope 'subtree)))
  '(org-agenda-files
-   '("~/Nextcloud/documents/org/roam/20230524091127-art_drawing_commission_ideas.org"
+   '("~/Nextcloud/documents/hledger/README.org"
+     "/home/chu/Nextcloud/documents/org/roam/20220726210346-important_dates.org"
+     "/home/chu/Nextcloud/documents/org/roam/daily/2025-05-12.org"
      "/home/chu/Nextcloud/documents/org/roam/20220726215421-ideas.org"
      "/home/chu/Nextcloud/documents/org/roam/20221004222235-notes.org"
      "/home/chu/Nextcloud/documents/org/roam/20221004222230-journal.org"

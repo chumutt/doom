@@ -910,8 +910,9 @@ Do this: put pointer in a code block -> m ' -> F9 to tangle.
                                    (concat (file-name-sans-extension
                                             (buffer-file-name)) ".org"))))
 #+end_src
-*** Custom Command to Show Only DONE Tasks Today
-#+begin_src elisp
+*** TODO Custom Command to Show Only DONE Tasks Today
+Doesn't work
+#+begin_example elisp
 (setq org-agenda-custom-commands
       '(("d" "Tasks done today"
          ((agenda ""
@@ -920,7 +921,7 @@ Do this: put pointer in a code block -> m ' -> F9 to tangle.
                    (org-agenda-log-mode-items '(closed state))
                    ;;(org-agenda-archives-mode t)
                    ))))))
-#+end_src
+#+end_example
 ** nasm-mode
 
 #+begin_src elisp
@@ -1196,24 +1197,36 @@ The ~num-processors~ function is a part of base Emacs: [[https://www.gnu.org/sof
 
 (map! :n "SPC p ," #'newline-after-comma-in-parens) ;; Bind it to a key, like `SPC p ,`
 #+end_src
-** TODO turn ledger-mode into hledger-mode
+** TODO hledger/ledger
+*** TODO turn ledger-mode into hledger-mode
 
 figuratively, of course
 
 requires hledger to be installed, obviously
 
+from https://hledger.org/editors.html#emacs
+
 #+begin_src elisp
+(require 'ob-hledger) ;; depends on org-contrib package
 (setq ledger-binary-path "hledger.sh"
       ledger-mode-should-check-version nil
       ledger-report-auto-width nil
       ledger-report-links-in-register nil
       ledger-report-native-highlighting-arguments '("--color=always")
-      ledger-default-date-string "%Y-%m-%d")
+      ledger-default-date-string "%Y-%m-%d"
+      ledger-source-directory (getenv "LEDGER_FILE")
+      ledger-init-file nil
+      ledger-init-file-name "~/.ledgerrc"
+      ledger-accounts-file nil
+      ledger-schedule-file nil
+      ledger-payees-file nil)
 
 (add-to-list 'auto-mode-alist '("\\.hledger\\'" . ledger-mode))
 #+end_src
-*** hledger.sh script
-#+begin_src sh :tangle ~/.local/bin/hledger.sh :shebang "#!/bin/bash"
+
+**** hledger.sh script
+from https://hledger.org/editors.html#emacs
+#+begin_src sh :tangle ~/.local/bin/hledger.sh :shebang "#!/bin/sh" :eval no
 # hledger.sh
 # Kudos to acarrico for the original script.
 
@@ -1224,13 +1237,14 @@ iargs=("$@")
 oargs=()
 j=0;
 date=;
-for ((i=0; i<${#iargs[@]}; ++i)); do
+for((i=0; i<${#iargs[@]}; ++i)); do
     case ${iargs[i]} in
         --date-format)
             # drop --date-format and the next arg
             i=$((i+1));
             ;;
-        cleared) # for ledger-display-balance-at-point
+        cleared) # for ledger-di
+            splay-balance-at-point
             # convert "cleared" to "balance -N -C"
             oargs[j]=balance; oargs[j+1]=-N; oargs[j+2]=-C; j=$((j+3));
             ;;
@@ -1243,14 +1257,14 @@ for ((i=0; i<${#iargs[@]}; ++i)); do
             ;;
         # NOTE: Reconciliation still doesn't work for other reasons
         #       so the following filters/conversions are unnecessary for now.
-        --sort) # for reconcilliation
-            # drop --sort and the next arg
-            i=$((i+1));
-            ;;
-        --uncleared) # for reconcilliation
-            # convert "--uncleared" to "--unmarked --pending"
-            oargs[j]=--unmarked; oargs[j+1]=--pending; j=$((j+2))
-            ;;
+        # --sort) # for reconcilliation
+        #     # drop --sort and the next arg
+        #     i=$((i+1));
+        #     ;;
+        # --uncleared) # for reconcilliation
+        #     # convert "--uncleared" to "--unmarked --pending"
+        #     oargs[j]=--unmarked; oargs[j+1]=--pending; j=$((j+2))
+        #     ;;
         ,*)
             # keep any other args:
             oargs[j]=${iargs[i]};
@@ -1264,18 +1278,25 @@ then
     # substitute the given date for the old date:
     hledger "${oargs[@]}" | sed "1s/....-..-../$date/"
 else
-    echo "${oargs[@]}"
+    # echo "${oargs[@]}"
     hledger "${oargs[@]}"
 fi
 #+end_src
 
-*** TODO further ledger-mode configuration
-**** TODO Use strict account name checking.
+**** [[https://hledger.org/editors.html#misc][Misc]]
+
+A helper to browse TODO tags in the journal:
+
+#+begin_example elisp
+(defun journal-todos nil (interactive) (lgrep "TODO:" "current.journal" "~/finance" nil))
+#+end_example
+**** TODO further ledger-mode configuration
+***** TODO Use strict account name checking.
 #+begin_src elisp
 ;; (after! 'ledger-mode
 ;;   (setq ledger-report-use-strict t))
 #+end_src
-*** custom hledger formatting scripts
+**** custom hledger formatting scripts
 #+begin_src elisp
 (defvar chu/default-currency "$"
   "Default currency symbol used for formatting amounts.")
@@ -1341,12 +1362,12 @@ Otherwise, process only the current transaction."
         :localleader
         "f" #'chu/ledger-post-fill))
 #+end_src
-** TODO csv to ledger (c2l) config :ledger:pta:
+*** TODO csv to ledger (c2l) config :ledger:pta:
 #+begin_src elisp
 ;; (setq c2l-csv-columns '("date" "_" "posted" "payee" "description" "_" "quantity" "price" "amount"))
 ;; (setq c2l-base-account "cdw:assets:checking")
 #+end_src
-** org-tanglesync
+** NO org-tanglesync
 
 org-tanglesync for doom emacs! be careful
 
@@ -1360,6 +1381,7 @@ org-tanglesync for doom emacs! be careful
 #+begin_example elisp
 (setq! org-tanglesync-watch-files '("~/Nextcloud/documents/org/example.org"))
 #+end_example
+
 ** IDEA workspaces initialization
 #+begin_example elisp
 (+workspace/new-named "agender")
@@ -1523,6 +1545,16 @@ this is done by installing the [[https://github.com/wslutilities/wslu][wslu]] on
     )
   )
 (advice-add 'org-download-clipboard :before #'win2wsl-clipped-image)
+#+end_src
+** gptel
+
+#+begin_src elisp
+(setq
+ gptel-model 'dolphin-llama3:latest
+ gptel-backend (gptel-make-ollama "Ollama"
+                 :host "localhost:11434"
+                 :stream t
+                 :models '(dolphin-llama3:latest)))
 #+end_src
 
 * Works Cited
