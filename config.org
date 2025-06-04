@@ -328,6 +328,8 @@ For the package org-babel-auto-tangle (see packages.org).
 
 *** Ensure blank lines between headings and before contents
 
+From alphapapa.
+
 #+begin_src elisp
 (defun ap/org-fix-blank-lines (prefix)
   "Fix blank lines (or lack thereof) between entries and between planning-lines/drawers and entry contents in current subtree.
