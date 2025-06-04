@@ -271,6 +271,8 @@ My version(s):
 
 *** Org Tag List :org:
 
+From System Crafters: [[https://www.youtube.com/watch?v=3-sLBaJAtew][Org Roam: The Best Way to Keep a Journal in Emacs - YouTube]]
+
 #+begin_src elisp
 (setq org-tag-alist
       '(;; Places
@@ -1600,3 +1602,9 @@ By [[https://gist.github.com/kepi/2f4acc3cc93403c75fbba5684c5d852d][Kepi]]. Than
 *** [[https://lists.gnu.org/archive/html/emacs-orgmode/2014-08/msg00109.html][org-archive-subtree-hierarchical.el v0.1]]
 
 By [[https://lists.gnu.org/archive/html/emacs-orgmode/2014-08/msg00109.html][Florian Adamsky]]. Thanks, Florian Adamsky.
+
+** System Crafters
+
+Thanks, David!
+
+*** [[https://www.youtube.com/watch?v=3-sLBaJAtew][Org Roam: The Best Way to Keep a Journal in Emacs - YouTube]]
