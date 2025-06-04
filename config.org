@@ -31,13 +31,11 @@ What I am about to explain is typically done in order to debug the configuration
 
 I try to keep the ones seen here (as in, in this configuration) limited to settings saved for reference, debugging, or other posterity purposes, rather than leaving behind a bunch of crud and bug fixes that are no longer necessary.
 
-
 * ~config.el~ lexical binding
 
 #+begin_src elisp
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 #+end_src
-
 
 * DOOM Emacs Documentation
 
