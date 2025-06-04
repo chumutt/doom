@@ -1543,17 +1543,6 @@ this is done by installing the [[https://github.com/wslutilities/wslu][wslu]] on
 (advice-add 'org-download-clipboard :before #'win2wsl-clipped-image)
 #+end_src
 
-** gptel
-
-#+begin_src elisp
-(setq
- gptel-model 'dolphin-llama3:latest
- gptel-backend (gptel-make-ollama "Ollama"
-                 :host "localhost:11434"
-                 :stream t
-                 :models '(dolphin-llama3:latest)))
-#+end_src
-
 * Works Cited
 
 ** [[https://gergely.polonkai.eu/blog/2014/10/7/rounding-numbers-to-n-decimals-in-emacs.html][Rounding numbers to N decimals in Emacs]]
