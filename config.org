@@ -1393,7 +1393,7 @@ Otherwise, process only the current transaction."
 (achievements-mode)
 #+end_src
 
-** parrot
+** =parrot-mode=
 
 #+begin_src elisp
 (parrot-mode)
@@ -1401,9 +1401,9 @@ Otherwise, process only the current transaction."
 
 ** WSL2
 
-*** setup
+*** Setup
 
-**** wsl_path.py setup
+**** =wsl_path.py= Setup
 
 #+begin_src python :exec no :tangle no
 import os
@@ -1512,7 +1512,7 @@ since this is the 'navi' branch this is enabled by default:
 
 *** TODO open links in org-mode in emacs@wsl2 using windows apps
 
-this is done by installing the [[https://github.com/wslutilities/wslu][wslu]] on your wsl2, and then you can config your org-mode by:
+This is done by installing the [[https://github.com/wslutilities/wslu][wslu]] on your wsl2, and then you can config your org-mode by:
 
 #+begin_src elisp
 ;; "Set org-file-apps based on the system type"
