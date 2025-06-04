@@ -269,14 +269,29 @@ My version(s):
 
 ** Org-Mode :org:
 
-*** Org Tag List
+*** Org Tag List :org:
 
 #+begin_src elisp
+(setq org-tag-alist
+      '(;; Places
+        ("@home" . ?H)
+        ("@work" . ?W)
 
+        ;; Devices
+        ("@computer" . ?C)
+        ("@phone" . ?P)
 
+        ;; Activities
+        ("@planning" . ?n)
+        ("@programming" . ?p)
+        ("@writing" . ?w)
+        ("@creative" . ?c)
+        ("@email" . ?e)
+        ("@calls" . ?a)
+        ("@errands" . ?r))
 #+end_src
 
-*** Org TODO state hiding
+*** Org TODO state hiding :org:
 
 Write TODO state changes into LOGBOOK drawer. [[https://stackoverflow.com/a/63798475][Thanks, LeeRuns (stackoverflow.com)]].
 
