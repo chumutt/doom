@@ -261,6 +261,7 @@ My version(s):
 **** TODO Clean this section up.
 
 ** remove all blank lines custom script :custom:
+
 #+begin_src elisp
 (defun chu/remove-all-empty-lines ()
   (interactive)
@@ -272,6 +273,7 @@ My version(s):
 ** Org-Mode :org:
 
 *** Org Tag List
+
 #+begin_src elisp
 
 
@@ -779,6 +781,7 @@ Want files tracked in your agenda? Use the ~C-c [~ keybinding in each file to ad
 *** Org Mode Capture Templates Customization :org:templates:
 
 **** default version
+
 #+begin_example elisp
 (("t" "Personal todo" entry (file+headline +org-capture-todo-file "Inbox")
   "* [ ] %?\n%i\n%a" :prepend t)
@@ -806,6 +809,7 @@ Want files tracked in your agenda? Use the ~C-c [~ keybinding in each file to ad
 #+end_example
 
 **** old version
+
 #+begin_example elisp
 (setq org-capture-templates
   '(("t" "Personal todo" entry (file+headline +org-capture-todo-file "Inbox") "* [ ] %?\n%i\n%a" :prepend t)
@@ -832,6 +836,7 @@ Want files tracked in your agenda? Use the ~C-c [~ keybinding in each file to ad
 #+end_src
 
 **** TODO new version
+
 Mon Mar 31 09:50:32 2025
 
 #+begin_quote
@@ -922,6 +927,7 @@ Do this: put pointer in a code block -> m ' -> F9 to tangle.
 #+end_src
 
 *** TODO Custom Command to Show Only DONE Tasks Today
+
 Doesn't work
 #+begin_example elisp
 (setq org-agenda-custom-commands
@@ -1195,6 +1201,7 @@ The ~num-processors~ function is a part of base Emacs: [[https://www.gnu.org/sof
 #+end_src
 
 ** newline custom
+
 #+begin_src elisp
 (defun newline-after-comma-in-parens ()
   "Insert a newline after each comma within the parentheses of the current line and re-indent."
@@ -1240,6 +1247,7 @@ From https://hledger.org/editors.html#emacs
 #+end_src
 
 **** hledger.sh script
+
 from https://hledger.org/editors.html#emacs
 #+begin_src sh :mkdirp t :tangle ~/.local/bin/hledger.sh :shebang "#!/bin/sh" :eval no
 # hledger.sh
@@ -1307,12 +1315,14 @@ A helper to browse TODO tags in the journal:
 #+end_example
 
 **** Use strict account name checking (optional)
+
 #+begin_src elisp
 ;; (after! 'ledger-mode
 ;;   (setq ledger-report-use-strict t))
 #+end_src
 
 **** custom hledger formatting scripts
+
 #+begin_src elisp
 (defvar chu/default-currency "$"
   "Default currency symbol used for formatting amounts.")
@@ -1396,6 +1406,7 @@ Otherwise, process only the current transaction."
 *** setup
 
 **** wsl_path.py setup
+
 #+begin_src python :exec no :tangle no
 import os
 import sys
@@ -1411,6 +1422,7 @@ os.system(command)
 #+end_src
 
 **** wsl_emacs.py setup
+
 #+begin_src python :exec no :tangle no
 import sys
 import subprocess
@@ -1476,6 +1488,7 @@ if __name__ == "__main__":
 #+end_src
 
 **** org-protocol registry setup
+
 #+begin_src reg :exec no :tangle no
 Windows Registry Editor Version 5.00
 
@@ -1500,6 +1513,7 @@ since this is the 'navi' branch this is enabled by default:
 #+end_src
 
 *** TODO open links in org-mode in emacs@wsl2 using windows apps
+
 this is done by installing the [[https://github.com/wslutilities/wslu][wslu]] on your wsl2, and then you can config your org-mode by:
 
 #+begin_src elisp
@@ -1520,6 +1534,7 @@ this is done by installing the [[https://github.com/wslutilities/wslu][wslu]] on
 #+end_src
 
 *** TODO fix keyboard shortcut for C-shift-0
+
 #+begin_src elisp
 ;; Windows 10 blocks Ctrl-Shift-0, So we using powertoy to cheat the system
 ;; when we press "C-)", it becomes "C->"
@@ -1531,6 +1546,7 @@ this is done by installing the [[https://github.com/wslutilities/wslu][wslu]] on
 :PROPERTIES:
 :ID:       723b4e62-7315-4dd4-8515-7ca2748220b2
 :END:
+
 #+begin_src elisp
 (defun win2wsl-clipped-image()
   "use powershell to save the clipped image to wsl and load it to xclip"
