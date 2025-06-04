@@ -257,8 +257,6 @@ My version(s):
       (put 'toggle-background-transparency 'state t))))
 #+end_src
 
-**** TODO Clean this section up.
-
 ** remove all blank lines custom script :custom:
 
 #+begin_src elisp
