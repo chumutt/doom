@@ -3,6 +3,7 @@
 #+DESCRIPTION: Chu's Literate Doom GNU Emacs configuration
 #+PROPERTY: header-args :tangle yes :results none
 #+startup: show2levels
+
 * Preamble
 
 Here's the deets:
