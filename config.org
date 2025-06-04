@@ -269,6 +269,11 @@ My version(s):
     (flush-lines "^\\s-*$")))
 #+end_src
 ** Org-Mode :org:
+*** Org Tag List
+#+begin_src elisp
+
+
+#+end_src
 *** Org TODO state hiding
 
 Write TODO state changes into LOGBOOK drawer. [[https://stackoverflow.com/a/63798475][Thanks, LeeRuns (stackoverflow.com)]].
@@ -1197,14 +1202,14 @@ The ~num-processors~ function is a part of base Emacs: [[https://www.gnu.org/sof
 
 (map! :n "SPC p ," #'newline-after-comma-in-parens) ;; Bind it to a key, like `SPC p ,`
 #+end_src
-** TODO hledger/ledger
-*** TODO turn ledger-mode into hledger-mode
+** hledger/ledger
+*** Turn =ledger-mode= into =hledger-mode=
 
-figuratively, of course
+Figuratively, of course.
 
-requires hledger to be installed, obviously
+Requires hledger to be installed.
 
-from https://hledger.org/editors.html#emacs
+From https://hledger.org/editors.html#emacs
 
 #+begin_src elisp
 (require 'ob-hledger) ;; depends on org-contrib package
@@ -1216,7 +1221,8 @@ from https://hledger.org/editors.html#emacs
       ledger-default-date-string "%Y-%m-%d"
       ledger-source-directory (getenv "LEDGER_FILE")
       ledger-init-file nil
-      ledger-init-file-name "~/.ledgerrc"
+      ;; ledger-init-file-name "~/.ledgerrc"
+      ;; ledger-init-file-name "~/.config/ledger/ledgerrc"
       ledger-accounts-file nil
       ledger-schedule-file nil
       ledger-payees-file nil)
@@ -1226,7 +1232,7 @@ from https://hledger.org/editors.html#emacs
 
 **** hledger.sh script
 from https://hledger.org/editors.html#emacs
-#+begin_src sh :tangle ~/.local/bin/hledger.sh :shebang "#!/bin/sh" :eval no
+#+begin_src sh :mkdirp t :tangle ~/.local/bin/hledger.sh :shebang "#!/bin/sh" :eval no
 # hledger.sh
 # Kudos to acarrico for the original script.
 
@@ -1290,8 +1296,7 @@ A helper to browse TODO tags in the journal:
 #+begin_example elisp
 (defun journal-todos nil (interactive) (lgrep "TODO:" "current.journal" "~/finance" nil))
 #+end_example
-**** TODO further ledger-mode configuration
-***** TODO Use strict account name checking.
+**** Use strict account name checking (optional)
 #+begin_src elisp
 ;; (after! 'ledger-mode
 ;;   (setq ledger-report-use-strict t))
@@ -1362,35 +1367,6 @@ Otherwise, process only the current transaction."
         :localleader
         "f" #'chu/ledger-post-fill))
 #+end_src
-*** TODO csv to ledger (c2l) config :ledger:pta:
-#+begin_src elisp
-;; (setq c2l-csv-columns '("date" "_" "posted" "payee" "description" "_" "quantity" "price" "amount"))
-;; (setq c2l-base-account "cdw:assets:checking")
-#+end_src
-** NO org-tanglesync
-
-org-tanglesync for doom emacs! be careful
-
-#+begin_src elisp
-(after! org
-  (map! :prefix "C-c"
-        "M-i" '(org-tanglesync-process-buffer-interactive :which-key "org-tanglesync-process-buffer-interactive")
-        "M-a" '(org-tanglesync-process-buffer-automatic :which-key "org-tanglesync-process-buffer-automatic")))
-#+end_src
-
-#+begin_example elisp
-(setq! org-tanglesync-watch-files '("~/Nextcloud/documents/org/example.org"))
-#+end_example
-
-** IDEA workspaces initialization
-#+begin_example elisp
-(+workspace/new-named "agender")
-(org-agenda-list)
-(+workspace/new-named "todo")
-(+workspace/new-named "daily")
-(+workspace/new-named "ledger")
-(+workspace/new)
-#+end_example
 ** achievements in emacs
 
 #+begin_src elisp
