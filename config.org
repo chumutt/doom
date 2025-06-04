@@ -170,8 +170,6 @@ The following ensures correct font size without affecting the font used:
 (setq doom-font (font-spec :size 12))
 #+end_example
 
-You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs loading your Xresources file.]]
-
 **** Temporarily convert images that Emacs cannot otherwise display
 
 This will Set Emacs to convert images if they are going to be shown in the GUI. It detects when Emacs is unable to display the image due to lack of compatibility and temporarily converts it, pushing the converted version into memory during display (it gets cleaned up by the garbage collector).
