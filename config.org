@@ -257,7 +257,7 @@ My version(s):
       (put 'toggle-background-transparency 'state t))))
 #+end_src
 
-** remove all blank lines custom script :custom:
+** A "remove all blank lines" custom script :custom:
 
 #+begin_src elisp
 (defun chu/remove-all-empty-lines ()
