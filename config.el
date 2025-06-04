@@ -56,6 +56,8 @@
     (goto-char (point-min))
     (flush-lines "^\\s-*$")))
 
+
+
 (setq org-log-into-drawer "LOGBOOK")
 
 (add-hook 'org-mode-hook 'org-auto-tangle-mode)
@@ -553,7 +555,8 @@
       ledger-default-date-string "%Y-%m-%d"
       ledger-source-directory (getenv "LEDGER_FILE")
       ledger-init-file nil
-      ledger-init-file-name "~/.ledgerrc"
+      ;; ledger-init-file-name "~/.ledgerrc"
+      ;; ledger-init-file-name "~/.config/ledger/ledgerrc"
       ledger-accounts-file nil
       ledger-schedule-file nil
       ledger-payees-file nil)
@@ -627,14 +630,6 @@ Otherwise, process only the current transaction."
         :localleader
         "f" #'chu/ledger-post-fill))
 
-;; (setq c2l-csv-columns '("date" "_" "posted" "payee" "description" "_" "quantity" "price" "amount"))
-;; (setq c2l-base-account "cdw:assets:checking")
-
-(after! org
-  (map! :prefix "C-c"
-        "M-i" '(org-tanglesync-process-buffer-interactive :which-key "org-tanglesync-process-buffer-interactive")
-        "M-a" '(org-tanglesync-process-buffer-automatic :which-key "org-tanglesync-process-buffer-automatic")))
-
 (achievements-mode)
 
 (parrot-mode)
@@ -670,10 +665,3 @@ Otherwise, process only the current transaction."
     )
   )
 (advice-add 'org-download-clipboard :before #'win2wsl-clipped-image)
-
-(setq
- gptel-model 'dolphin-llama3:latest
- gptel-backend (gptel-make-ollama "Ollama"
-                 :host "localhost:11434"
-                 :stream t
-                 :models '(dolphin-llama3:latest)))
