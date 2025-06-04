@@ -94,7 +94,6 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
       user-mail-address "example@donut.arpa")
 #+end_example
 
-
 * Config
 
 ** Private Configuration
@@ -260,6 +259,7 @@ My version(s):
 #+end_src
 
 **** TODO Clean this section up.
+
 ** remove all blank lines custom script :custom:
 #+begin_src elisp
 (defun chu/remove-all-empty-lines ()
@@ -268,12 +268,15 @@ My version(s):
     (goto-char (point-min))
     (flush-lines "^\\s-*$")))
 #+end_src
+
 ** Org-Mode :org:
+
 *** Org Tag List
 #+begin_src elisp
 
 
 #+end_src
+
 *** Org TODO state hiding
 
 Write TODO state changes into LOGBOOK drawer. [[https://stackoverflow.com/a/63798475][Thanks, LeeRuns (stackoverflow.com)]].
@@ -774,6 +777,7 @@ By default, using the Org mode archive function 'org-archive-subtree-default' do
 Want files tracked in your agenda? Use the ~C-c [~ keybinding in each file to add them to your custom.el to be tracked via your agenda.
 
 *** Org Mode Capture Templates Customization :org:templates:
+
 **** default version
 #+begin_example elisp
 (("t" "Personal todo" entry (file+headline +org-capture-todo-file "Inbox")
@@ -826,6 +830,7 @@ Want files tracked in your agenda? Use the ~C-c [~ keybinding in each file to ad
   ("on" "Project notes" entry #'+org-capture-central-project-notes-file "* %U %?\n %i\n %a" :heading "Notes" :prepend t)
   ("oc" "Project changelog" entry #'+org-capture-central-project-changelog-file "* %U %?\n %i\n %a" :heading "Changelog" :prepend t)))
 #+end_src
+
 **** TODO new version
 Mon Mar 31 09:50:32 2025
 
@@ -915,6 +920,7 @@ Do this: put pointer in a code block -> m ' -> F9 to tangle.
                                    (concat (file-name-sans-extension
                                             (buffer-file-name)) ".org"))))
 #+end_src
+
 *** TODO Custom Command to Show Only DONE Tasks Today
 Doesn't work
 #+begin_example elisp
@@ -927,6 +933,7 @@ Doesn't work
                    ;;(org-agenda-archives-mode t)
                    ))))))
 #+end_example
+
 ** nasm-mode
 
 #+begin_src elisp
@@ -1202,7 +1209,9 @@ The ~num-processors~ function is a part of base Emacs: [[https://www.gnu.org/sof
 
 (map! :n "SPC p ," #'newline-after-comma-in-parens) ;; Bind it to a key, like `SPC p ,`
 #+end_src
+
 ** hledger/ledger
+
 *** Turn =ledger-mode= into =hledger-mode=
 
 Figuratively, of course.
@@ -1296,11 +1305,13 @@ A helper to browse TODO tags in the journal:
 #+begin_example elisp
 (defun journal-todos nil (interactive) (lgrep "TODO:" "current.journal" "~/finance" nil))
 #+end_example
+
 **** Use strict account name checking (optional)
 #+begin_src elisp
 ;; (after! 'ledger-mode
 ;;   (setq ledger-report-use-strict t))
 #+end_src
+
 **** custom hledger formatting scripts
 #+begin_src elisp
 (defvar chu/default-currency "$"
@@ -1367,6 +1378,7 @@ Otherwise, process only the current transaction."
         :localleader
         "f" #'chu/ledger-post-fill))
 #+end_src
+
 ** achievements in emacs
 
 #+begin_src elisp
@@ -1378,8 +1390,11 @@ Otherwise, process only the current transaction."
 #+begin_src elisp
 (parrot-mode)
 #+end_src
+
 ** WSL2
+
 *** setup
+
 **** wsl_path.py setup
 #+begin_src python :exec no :tangle no
 import os
@@ -1394,6 +1409,7 @@ if file_path.startswith(wsl_path_prefix):
 command = "echo " + file_path.strip() + "| clip"
 os.system(command)
 #+end_src
+
 **** wsl_emacs.py setup
 #+begin_src python :exec no :tangle no
 import sys
@@ -1458,6 +1474,7 @@ if __name__ == "__main__":
     w.find_window_wildcard(".*Doom Emac")
     w.set_foreground()
 #+end_src
+
 **** org-protocol registry setup
 #+begin_src reg :exec no :tangle no
 Windows Registry Editor Version 5.00
@@ -1473,11 +1490,13 @@ Windows Registry Editor Version 5.00
 [HKEY_CLASSES_ROOT\org-protocol\shell\open\command]
 @="\"C:\\Users\\lain\\scoop\\apps\\python\\current\\pythonw.exe\" \"C:\\Portables.chu\\emacs-wsl\\wsl_emacs.py\" \"%1\""
 #+end_src
+
 *** TODO enable/disable WSL-specific settings
 since this is the 'navi' branch this is enabled by default:
 #+begin_src elisp :tangle no
 ;; (defvar IS-WSL t)
 #+end_src
+
 *** TODO open links in org-mode in emacs@wsl2 using windows apps
 this is done by installing the [[https://github.com/wslutilities/wslu][wslu]] on your wsl2, and then you can config your org-mode by:
 
@@ -1505,6 +1524,7 @@ this is done by installing the [[https://github.com/wslutilities/wslu][wslu]] on
 ;; (cond (IS-WSL (map! "C->" #'sp-forward-slurp-sexp))
 ;;       (t (map! "C-)" #'sp-forward-slurp-sexp)))
 #+end_src
+
 *** TODO share clipboard between windows host and WSL2
 :PROPERTIES:
 :ID:       723b4e62-7315-4dd4-8515-7ca2748220b2
@@ -1522,6 +1542,7 @@ this is done by installing the [[https://github.com/wslutilities/wslu][wslu]] on
   )
 (advice-add 'org-download-clipboard :before #'win2wsl-clipped-image)
 #+end_src
+
 ** gptel
 
 #+begin_src elisp
