@@ -290,7 +290,7 @@ From System Crafters: [[https://www.youtube.com/watch?v=3-sLBaJAtew][Org Roam: T
         ("@creative" . ?c)
         ("@email" . ?e)
         ("@calls" . ?a)
-        ("@errands" . ?r))
+        ("@errands" . ?r)))
 #+end_src
 
 *** Org TODO state hiding :org:
