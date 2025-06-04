@@ -1387,7 +1387,7 @@ Otherwise, process only the current transaction."
         "f" #'chu/ledger-post-fill))
 #+end_src
 
-** achievements in emacs
+** Achievements in Emacs
 
 #+begin_src elisp
 (achievements-mode)
