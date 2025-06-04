@@ -3,3 +3,4 @@ emacs/*
 PKGBUILD
 emacs/keys/*
 *.asc
+*.~1~
