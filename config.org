@@ -1492,7 +1492,9 @@ Windows Registry Editor Version 5.00
 #+end_src
 
 *** TODO enable/disable WSL-specific settings
+
 since this is the 'navi' branch this is enabled by default:
+
 #+begin_src elisp :tangle no
 ;; (defvar IS-WSL t)
 #+end_src
