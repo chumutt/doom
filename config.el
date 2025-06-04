@@ -56,7 +56,23 @@
     (goto-char (point-min))
     (flush-lines "^\\s-*$")))
 
+(setq org-tag-alist
+      '(;; Places
+        ("@home" . ?H)
+        ("@work" . ?W)
 
+        ;; Devices
+        ("@computer" . ?C)
+        ("@phone" . ?P)
+
+        ;; Activities
+        ("@planning" . ?n)
+        ("@programming" . ?p)
+        ("@writing" . ?w)
+        ("@creative" . ?c)
+        ("@email" . ?e)
+        ("@calls" . ?a)
+        ("@errands" . ?r)))
 
 (setq org-log-into-drawer "LOGBOOK")
 
