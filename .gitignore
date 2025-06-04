@@ -4,4 +4,3 @@ PKGBUILD
 emacs/keys/*
 *.asc
 *.~1~
-config.el
