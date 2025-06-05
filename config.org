@@ -894,7 +894,6 @@ From systemcrafters:
     (buffer-string)))
 #+end_example
 
-
 #+begin_example elisp
 (setq org-capture-templates
   `(("t" "Tasks / Projects")
