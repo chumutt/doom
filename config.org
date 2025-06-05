@@ -868,7 +868,7 @@ Wed Jun  4 18:28:02 2025
                      change that.
 #+end_quote
 
-***** Mine:
+***** Mine
 
 #+begin_src elisp
 (setq org-capture-templates
@@ -887,7 +887,7 @@ Wed Jun  4 18:28:02 2025
         ))
 #+end_src
 
-***** From systemcrafters:
+***** From systemcrafters
 
 #+begin_example elisp
 (defun dw/read-file-as-string (path)
