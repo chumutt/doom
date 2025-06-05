@@ -1004,7 +1004,8 @@ Do this: put pointer in a code block -> m ' -> F9 to tangle.
 
 *** TODO Custom Command to Show Only DONE Tasks Today
 
-Doesn't work
+Doesn't work for me.
+
 #+begin_example elisp
 (setq org-agenda-custom-commands
       '(("d" "Tasks done today"
