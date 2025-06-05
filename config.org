@@ -868,6 +868,8 @@ Wed Jun  4 18:28:02 2025
                      change that.
 #+end_quote
 
+Mine:
+
 #+begin_src elisp
 (setq org-capture-templates
   '(("t" "Personal todo" entry (file+headline +org-capture-todo-file "Inbox") "* [ ] %?\n%i\n" :prepend t)
