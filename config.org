@@ -288,7 +288,8 @@ From System Crafters: [[https://www.youtube.com/watch?v=3-sLBaJAtew][Org Roam: T
         ("@creative" . ?c)
         ("@email" . ?e)
         ("@calls" . ?a)
-        ("@errands" . ?r)))
+        ("@errands" . ?r)
+        ("@research" . ?R)))
 #+end_src
 
 *** Org TODO state hiding :org:
@@ -1362,7 +1363,8 @@ The ~num-processors~ function is a part of base Emacs: [[https://www.gnu.org/sof
 (use-package whisper
   :config
   (setq whisper-install-directory "~/.config/emacs/.local/cache/"
-        whisper-model "base"
+        ;; whisper-model "base"
+        whisper-model "large-v3"
         whisper-language "en"
         whisper-translate nil
         whisper-use-threads (/ (num-processors) 2))
