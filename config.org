@@ -576,6 +576,11 @@ Path to daily-notes. This path is relative to org-roam-directory.
 (require 'org-roam-export)
 #+end_example
 
+#+begin_src elisp
+(after! org-roam
+  (require 'org-roam-export))
+#+end_src
+
 **** Org ID: Custom ID Location :org:
 
 #+begin_src elisp
