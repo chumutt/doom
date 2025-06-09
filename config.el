@@ -17,15 +17,12 @@
 
 (setq image-use-external-converter t)
 
-(require 'random-splash-image)
-
-(setq random-splash-image-dir
-      (concat
-       (getenv "HOME")
-       "/.local/share/random-splash-images/"))
-
-(with-eval-after-load 'random-splash-image
-  (random-splash-image-set))
+(use-package! random-splash-image
+  :commands (random-splash-image-set)
+  :init
+  (setq random-splash-image-dir
+        (expand-file-name "~/.local/share/random-splash-images/"))
+  :config (random-splash-image-set))
 
 (defun toggle-transparency ()
   "Toggle TOTAL EMACS X11 transparency. Might need to be called a couple of times in a row to work."
@@ -72,7 +69,8 @@
         ("@creative" . ?c)
         ("@email" . ?e)
         ("@calls" . ?a)
-        ("@errands" . ?r)))
+        ("@errands" . ?r)
+        ("@research" . ?R)))
 
 (setq org-log-into-drawer "LOGBOOK")
 
@@ -234,9 +232,11 @@
          :target (file+head "%<%Y-%m-%d>.org"
                             "#+title: %<%Y-%m-%d>\n"))))
 
-(require 'org-roam-protocol)
+(after! org-roam
+  (require 'org-roam-protocol))
 
-(require 'org-roam-export)
+(after! org-roam
+  (require 'org-roam-export))
 
 (setq org-id-locations-file
       (concat
@@ -261,8 +261,8 @@
 
 (setq org-archive-location "archives/%s_archive::")
 
-(with-eval-after-load 'org
-  (require 'org-download))
+(after! org
+  (add-to-list 'org-modules 'org-download))
 
 (setq org-image-actual-width nil)
 
@@ -392,6 +392,10 @@
 
         ))
 
+(after! org
+  (add-to-list 'org-modules 'org-habit)
+  (setq org-habit-graph-column 60))
+
 (after! 'org
   (use-package! vulpea
     :hook ((org-roam-db-autosync-mode . vulpea-db-autosync-enable))))
@@ -452,8 +456,13 @@
       erc-nick "chuthepup"
       erc-user-full-name "Chu the Pup")
 
-(require 'edit-server)
-(edit-server-start)
+(use-package! edit-server
+  :defer t
+  :commands (edit-server-start)
+  :init
+  (when (and (display-graphic-p)
+             (string= (system-name) "navi")) ;; optional guard ($HOSTNAME)
+    (edit-server-start)))
 
 (after! 'org
   (setq ispell-alternate-dictionary "/usr/share/dict"))
@@ -564,22 +573,28 @@
 
 (map! :n "SPC p ," #'newline-after-comma-in-parens) ;; Bind it to a key, like `SPC p ,`
 
-(require 'ob-hledger) ;; depends on org-contrib package
-(setq ledger-binary-path "hledger.sh"
-      ledger-mode-should-check-version nil
-      ledger-report-auto-width nil
-      ledger-report-links-in-register nil
-      ledger-report-native-highlighting-arguments '("--color=always")
-      ledger-default-date-string "%Y-%m-%d"
-      ledger-source-directory (getenv "LEDGER_FILE")
-      ledger-init-file nil
-      ;; ledger-init-file-name "~/.ledgerrc"
-      ;; ledger-init-file-name "~/.config/ledger/ledgerrc"
-      ledger-accounts-file nil
-      ledger-schedule-file nil
-      ledger-payees-file nil)
+;; Load ob-hledger from org-contrib
+(use-package! ob-hledger
+  :after org
+  :defer t)  ;; only loads when needed
 
-(add-to-list 'auto-mode-alist '("\\.hledger\\'" . ledger-mode))
+;; Configure ledger-mode for hledger
+(use-package! ledger-mode
+  :mode ("\\.hledger\\'" . ledger-mode)
+  :init
+  (setq ledger-binary-path "hledger.sh"
+        ledger-mode-should-check-version nil
+        ledger-report-auto-width nil
+        ledger-report-links-in-register nil
+        ledger-report-native-highlighting-arguments '("--color=always")
+        ledger-default-date-string "%Y-%m-%d"
+        ledger-source-directory (getenv "LEDGER_FILE")
+        ledger-init-file nil
+        ;; ledger-init-file-name "~/.ledgerrc"
+        ;; ledger-init-file-name "~/.config/ledger/ledgerrc"
+        ledger-accounts-file nil
+        ledger-schedule-file nil
+        ledger-payees-file nil))
 
 ;; (after! 'ledger-mode
 ;;   (setq ledger-report-use-strict t))
