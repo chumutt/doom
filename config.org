@@ -187,7 +187,6 @@ Note: This is a soft dependency of random-splash-image; in turn, you risk being 
 For the plugin 'random-splash-image' which displays a random splash image on each Emacs startup.
 
 #+begin_src elisp
-;; (require 'random-splash-image)
 (use-package! random-splash-image
   :commands (random-splash-image-set)
   :init
