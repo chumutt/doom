@@ -187,26 +187,31 @@ Note: This is a soft dependency of random-splash-image; in turn, you risk being 
 For the plugin 'random-splash-image' which displays a random splash image on each Emacs startup.
 
 #+begin_src elisp
-(require 'random-splash-image)
+;; (require 'random-splash-image)
+(use-package! random-splash-image
+  :commands (random-splash-image-set)
+  :init
+  (setq random-splash-image-dir
+        (expand-file-name "~/.local/share/random-splash-images/")))
 #+end_src
 
 ***** Tell random-splash-image what directory to look for images in.
 
-#+begin_src elisp
+#+begin_example elisp
 (setq random-splash-image-dir
       (concat
        (getenv "HOME")
        "/.local/share/random-splash-images/"))
-#+end_src
+#+end_example
 
 ***** IDEA Find way to set multiple directories for random-splash-image
 
 ***** Set a random splash image on Emacs startup
 
-#+begin_src elisp
+#+begin_example elisp
 (with-eval-after-load 'random-splash-image
   (random-splash-image-set))
-#+end_src
+#+end_example
 
 *** Alpha background transparency function :function:
 
