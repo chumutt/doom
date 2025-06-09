@@ -1181,8 +1181,13 @@ Set user information.
 ** Editing server (~edit-server~) for Emacs with ~edit-with-emacs~
 
 #+begin_src elisp
-(require 'edit-server)
-(edit-server-start)
+(use-package! edit-server
+  :defer t
+  :commands (edit-server-start)
+  :init
+  (when (and (display-graphic-p)
+             (string= (system-name) "navi")) ;; optional guard ($HOSTNAME)
+    (edit-server-start)))
 #+end_src
 
 ** Dictionary
