@@ -186,32 +186,23 @@ Note: This is a soft dependency of random-splash-image; in turn, you risk being 
 
 For the plugin 'random-splash-image' which displays a random splash image on each Emacs startup.
 
-#+begin_src elisp
-(use-package! random-splash-image
-  :commands (random-splash-image-set)
-  :init
-  (setq random-splash-image-dir
-        (expand-file-name "~/.local/share/random-splash-images/"))
-  :config (random-splash-image-set))
-#+end_src
-
 ***** Tell random-splash-image what directory to look for images in.
 
-#+begin_example elisp
+#+begin_src elisp
 (setq random-splash-image-dir
       (concat
        (getenv "HOME")
        "/.local/share/random-splash-images/"))
-#+end_example
+#+end_src
 
 ***** IDEA Find way to set multiple directories for random-splash-image
 
 ***** Set a random splash image on Emacs startup
 
-#+begin_example elisp
+#+begin_src elisp
 (with-eval-after-load 'random-splash-image
   (random-splash-image-set))
-#+end_example
+#+end_src
 
 *** Alpha background transparency function :function:
 
@@ -557,16 +548,18 @@ Path to daily-notes. This path is relative to org-roam-directory.
 
 **** org-roam-protocol test :org:roam:protocols:
 
+(I don't remember why I put this here.)
+
 #+begin_src elisp
-(after! org-roam
-  (require 'org-roam-protocol))
+(require 'org-roam-protocol)
 #+end_src
 
 **** org-roam-export test :org:roam:
 
+(I don't remember why I put this here, either.)
+
 #+begin_src elisp
-(after! org-roam
-  (require 'org-roam-export))
+(require 'org-roam-export)
 #+end_src
 
 **** Org ID: Custom ID Location :org:
@@ -621,8 +614,8 @@ Citation Style Language (CSL) files can be used with org-cite.
 *** Download/capture for Org mode
 
 #+begin_src elisp
-(after! org
-  (add-to-list 'org-modules 'org-download))
+(with-eval-after-load 'org
+  (require 'org-download))
 #+end_src
 
 *** Org-download image width attribute tag
@@ -1169,13 +1162,8 @@ Set user information.
 ** Editing server (~edit-server~) for Emacs with ~edit-with-emacs~
 
 #+begin_src elisp
-(use-package! edit-server
-  :defer t
-  :commands (edit-server-start)
-  :init
-  (when (and (display-graphic-p)
-             (string= (system-name) "navi")) ;; optional guard ($HOSTNAME)
-    (edit-server-start)))
+(require 'edit-server)
+(edit-server-start)
 #+end_src
 
 ** Dictionary
@@ -1421,28 +1409,22 @@ Requires hledger to be installed.
 From https://hledger.org/editors.html#emacs
 
 #+begin_src elisp
-;; Load ob-hledger from org-contrib
-(use-package! ob-hledger
-  :after org
-  :defer t)  ;; only loads when needed
+(require 'ob-hledger) ;; depends on org-contrib package
+(setq ledger-binary-path "hledger.sh"
+      ledger-mode-should-check-version nil
+      ledger-report-auto-width nil
+      ledger-report-links-in-register nil
+      ledger-report-native-highlighting-arguments '("--color=always")
+      ledger-default-date-string "%Y-%m-%d"
+      ledger-source-directory (getenv "LEDGER_FILE")
+      ledger-init-file nil
+      ;; ledger-init-file-name "~/.ledgerrc"
+      ;; ledger-init-file-name "~/.config/ledger/ledgerrc"
+      ledger-accounts-file nil
+      ledger-schedule-file nil
+      ledger-payees-file nil)
 
-;; Configure ledger-mode for hledger
-(use-package! ledger-mode
-  :mode ("\\.hledger\\'" . ledger-mode)
-  :init
-  (setq ledger-binary-path "hledger.sh"
-        ledger-mode-should-check-version nil
-        ledger-report-auto-width nil
-        ledger-report-links-in-register nil
-        ledger-report-native-highlighting-arguments '("--color=always")
-        ledger-default-date-string "%Y-%m-%d"
-        ledger-source-directory (getenv "LEDGER_FILE")
-        ledger-init-file nil
-        ;; ledger-init-file-name "~/.ledgerrc"
-        ;; ledger-init-file-name "~/.config/ledger/ledgerrc"
-        ledger-accounts-file nil
-        ledger-schedule-file nil
-        ledger-payees-file nil))
+(add-to-list 'auto-mode-alist '("\\.hledger\\'" . ledger-mode))
 #+end_src
 
 **** hledger.sh script
