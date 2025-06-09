@@ -1359,12 +1359,13 @@ Personally, I can't get a model other than the ~base~ one to download. I'm an En
 
 The ~num-processors~ function is a part of base Emacs: [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Process-Information.html#index-num_002dprocessors][GNU Emacs Manual 40.6 Process Information]].
 
+I wouldn't bother using anything other than the "base.en" model specified below by the two model and language variables.
+
 #+begin_src elisp
 (use-package whisper
   :config
   (setq whisper-install-directory "~/.config/emacs/.local/cache/"
-        ;; whisper-model "base"
-        whisper-model "large-v3"
+        whisper-model "base"
         whisper-language "en"
         whisper-translate nil
         whisper-use-threads (/ (num-processors) 2))
