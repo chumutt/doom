@@ -1433,22 +1433,28 @@ Requires hledger to be installed.
 From https://hledger.org/editors.html#emacs
 
 #+begin_src elisp
-(require 'ob-hledger) ;; depends on org-contrib package
-(setq ledger-binary-path "hledger.sh"
-      ledger-mode-should-check-version nil
-      ledger-report-auto-width nil
-      ledger-report-links-in-register nil
-      ledger-report-native-highlighting-arguments '("--color=always")
-      ledger-default-date-string "%Y-%m-%d"
-      ledger-source-directory (getenv "LEDGER_FILE")
-      ledger-init-file nil
-      ;; ledger-init-file-name "~/.ledgerrc"
-      ;; ledger-init-file-name "~/.config/ledger/ledgerrc"
-      ledger-accounts-file nil
-      ledger-schedule-file nil
-      ledger-payees-file nil)
+;; Load ob-hledger from org-contrib
+(use-package! ob-hledger
+  :after org
+  :defer t)  ;; only loads when needed
 
-(add-to-list 'auto-mode-alist '("\\.hledger\\'" . ledger-mode))
+;; Configure ledger-mode for hledger
+(use-package! ledger-mode
+  :mode ("\\.hledger\\'" . ledger-mode)
+  :init
+  (setq ledger-binary-path "hledger.sh"
+        ledger-mode-should-check-version nil
+        ledger-report-auto-width nil
+        ledger-report-links-in-register nil
+        ledger-report-native-highlighting-arguments '("--color=always")
+        ledger-default-date-string "%Y-%m-%d"
+        ledger-source-directory (getenv "LEDGER_FILE")
+        ledger-init-file nil
+        ;; ledger-init-file-name "~/.ledgerrc"
+        ;; ledger-init-file-name "~/.config/ledger/ledgerrc"
+        ledger-accounts-file nil
+        ledger-schedule-file nil
+        ledger-payees-file nil))
 #+end_src
 
 **** hledger.sh script
