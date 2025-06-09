@@ -557,12 +557,6 @@ Path to daily-notes. This path is relative to org-roam-directory.
 
 **** org-roam-protocol test :org:roam:protocols:
 
-(I don't remember why I put this here.)
-
-#+begin_example elisp
-(require 'org-roam-protocol)
-#+end_example
-
 #+begin_src elisp
 (after! org-roam
   (require 'org-roam-protocol))
