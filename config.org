@@ -191,7 +191,9 @@ For the plugin 'random-splash-image' which displays a random splash image on eac
   :commands (random-splash-image-set)
   :init
   (setq random-splash-image-dir
-        (expand-file-name "~/.local/share/random-splash-images/")))
+        (expand-file-name "~/.local/share/random-splash-images/"))
+  :config
+  (random-splash-image-set))
 #+end_src
 
 ***** Tell random-splash-image what directory to look for images in.
