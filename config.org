@@ -938,11 +938,15 @@ Bindings straight to templates
 
 Habit tracking
 
-#+begin_example elisp
-(require 'org-habit)
-(add-to-list 'org-modules 'org-habit)
-(setq org-habit-graph-column 60)
-#+end_example
+#+begin_src elisp
+;; (require 'org-habit)
+;; (add-to-list 'org-modules 'org-habit)
+;; (setq org-habit-graph-column 60)
+
+(after! org
+  (add-to-list 'org-modules 'org-habit)
+  (setq org-habit-graph-column 60))
+#+end_src
 
 ***** TODO An even newer version :@computer:@home:@programming:
 
