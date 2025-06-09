@@ -633,8 +633,8 @@ Citation Style Language (CSL) files can be used with org-cite.
 *** Download/capture for Org mode
 
 #+begin_src elisp
-(with-eval-after-load 'org
-  (require 'org-download))
+(after! org
+  (add-to-list 'org-modules 'org-download))
 #+end_src
 
 *** Org-download image width attribute tag
