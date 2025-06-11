@@ -186,6 +186,10 @@ Note: This is a soft dependency of random-splash-image; in turn, you risk being 
 
 For the plugin 'random-splash-image' which displays a random splash image on each Emacs startup.
 
+#+begin_src elisp
+(require 'random-splash-image)
+#+end_src
+
 ***** Tell random-splash-image what directory to look for images in.
 
 #+begin_src elisp
@@ -520,12 +524,10 @@ I primarily use a "todo" file rather than an "agenda" file, for agenda ("TODO") 
 **** Org Roam v2 directories and files :org:roam:
 
 #+begin_src elisp
-;; (with-eval-after-load 'org
-  (setq org-roam-directory
-        (concat
-         (getenv "HOME")
-         "/Nextcloud/documents/org/roam/"))
-;; )
+(setq org-roam-directory
+      (concat
+       (getenv "HOME")
+       "/Nextcloud/documents/org/roam/"))
 #+end_src
 
 **** Org Roam v2 dailies directory :org:roam:
@@ -546,7 +548,7 @@ Path to daily-notes. This path is relative to org-roam-directory.
                             "#+title: %<%Y-%m-%d>\n"))))
 #+end_src
 
-**** org-roam-protocol test :org:roam:protocols:
+**** =org-roam-protocol= test :org:roam:protocols:
 
 (I don't remember why I put this here.)
 
@@ -554,7 +556,7 @@ Path to daily-notes. This path is relative to org-roam-directory.
 (require 'org-roam-protocol)
 #+end_src
 
-**** org-roam-export test :org:roam:
+**** =org-roam-export= test :org:roam:
 
 (I don't remember why I put this here, either.)
 
@@ -571,7 +573,7 @@ Path to daily-notes. This path is relative to org-roam-directory.
        "/Nextcloud/documents/org/.orgids"))
 #+end_src
 
-**** Org-attach custom directory :org:
+**** =org-attach= custom directory :org:
 
 #+begin_src elisp
 (setq org-attach-id-dir
@@ -580,7 +582,7 @@ Path to daily-notes. This path is relative to org-roam-directory.
        "/Nextcloud/documents/org/.attach/"))
 #+end_src
 
-**** Org-Cite (oc.el) :org:cite:
+**** =org-cite= (oc.el) :org:cite:
 
 ***** Bibliography Location :org:cite:bib:
 
@@ -605,7 +607,7 @@ Citation Style Language (CSL) files can be used with org-cite.
        "/Nextcloud/documents/org/latex/citeproc-formatters/"))
 #+end_src
 
-**** Org Archive Location
+**** =org-archive= Location
 
 #+begin_src elisp
 (setq org-archive-location "archives/%s_archive::")
@@ -995,9 +997,8 @@ Habit tracking
 
     ("t" "Tasks / Projects")
     ("tt" "Task" entry
-     (file+olp
-      ;; FIXME
-      ;; "~/Projects/Code/emacs-from-scratch/OrgFiles/Tasks.org"
+     (
+      file+headline +org-capture-todo-file
       "Inbox")
      "* TODO %?\n  %U\n  %a\n  %i"
      :empty-lines 1)
@@ -1009,20 +1010,22 @@ Habit tracking
     ("j" "Journal Entries")
     ("jj" "Journal" entry
          (file+olp+datetree
-          ;; FIXME
-          ;; "~/Projects/Code/emacs-from-scratch/OrgFiles/Journal.org"
+          +org-capture-journal-file
           )
-         "\n* %<%I:%M %p> - Journal :journal:\n\n%?\n\n"
+         ;; "\n* %<%I:%M %p> - Journal :journal:\n\n%?\n\n"
           ;; FIXME
          ;; ,(dw/read-file-as-string "~/Notes/Templates/Daily.org")
-         :clock-in :clock-resume
-         :empty-lines 1)
+         ;; :clock-in :clock-resume
+         ;; :empty-lines 1)
+         "* %U %?\n%i\n%a" :prepend t)
     ("jm" "Meeting" entry
          (file+olp+datetree
           ;; FIXME
           ;; "~/Projects/Code/emacs-from-scratch/OrgFiles/Journal.org"
+          +org-capture-journal-file
           )
          "* %<%I:%M %p> - %a :meetings:\n\n%?\n\n"
+         :prepend t
          :clock-in :clock-resume
          :empty-lines 1)
 
