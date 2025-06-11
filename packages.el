@@ -210,3 +210,4 @@
 (package! org-newtab)
 (package! org-notifications)
 (package! gptel)
+(package! hledger-mode)
