@@ -573,7 +573,7 @@
       ledger-report-auto-width nil
       ledger-report-links-in-register nil
       ledger-report-native-highlighting-arguments '("--color=always")
-      ledger-default-date-string "%Y-%m-%d"
+      ledger-default-date-string "%Y-%m-%d" ; 2000-01-01
       ledger-source-directory (getenv "LEDGER_FILE")
       ledger-init-file nil ; optional
       ;; ledger-init-file-name "~/.ledgerrc"
