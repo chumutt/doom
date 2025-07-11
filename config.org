@@ -1403,7 +1403,7 @@ From https://hledger.org/editors.html#emacs
 
 #+begin_src elisp
 (require 'ob-hledger) ; hledger-mode depends on org-contrib package
-(setq ledger-binary-path "hledger.sh"
+(setq ledger-binary-path "hledger.sh" ; may need to be customized; need to add to your path variable
       ledger-mode-should-check-version nil
       ledger-report-auto-width nil
       ledger-report-links-in-register nil
@@ -1495,9 +1495,9 @@ A helper to browse TODO tags in the journal:
 ;;   (setq ledger-report-use-strict t))
 #+end_src
 
-**** custom hledger formatting scripts
+**** custom hledger formatting scripts (example)
 
-#+begin_src elisp
+#+begin_example elisp
 (defvar chu/default-currency "$"
   "Default currency symbol used for formatting amounts.")
 
@@ -1561,7 +1561,7 @@ Otherwise, process only the current transaction."
   (map! :map ledger-mode-map
         :localleader
         "f" #'chu/ledger-post-fill))
-#+end_src
+#+end_example
 
 ** Achievements in Emacs
 
