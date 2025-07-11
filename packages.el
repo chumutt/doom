@@ -211,3 +211,6 @@
 (package! org-notifications)
 (package! gptel)
 (package! hledger-mode)
+
+(package! org-multi-clock
+  :recipe (:host gitlab :repo "OlMon/org-multi-clock"))

@@ -1009,44 +1009,34 @@ Habit tracking
 
     ("j" "Journal Entries")
     ("jj" "Journal" entry
-         (file+olp+datetree
-          +org-capture-journal-file
-          )
-         ;; "\n* %<%I:%M %p> - Journal :journal:\n\n%?\n\n"
-          ;; FIXME
-         ;; ,(dw/read-file-as-string "~/Notes/Templates/Daily.org")
-         ;; :clock-in :clock-resume
-         ;; :empty-lines 1)
-         "* %U %?\n%i\n%a" :prepend t)
+         (file+olp+datetree +org-capture-journal-file)
+         "* %U %?\n%i\n%a"
+         :prepend t)
     ("jm" "Meeting" entry
-         (file+olp+datetree
-          ;; FIXME
-          ;; "~/Projects/Code/emacs-from-scratch/OrgFiles/Journal.org"
-          +org-capture-journal-file
-          )
+         (file+olp+datetree +org-capture-journal-file)
          "* %<%I:%M %p> - %a :meetings:\n\n%?\n\n"
          :prepend t
          :clock-in :clock-resume
          :empty-lines 1)
 
-    ("w" "Workflows")
-    ("we" "Checking Email" entry
-     (file+olp+datetree
-      ;; FIXME
-      ;; ,(dw/get-todays-journal-file-name))
-     "* Checking Email :email:\n\n%?"
-     :clock-in
-     :clock-resume
-     :empty-lines 1)
+    ;; ("w" "Workflows")
+    ;; ("we" "Checking Email" entry
+    ;;  (file+olp+datetree
+    ;;   ;; FIXME
+    ;;   ;; ,(dw/get-todays-journal-file-name))
+    ;;  "* Checking Email :email:\n\n%?"
+    ;;  :clock-in
+    ;;  :clock-resume
+    ;;  :empty-lines 1)
 
-    ("m" "Metrics Capture")
-    ("mw" "Weight" table-line
-     (file+headline
-      ;; FIXME
-      ;; "~/Projects/Code/emacs-from-scratch/OrgFiles/Metrics.org"
-      "Weight")
-     "| %U | %^{Weight} | %^{Notes} |"
-     :kill-buffer t)))
+    ;; ("m" "Metrics Capture")
+    ;; ("mw" "Weight" table-line
+    ;;  (file+headline
+    ;;   ;; FIXME
+    ;;   ;; "~/Projects/Code/emacs-from-scratch/OrgFiles/Metrics.org"
+    ;;   "Weight")
+    ;;  "| %U | %^{Weight} | %^{Notes} |"
+    ;;  :kill-buffer t)))
 #+end_src
 
 *** Vulpea Auto-Sync Org Roam v2 todos from dailies :org:roam:vulpea:
@@ -1412,7 +1402,7 @@ Requires hledger to be installed.
 From https://hledger.org/editors.html#emacs
 
 #+begin_src elisp
-(require 'ob-hledger) ;; depends on org-contrib package
+(require 'ob-hledger) ; hledger-mode depends on org-contrib package
 (setq ledger-binary-path "hledger.sh"
       ledger-mode-should-check-version nil
       ledger-report-auto-width nil
@@ -1420,7 +1410,7 @@ From https://hledger.org/editors.html#emacs
       ledger-report-native-highlighting-arguments '("--color=always")
       ledger-default-date-string "%Y-%m-%d"
       ledger-source-directory (getenv "LEDGER_FILE")
-      ledger-init-file nil
+      ledger-init-file nil ; optional
       ;; ledger-init-file-name "~/.ledgerrc"
       ;; ledger-init-file-name "~/.config/ledger/ledgerrc"
       ledger-accounts-file nil
