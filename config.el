@@ -583,6 +583,7 @@
       ledger-payees-file nil)
 
 (add-to-list 'auto-mode-alist '("\\.hledger\\'" . ledger-mode))
+(add-to-list 'auto-mode-alist '("\\.journal\\'" . ledger-mode))
 
 ;; (after! 'ledger-mode
 ;;   (setq ledger-report-use-strict t))
