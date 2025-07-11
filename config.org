@@ -1418,6 +1418,7 @@ From https://hledger.org/editors.html#emacs
       ledger-payees-file nil)
 
 (add-to-list 'auto-mode-alist '("\\.hledger\\'" . ledger-mode))
+(add-to-list 'auto-mode-alist '("\\.journal\\'" . ledger-mode))
 #+end_src
 
 **** hledger.sh script
