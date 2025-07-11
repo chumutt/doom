@@ -568,7 +568,7 @@
 (map! :n "SPC p ," #'newline-after-comma-in-parens) ;; Bind it to a key, like `SPC p ,`
 
 (require 'ob-hledger) ; hledger-mode depends on org-contrib package
-(setq ledger-binary-path "hledger.sh"
+(setq ledger-binary-path "hledger.sh" ; may need to be customized; need to add to your path variable
       ledger-mode-should-check-version nil
       ledger-report-auto-width nil
       ledger-report-links-in-register nil
@@ -586,70 +586,6 @@
 
 ;; (after! 'ledger-mode
 ;;   (setq ledger-report-use-strict t))
-
-(defvar chu/default-currency "$"
-  "Default currency symbol used for formatting amounts.")
-
-(defun chu/ledger-format-number-with-commas (num)
-  "Format NUM with commas and two decimals (e.g., 1,234.56)."
-  (let* ((str (format "%.2f" num))
-         (parts (split-string str "\\."))
-         (int-part (car parts))
-         (dec-part (cadr parts))
-         (int-with-commas
-          (replace-regexp-in-string
-           "\\B\\(\\d\\{3\\}\\)\\(\\(?:\\d\\{3\\}\\)*\\)" ",\\1" int-part)))
-    (concat int-with-commas "." dec-part)))
-
-(defun chu/format-usd (amount)
-  "Format AMOUNT as a USD value with commas, 2 decimals, and no space before $."
-  (let* ((num (abs amount))
-         (sign (if (< amount 0) "-" ""))
-         (formatted (chu/ledger-format-number-with-commas num)))
-    (format "%s%s%s" sign chu/default-currency formatted)))
-
-(defun chu/ledger-fill-1-xact ()
-  "Fill one missing posting in the current transaction with formatted amount."
-  (pcase-let* ((`(,total . ,missing-positions) (ledger-post-xact-total))
-               (missing-amount (ledger-negate-commodity total))
-               (amounts-balance (< (abs (car missing-amount)) 0.0001)))
-    (pcase missing-positions
-      ('() (unless amounts-balance
-             (user-error "Postings do not balance, but no posting to fill")))
-      (`(,missing-pos)
-       (if amounts-balance
-           (user-error "Missing amount but amounts balance already")
-         (goto-char missing-pos)
-         (insert "  " (chu/format-usd (car missing-amount)))
-         (ledger-post-align-xact (point))))
-      (_ (user-error "More than one posting with missing amount")))))
-
-(with-eval-after-load 'ledger-mode
-  (defun chu/ledger-post-fill (&optional beg end)
-    "Fill missing posting amounts.
-
-If region is active, process all transactions in region.
-Otherwise, process only the current transaction."
-    (interactive (if (use-region-p)
-                     (list (region-beginning) (region-end))))
-    (save-excursion
-      (if (and beg end)
-          ;; Region-based processing
-          (progn
-            (goto-char beg)
-            (while (and (< (point) end)
-                        (re-search-forward ledger-transaction-start-regexp end t))
-              (goto-char (match-beginning 0))
-              (chu/ledger-fill-1-xact)
-              (ledger-next-xact)))
-        ;; Single transaction fallback
-        (chu/ledger-fill-1-xact)))))
-
-;; Optional: keybinding for Doom Emacs
-(with-eval-after-load 'ledger-mode
-  (map! :map ledger-mode-map
-        :localleader
-        "f" #'chu/ledger-post-fill))
 
 (achievements-mode)
 
