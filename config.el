@@ -623,3 +623,14 @@
     )
   )
 (advice-add 'org-download-clipboard :before #'win2wsl-clipped-image)
+
+(add-to-list 'load-path "~/.emacs.d/.local/straight/repos/emacs-application-framework/")
+
+(use-package! eaf
+  :load-path "~/.config/emacs/.local/straight/repos/emacs-application-framework/"
+  ;; :commands (eaf-open-browser eaf-open find-file)
+  :commands (eaf-open)
+  :config
+  (require 'eaf-markdown-previewer)
+  (require 'eaf-pdf-viewer)
+  (setq eaf-pdf-dark-mode nil))
