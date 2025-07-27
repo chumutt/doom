@@ -216,8 +216,7 @@
   :recipe (:host gitlab :repo "OlMon/org-multi-clock"))
 
 ;; emacs-application-framework
-
-(when (package! eaf :recipe (:host github
-                             :repo "manateelazycat/emacs-application-framework"
-                             :files ("*.el" "*.py" "app" "core")
-                             :build (:not compile))))
+;; (package! eaf :recipe (:host github
+;;                              :repo "manateelazycat/emacs-application-framework"
+;;                              :files ("*.el" "*.py" "app" "core")
+;;                              :build (:not compile)))
