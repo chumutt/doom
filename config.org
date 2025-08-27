@@ -187,16 +187,16 @@ Note: This is a soft dependency of random-splash-image; in turn, you risk being 
 For the plugin 'random-splash-image' which displays a random splash image on each Emacs startup.
 
 #+begin_src elisp
-(require 'random-splash-image)
+;; (require 'random-splash-image)
 #+end_src
 
 ***** Tell random-splash-image what directory to look for images in.
 
 #+begin_src elisp
-(setq random-splash-image-dir
-      (concat
-       (getenv "HOME")
-       "/.local/share/random-splash-images/"))
+;; (setq random-splash-image-dir
+;;       (concat
+;;        (getenv "HOME")
+;;        "/.local/share/random-splash-images/"))
 #+end_src
 
 ***** IDEA Find way to set multiple directories for random-splash-image
@@ -204,8 +204,8 @@ For the plugin 'random-splash-image' which displays a random splash image on eac
 ***** Set a random splash image on Emacs startup
 
 #+begin_src elisp
-(with-eval-after-load 'random-splash-image
-  (random-splash-image-set))
+;; (with-eval-after-load 'random-splash-image
+;;   (random-splash-image-set))
 #+end_src
 
 *** Alpha background transparency function :function:
@@ -1354,7 +1354,7 @@ I wouldn't bother using anything other than the "base.en" model specified below 
 (use-package whisper
   :config
   (setq whisper-install-directory "~/.config/emacs/.local/cache/"
-        whisper-model "base"
+        whisper-model "small"
         whisper-language "en"
         whisper-translate nil
         whisper-use-threads (/ (num-processors) 2))

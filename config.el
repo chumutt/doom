@@ -17,15 +17,15 @@
 
 (setq image-use-external-converter t)
 
-(require 'random-splash-image)
+;; (require 'random-splash-image)
 
-(setq random-splash-image-dir
-      (concat
-       (getenv "HOME")
-       "/.local/share/random-splash-images/"))
+;; (setq random-splash-image-dir
+;;       (concat
+;;        (getenv "HOME")
+;;        "/.local/share/random-splash-images/"))
 
-(with-eval-after-load 'random-splash-image
-  (random-splash-image-set))
+;; (with-eval-after-load 'random-splash-image
+;;   (random-splash-image-set))
 
 (defun toggle-transparency ()
   "Toggle TOTAL EMACS X11 transparency. Might need to be called a couple of times in a row to work."
@@ -542,7 +542,7 @@
 (use-package whisper
   :config
   (setq whisper-install-directory "~/.config/emacs/.local/cache/"
-        whisper-model "base"
+        whisper-model "small"
         whisper-language "en"
         whisper-translate nil
         whisper-use-threads (/ (num-processors) 2))
