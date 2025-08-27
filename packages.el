@@ -212,8 +212,8 @@
 (package! gptel)
 (package! hledger-mode)
 
-(package! org-multi-clock
-  :recipe (:host gitlab :repo "OlMon/org-multi-clock"))
+;; (package! org-multi-clock
+;;   :recipe (:host gitlab :repo "OlMon/org-multi-clock"))
 
 ;; emacs-application-framework
 ;; (package! eaf :recipe (:host github
