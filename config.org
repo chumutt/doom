@@ -1317,11 +1317,11 @@ Ange-FTP defaults to =~/.netrc=  so you need to add this to your init script:
 
 #+begin_src elisp
 (after! lisp-mode
-  (load! (expand-file-name "~/.local/share/roswell/helper.el"))
+  (load! (expand-file-name "~/.roswell/helper.el"))
   (setq inferior-lisp-program "ros dynamic-space-size=8000 -Q run"))
 #+end_src
 
-*** Common Lisp snippets for ya snippets (require)
+*** Common Lisp snippets for yasnippets (require)
 
 #+begin_src elisp
 (after! lisp-mode
