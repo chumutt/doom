@@ -524,10 +524,11 @@
   (defun +lisp/find-file-in-quicklisp ()
     "Find a file belonging to a library downloaded by Quicklisp."
     (interactive)
-    (doom-project-find-file "~/.local/share/roswell/lisp/quicklisp/dists")))
+    (doom-project-find-file "~/.roswell/lisp/quicklisp/dists")))
 
 (after! lisp-mode
-  (load! (expand-file-name "~/.local/share/roswell/helper.el"))
+  (setq sly-roswell-args '("--no-ssl"))
+  (load! (expand-file-name "~/.roswell/helper.el"))
   (setq inferior-lisp-program "ros dynamic-space-size=8000 -Q run"))
 
 (after! lisp-mode

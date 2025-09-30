@@ -7,11 +7,11 @@
  '(hledger-currency-string "$")
  '(ignored-local-variable-values '((eval setq org-export-initial-scope 'subtree)))
  '(org-agenda-files
-   '("/home/chu/Nextcloud/documents/org/roam/20220726210346-important_dates.org"
+   '("/home/chu/Nextcloud/documents/org/roam/20220726215421-ideas.org"
+     "/home/chu/Nextcloud/documents/org/roam/20220726210346-important_dates.org"
      "/home/chu/Nextcloud/documents/org/roam/20250826131236-calculus_based_prob_stats.org"
      "/home/chu/Nextcloud/documents/org/roam/20250826134242-assembly_computer_organization.org"
      "/home/chu/Nextcloud/documents/org/roam/daily/2025-05-12.org"
-     "/home/chu/Nextcloud/documents/org/roam/20220726215421-ideas.org"
      "/home/chu/Nextcloud/documents/org/roam/20221004222235-notes.org"
      "/home/chu/Nextcloud/documents/org/roam/20221004222230-journal.org"
      "/home/chu/Nextcloud/documents/org/roam/daily/2025-04-08.org"

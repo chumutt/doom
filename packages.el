@@ -144,7 +144,7 @@
 
 ;; visual
 (package! parrot)
-(package! wttrin)
+;; (package! wttrin)
 (package! animate)
 (package! zone-nyan)
 (package! pif)
