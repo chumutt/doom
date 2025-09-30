@@ -1310,13 +1310,14 @@ Ange-FTP defaults to =~/.netrc=  so you need to add this to your init script:
   (defun +lisp/find-file-in-quicklisp ()
     "Find a file belonging to a library downloaded by Quicklisp."
     (interactive)
-    (doom-project-find-file "~/.local/share/roswell/lisp/quicklisp/dists")))
+    (doom-project-find-file "~/.roswell/lisp/quicklisp/dists")))
 #+end_src
 
 *** ~roswell~ Lisp Sly helper :lisp:roswell:sly:repl:
 
 #+begin_src elisp
 (after! lisp-mode
+  (setq sly-roswell-args '("--no-ssl"))
   (load! (expand-file-name "~/.roswell/helper.el"))
   (setq inferior-lisp-program "ros dynamic-space-size=8000 -Q run"))
 #+end_src
@@ -1335,7 +1336,6 @@ Ange-FTP defaults to =~/.netrc=  so you need to add this to your init script:
 (after! sly
   (setq sly-complete-symbol-function 'sly-flex-completions))
 #+end_src
-
 ** C++
 
 #+begin_src elisp
