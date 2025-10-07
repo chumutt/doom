@@ -211,12 +211,3 @@
 (package! org-notifications)
 (package! gptel)
 (package! hledger-mode)
-
-;; (package! org-multi-clock
-;;   :recipe (:host gitlab :repo "OlMon/org-multi-clock"))
-
-;; emacs-application-framework
-;; (package! eaf :recipe (:host github
-;;                              :repo "manateelazycat/emacs-application-framework"
-;;                              :files ("*.el" "*.py" "app" "core")
-;;                              :build (:not compile)))
