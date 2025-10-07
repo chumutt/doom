@@ -511,6 +511,8 @@
   ;; https://www.gnu.org/software/tramp/#Improving-performance-of-asynchronous-remote-processes-1.
   (add-to-list 'tramp-connection-properties
                (list (regexp-quote "/ssh:chunix:")
+                     (regexp-quote "/ssh:navi")
+                     (regexp-quote "/ssh:dogleash")
                      "direct-async-process" t))
   ;; Tips to speed up connections
   (setq tramp-verbose 0
@@ -520,16 +522,18 @@
 (use-package! palimpsest-mode
   :hook (prog-mode . palimpsest-mode))
 
+(setq inferior-lisp-program "ros dynamic-space-size=8000 -Q run")
+;; (load (expand-file-name "~/.roswell/helper.el"))
+;; (setq sly-replace-slime t)
+;; (after! lisp-mode
+;; 
+;; )
+
 (after! lisp-mode
   (defun +lisp/find-file-in-quicklisp ()
     "Find a file belonging to a library downloaded by Quicklisp."
     (interactive)
     (doom-project-find-file "~/.roswell/lisp/quicklisp/dists")))
-
-(after! lisp-mode
-  (setq sly-roswell-args '("--no-ssl"))
-  (load! (expand-file-name "~/.roswell/helper.el"))
-  (setq inferior-lisp-program "ros dynamic-space-size=8000 -Q run"))
 
 (after! lisp-mode
   (use-package! common-lisp-snippets
@@ -625,40 +629,13 @@
   )
 (advice-add 'org-download-clipboard :before #'win2wsl-clipped-image)
 
-;; (add-to-list 'load-path "~/.emacs.d/.local/straight/repos/emacs-application-framework/")
-
-;; (use-package! eaf
-;;   :load-path "~/.config/emacs/.local/straight/repos/emacs-application-framework/"
-;;   :commands (eaf-open-browser eaf-open find-file)
-;;   ;; :commands (eaf-open)
-;;   :config
-;;   (require 'eaf-markdown-previewer)
-;;   (require 'eaf-pdf-viewer)
-;;   (require 'eaf-jupyter)
-;;   (require 'eaf-file-manager)
-;;   (require 'eaf-map)
-;;   (require 'eaf-2048)
-;;   (require 'eaf-org-previewer)
-;;   (require 'eaf-file-browser)
-;;   (require 'eaf-mindmap)
-;;   (require 'eaf-image-viewer)
-;;   (require 'eaf-git)
-;;   (require 'eaf-rss-reader)
-;;   (require 'eaf-mind-elixir)
-;;   (require 'eaf-system-monitor)
-;;   (require 'eaf-music-player)
-;;   (require 'eaf-camera)
-;;   (require 'eaf-airshare)
-;;   (require 'eaf-demo)
-;;   (require 'eaf-vue-demo)
-;;   (require 'eaf-video-player)
-;;   (require 'eaf-terminal)
-;;   (require 'eaf-markdown-previewer)
-;;   (require 'eaf-js-video-player)
-;;   (require 'eaf-file-sender)
-;;   (require 'eaf-vue-tailwindcss)
-;;   (require 'eaf-pdf-viewer)
-;;   (require 'eaf-browser)
-;;   (require 'eaf-markmap)
-;;   (require 'eaf-pyqterminal)
-;;   (setq eaf-pdf-dark-mode nil))
+(after! org
+  (setq org-agenda-custom-commands
+        '(("u"                     ; key after `C-c a`
+           "Untagged TODO items"   ; buffer title
+           tags-todo               ; only TODO headlines
+           "+TODO=\"TODO\"+TAGS=\"\"" ; TODO state + no tags
+           ((org-agenda-overriding-header "Untagged TODOs")
+            ;; skip items whose TODO keyword is a DONE state
+            (org-agenda-skip-function
+             '(org-agenda-skip-entry-if 'todo 'done)))))))
