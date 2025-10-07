@@ -390,7 +390,7 @@
     ("on" "Project notes" entry #'+org-capture-central-project-notes-file "* %U %?\n%i\n%a" :heading "Notes" :prepend t)
     ("oc" "Project changelog" entry #'+org-capture-central-project-changelog-file "* %U %?\n%i\n%a" :heading "Changelog" :prepend t)
     ("b" "Bookmarks" entry (file+headline +org-capture-bookmarks-file "Inbox") "* %^{Title}\n%U\n%i\n%a" :prepend t)
-    )))
+    ))
 
 (after! org
   (add-to-list 'org-modules 'org-habit)
