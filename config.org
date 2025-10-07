@@ -1305,6 +1305,17 @@ Ange-FTP defaults to =~/.netrc=  so you need to add this to your init script:
 
 ** Common Lisp
 
+*** ~roswell~ Lisp Sly helper :lisp:roswell:sly:repl:
+
+#+begin_src elisp
+(setq inferior-lisp-program "ros dynamic-space-size=8000 -Q run")
+;; (load (expand-file-name "~/.roswell/helper.el"))
+;; (setq sly-replace-slime t)
+;; (after! lisp-mode
+;; 
+;; )
+#+end_src
+
 *** Common Lisp find file fix for Roswell compatibility :lisp:
 
 #+begin_src elisp
@@ -1313,14 +1324,6 @@ Ange-FTP defaults to =~/.netrc=  so you need to add this to your init script:
     "Find a file belonging to a library downloaded by Quicklisp."
     (interactive)
     (doom-project-find-file "~/.roswell/lisp/quicklisp/dists")))
-#+end_src
-
-*** ~roswell~ Lisp Sly helper :lisp:roswell:sly:repl:
-
-#+begin_src elisp
-(after! lisp-mode
-  (setq sly-replace-slime t)
-  (setq inferior-lisp-program "ros dynamic-space-size=8000 -Q run"))
 #+end_src
 
 *** Common Lisp snippets for yasnippets (require)
@@ -1735,6 +1738,19 @@ This is done by installing the [[https://github.com/wslutilities/wslu][wslu]] on
     )
   )
 (advice-add 'org-download-clipboard :before #'win2wsl-clipped-image)
+#+end_src
+** untaggeds
+#+begin_src elisp
+(after! org
+  (setq org-agenda-custom-commands
+        '(("u"                     ; key after `C-c a`
+           "Untagged TODO items"   ; buffer title
+           tags-todo               ; only TODO headlines
+           "+TODO=\"TODO\"+TAGS=\"\"" ; TODO state + no tags
+           ((org-agenda-overriding-header "Untagged TODOs")
+            ;; Skip items whose TODO keyword is a DONE state
+            (org-agenda-skip-function
+             '(org-agenda-skip-entry-if 'todo 'done)))))))
 #+end_src
 * Works Cited
 
