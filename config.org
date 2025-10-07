@@ -1748,7 +1748,7 @@ This is done by installing the [[https://github.com/wslutilities/wslu][wslu]] on
            tags-todo               ; only TODO headlines
            "+TODO=\"TODO\"+TAGS=\"\"" ; TODO state + no tags
            ((org-agenda-overriding-header "Untagged TODOs")
-            ;; Skip items whose TODO keyword is a DONE state
+            ;; skip items whose TODO keyword is a DONE state
             (org-agenda-skip-function
              '(org-agenda-skip-entry-if 'todo 'done)))))))
 #+end_src
