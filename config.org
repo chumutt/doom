@@ -1700,8 +1700,8 @@ Windows Registry Editor Version 5.00
 
 Since this is the 'navi' branch this is (will be?) enabled by default:
 
-#+begin_src elisp :tangle no
-;; (defvar IS-WSL t)
+#+begin_src elisp
+(defvar IS-WSL t)
 #+end_src
 
 *** TODO open links in org-mode in emacs@wsl2 using windows apps
@@ -1709,8 +1709,8 @@ Since this is the 'navi' branch this is (will be?) enabled by default:
 This is done by installing the [[https://github.com/wslutilities/wslu][wslu]] on your wsl2, and then you can config your org-mode by:
 
 #+begin_src elisp
-;; "Set org-file-apps based on the system type"
-;; (when IS-WSL
+;; Set org-file-apps based on the system type
+(when IS-WSL
   (setq org-file-apps '((remote . emacs)
                         (auto-mode . emacs)
                         (directory . emacs)
@@ -1721,17 +1721,17 @@ This is done by installing the [[https://github.com/wslutilities/wslu][wslu]] on
                         ("\\.docx?\\'" . "wslview \"%s\"")
                         ("\\.pdf\\'" .  "wslview \"%s\"")))
   ;; need to set explorer for open weblinks and htmls seperately
-  (setq browse-url-generic-program "/mnt/c/Program Files/Mozilla Firefox/firefox.exe")
-;; )
+  (setq browse-url-generic-program "/mnt/c/Program Files/Mozilla Firefox/firefox.exe"))
 #+end_src
 
 *** TODO fix keyboard shortcut for C-shift-0
 
 #+begin_src elisp
-;; Windows 10 blocks Ctrl-Shift-0, So we using powertoy to cheat the system
-;; when we press "C-)", it becomes "C->"
-;; (cond (IS-WSL (map! "C->" #'sp-forward-slurp-sexp))
-;;       (t (map! "C-)" #'sp-forward-slurp-sexp)))
+;; Windows 10 blocks Ctrl-Shift-0, so, using powertoy to cheat the system,
+;; when we press "C-)", it will become "C->"
+(cond (IS-WSL
+       (map! "C->" #'sp-forward-slurp-sexp))
+      (t (map! "C-)" #'sp-forward-slurp-sexp)))
 #+end_src
 
 *** DONE share clipboard between windows host and WSL2
