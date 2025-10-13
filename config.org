@@ -1597,9 +1597,7 @@ Otherwise, process only the current transaction."
 #+end_src
 
 ** WSL2
-
 *** Setup
-
 **** =wsl_path.py= Setup
 
 #+begin_src python :exec no :tangle no
