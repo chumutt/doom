@@ -17,16 +17,6 @@
 
 (setq image-use-external-converter t)
 
-;; (require 'random-splash-image)
-
-;; (setq random-splash-image-dir
-;;       (concat
-;;        (getenv "HOME")
-;;        "/.local/share/random-splash-images/"))
-
-;; (with-eval-after-load 'random-splash-image
-;;   (random-splash-image-set))
-
 (defun toggle-transparency ()
   "Toggle TOTAL EMACS X11 transparency. Might need to be called a couple of times in a row to work."
   (interactive)
