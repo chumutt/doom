@@ -185,27 +185,27 @@ Note: This is a soft dependency of random-splash-image; in turn, you risk being 
 
 For the plugin 'random-splash-image' which displays a random splash image on each Emacs startup.
 
-#+begin_src elisp
-;; (require 'random-splash-image)
-#+end_src
+#+begin_example elisp
+(require 'random-splash-image)
+#+end_example
 
 ***** Tell random-splash-image what directory to look for images in.
 
-#+begin_src elisp
-;; (setq random-splash-image-dir
-;;       (concat
-;;        (getenv "HOME")
-;;        "/.local/share/random-splash-images/"))
-#+end_src
+#+begin_example elisp
+(setq random-splash-image-dir
+      (concat
+       (getenv "HOME")
+       "/.local/share/random-splash-images/"))
+#+end_example
 
 ***** IDEA Find way to set multiple directories for random-splash-image
 
 ***** Set a random splash image on Emacs startup
 
-#+begin_src elisp
-;; (with-eval-after-load 'random-splash-image
-;;   (random-splash-image-set))
-#+end_src
+#+begin_example elisp
+(with-eval-after-load 'random-splash-image
+  (random-splash-image-set))
+#+end_example
 
 *** Alpha background transparency function :function:
 
@@ -215,7 +215,7 @@ Requires a compositor (xcompmgr, picom, compton (maybe (haven't tested compton))
 
 The original by kb:
 
-#+begin_src elisp :tangle no
+#+begin_example elisp
 (defun kb/toggle-window-transparency ()
   "Toggle transparency."
   (interactive)
@@ -223,7 +223,7 @@ The original by kb:
     (pcase (frame-parameter nil 'alpha-background)
       (alpha-transparency (set-frame-parameter nil 'alpha-background 100))
       (t (set-frame-parameter nil 'alpha-background alpha-transparency)))))
-#+end_src
+#+end_example
 
 My version(s):
 
@@ -1596,7 +1596,7 @@ Otherwise, process only the current transaction."
 *** Setup
 **** =wsl_path.py= Setup
 
-#+begin_src python :exec no :tangle no
+#+begin_example python :exec no
 import os
 import sys
 
@@ -1608,11 +1608,11 @@ if file_path.startswith(wsl_path_prefix):
 
 command = "echo " + file_path.strip() + "| clip"
 os.system(command)
-#+end_src
+#+end_example
 
 **** wsl_emacs.py setup
 
-#+begin_src python :exec no :tangle no
+#+begin_example python :exec no
 import sys
 import subprocess
 import os
@@ -1674,11 +1674,11 @@ if __name__ == "__main__":
     w = WindowMgr()
     w.find_window_wildcard(".*Doom Emac")
     w.set_foreground()
-#+end_src
+#+end_example
 
 **** org-protocol registry setup
 
-#+begin_src reg :exec no :tangle no
+#+begin_example reg :exec no
 Windows Registry Editor Version 5.00
 
 [HKEY_CLASSES_ROOT\org-protocol]
@@ -1691,7 +1691,7 @@ Windows Registry Editor Version 5.00
 
 [HKEY_CLASSES_ROOT\org-protocol\shell\open\command]
 @="\"C:\\Users\\lain\\scoop\\apps\\python\\current\\pythonw.exe\" \"C:\\Portables.chu\\emacs-wsl\\wsl_emacs.py\" \"%1\""
-#+end_src
+#+end_example
 
 *** TODO enable/disable WSL-specific settings
 
