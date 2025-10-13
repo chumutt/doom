@@ -591,15 +591,14 @@
 (add-to-list 'auto-mode-alist '("\\.hledger\\'" . ledger-mode))
 (add-to-list 'auto-mode-alist '("\\.journal\\'" . ledger-mode))
 
-;; (after! 'ledger-mode
-;;   (setq ledger-report-use-strict t))
-
 (achievements-mode)
 
 (parrot-mode)
 
-;; "Set org-file-apps based on the system type"
-;; (when IS-WSL
+(defvar IS-WSL t)
+
+;; Set org-file-apps based on the system type
+(when IS-WSL
   (setq org-file-apps '((remote . emacs)
                         (auto-mode . emacs)
                         (directory . emacs)
@@ -610,13 +609,13 @@
                         ("\\.docx?\\'" . "wslview \"%s\"")
                         ("\\.pdf\\'" .  "wslview \"%s\"")))
   ;; need to set explorer for open weblinks and htmls seperately
-  (setq browse-url-generic-program "/mnt/c/Program Files/Mozilla Firefox/firefox.exe")
-;; )
+  (setq browse-url-generic-program "/mnt/c/Program Files/Mozilla Firefox/firefox.exe"))
 
-;; Windows 10 blocks Ctrl-Shift-0, So we using powertoy to cheat the system
-;; when we press "C-)", it becomes "C->"
-;; (cond (IS-WSL (map! "C->" #'sp-forward-slurp-sexp))
-;;       (t (map! "C-)" #'sp-forward-slurp-sexp)))
+;; Windows 10 blocks Ctrl-Shift-0, so, using powertoy to cheat the system,
+;; when we press "C-)", it will become "C->"
+(cond (IS-WSL
+       (map! "C->" #'sp-forward-slurp-sexp))
+      (t (map! "C-)" #'sp-forward-slurp-sexp)))
 
 (defun win2wsl-clipped-image()
   "use powershell to save the clipped image to wsl and load it to xclip"
