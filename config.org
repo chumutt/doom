@@ -1509,14 +1509,11 @@ A helper to browse TODO tags in the journal:
 #+end_example
 
 **** Use strict account name checking (optional)
-
-#+begin_src elisp
-;; (after! 'ledger-mode
-;;   (setq ledger-report-use-strict t))
-#+end_src
-
+#+begin_example elisp
+(after! 'ledger-mode
+  (setq ledger-report-use-strict t))
+#+end_example
 **** custom hledger formatting scripts (example)
-
 #+begin_example elisp
 (defvar chu/default-currency "$"
   "Default currency symbol used for formatting amounts.")
