@@ -203,7 +203,6 @@
 (package! org-cite-overlay)
 (package! org-context)
 (package! org-daily-reflection)
-;; (package! org-mathsheet)
 (package! org-movies)
 (package! org-contrib)
 (package! org-cite-overlay-sidecar)
