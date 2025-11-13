@@ -422,6 +422,9 @@
                                    (concat (file-name-sans-extension
                                             (buffer-file-name)) ".org"))))
 
+(with-eval-after-load 'org-mode
+  (require org+-align-table.el))
+
 (add-to-list 'auto-mode-alist '("\\.\\(asm\\|s\\|S\\)$" . nasm-mode))
 
 (defun ascii-table ()
