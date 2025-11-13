@@ -210,3 +210,5 @@
 (package! org-notifications)
 (package! gptel)
 (package! hledger-mode)
+(package! orgplus-align-tables
+  :recipe (:host github :repo "TobiasZawada/orgplus-align-tables"))

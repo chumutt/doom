@@ -1126,7 +1126,11 @@ Doesn't work for me.
                    ;;(org-agenda-archives-mode t)
                    ))))))
 #+end_example
-
+*** orgplus-align-tables for LaTeX previews to be properly aligned in org tables
+#+begin_src elisp
+(with-eval-after-load 'org-mode
+  (require org+-align-table.el))
+#+end_src
 ** nasm-mode
 
 #+begin_src elisp
