@@ -212,3 +212,4 @@
 (package! hledger-mode)
 (package! valign)
 (package! renpy-mode)
+(package! org-doing)
