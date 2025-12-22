@@ -95,9 +95,9 @@
        ;;ein               ; tame Jupyter notebooks with emacs
        (eval +overlay)   ; run code, run (also, repls)
        lookup            ; navigate your code and its documentation
-       ;;lsp               ; M-x vscode
-       (lsp +eglot)      ; M-x vscode
-       (magit +forge)             ; a git porcelain for Emacs
+       lsp               ; M-x vscode
+       ;; (lsp +eglot)      ; M-x vscode
+       (magit +forge)    ; a git porcelain for Emacs
        make              ; run make tasks from Emacs
        pass              ; password manager for nerds
        pdf               ; pdf enhancements
@@ -116,7 +116,7 @@
        ;;beancount         ; mind the GAAP
        (cc
         +lsp
-        +tree-sitter)            ; C > C++ == 1
+        +tree-sitter)    ; C > C++ == 1
        ;;clojure           ; java with a lisp
        common-lisp       ; if you've seen one lisp, you've seen them all
        ;;coq               ; proofs-as-programs
@@ -135,7 +135,7 @@
        ;;fortran           ; in FORTRAN, GOD is REAL (unless declared INTEGER)
        ;;fsharp            ; ML stands for Microsoft's Language
        ;;fstar             ; (dependent) types and (monadic) effects and Z3
-       ;; (gdscript +lsp)   ; the language you waited for
+       ;;(gdscript +lsp)   ; the language you waited for
        (go +lsp)         ; the hipster dialect
        (graphql +lsp)    ; Give queries a REST
        (haskell +lsp)    ; a language that's lazier than I am
