@@ -213,3 +213,4 @@
 (package! valign)
 (package! renpy-mode)
 (package! org-doing)
+(package! easy-hugo)

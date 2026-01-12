@@ -19,7 +19,8 @@
      "/home/chu/Nextcloud/documents/org/roam/daily/2025-04-05.org"
      "/home/chu/Nextcloud/documents/org/roam/20250401140302-yiff_arpa.org"
      "/home/chu/Nextcloud/documents/org/roam/daily/2025-03-29.org"
-     "/home/chu/Nextcloud/documents/org/roam/20221004221829-todo.org")))
+     "/home/chu/Nextcloud/documents/org/roam/20221004221829-todo.org"))
+ '(safe-local-variable-values '((eval org-hugo-auto-export-mode t))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

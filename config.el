@@ -618,3 +618,5 @@
     )
   )
 (advice-add 'org-download-clipboard :before #'win2wsl-clipped-image)
+
+(setq easy-hugo-basedir "~/dogboner.xyz")
