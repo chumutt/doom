@@ -4,23 +4,24 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(hledger-currency-string "$")
- '(ignored-local-variable-values '((eval setq org-export-initial-scope 'subtree)))
- '(org-agenda-files
-   '("~/Nextcloud/documents/org/roam/20231215160821-technology.org"
-     "/home/chu/Nextcloud/documents/org/roam/20250826134242-assembly_computer_organization.org"
-     "/home/chu/Nextcloud/documents/org/roam/20220726215421-ideas.org"
-     "/home/chu/Nextcloud/documents/org/roam/20220726210346-important_dates.org"
-     "/home/chu/Nextcloud/documents/org/roam/20250826131236-calculus_based_prob_stats.org"
-     "/home/chu/Nextcloud/documents/org/roam/daily/2025-05-12.org"
-     "/home/chu/Nextcloud/documents/org/roam/20221004222235-notes.org"
-     "/home/chu/Nextcloud/documents/org/roam/20221004222230-journal.org"
-     "/home/chu/Nextcloud/documents/org/roam/daily/2025-04-08.org"
-     "/home/chu/Nextcloud/documents/org/roam/daily/2025-04-05.org"
-     "/home/chu/Nextcloud/documents/org/roam/20250401140302-yiff_arpa.org"
-     "/home/chu/Nextcloud/documents/org/roam/daily/2025-03-29.org"
-     "/home/chu/Nextcloud/documents/org/roam/20221004221829-todo.org"))
- '(safe-local-variable-values '((eval org-hugo-auto-export-mode t))))
+ ;; '(ignored-local-variable-values '((eval setq org-export-initial-scope 'subtree)))
+ ;; '(org-agenda-files
+ ;;   '(
+ ;;     "/home/chu/Nextcloud/documents/org/roam/20231215160821-technology.org"
+ ;;     "/home/chu/Nextcloud/documents/org/roam/20250826134242-assembly_computer_organization.org"
+ ;;     "/home/chu/Nextcloud/documents/org/roam/20220726215421-ideas.org"
+ ;;     "/home/chu/Nextcloud/documents/org/roam/20220726210346-important_dates.org"
+ ;;     "/home/chu/Nextcloud/documents/org/roam/20250826131236-calculus_based_prob_stats.org"
+ ;;     "/home/chu/Nextcloud/documents/org/roam/daily/2025-05-12.org"
+ ;;     "/home/chu/Nextcloud/documents/org/roam/20221004222235-notes.org"
+ ;;     "/home/chu/Nextcloud/documents/org/roam/20221004222230-journal.org"
+ ;;     "/home/chu/Nextcloud/documents/org/roam/daily/2025-04-08.org"
+ ;;     "/home/chu/Nextcloud/documents/org/roam/daily/2025-04-05.org"
+ ;;     "/home/chu/Nextcloud/documents/org/roam/20250401140302-yiff_arpa.org"
+ ;;     "/home/chu/Nextcloud/documents/org/roam/daily/2025-03-29.org"
+ ;;     "/home/chu/Nextcloud/documents/org/roam/20221004221829-todo.org"
+ ;;     ))
+ ;; '(safe-local-variable-values '((eval org-hugo-auto-export-mode t))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

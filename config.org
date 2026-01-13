@@ -439,7 +439,21 @@ I use a document that I track with org roam but you don't necessarily have to do
 
 #+begin_src elisp
 (setq org-agenda-files
-   '("/home/chu/Nextcloud/documents/org/roam/20220726210346-important_dates.org"
+   '(
+     "/home/chu/Nextcloud/documents/org/roam/20220726210346-important_dates.org"
+     "/home/chu/Nextcloud/documents/org/roam/20231215160821-technology.org"
+     "/home/chu/Nextcloud/documents/org/roam/20250826134242-assembly_computer_organization.org"
+     "/home/chu/Nextcloud/documents/org/roam/20220726215421-ideas.org"
+     "/home/chu/Nextcloud/documents/org/roam/20220726210346-important_dates.org"
+     "/home/chu/Nextcloud/documents/org/roam/20250826131236-calculus_based_prob_stats.org"
+     "/home/chu/Nextcloud/documents/org/roam/daily/2025-05-12.org"
+     "/home/chu/Nextcloud/documents/org/roam/20221004222235-notes.org"
+     "/home/chu/Nextcloud/documents/org/roam/20221004222230-journal.org"
+     "/home/chu/Nextcloud/documents/org/roam/daily/2025-04-08.org"
+     "/home/chu/Nextcloud/documents/org/roam/daily/2025-04-05.org"
+     "/home/chu/Nextcloud/documents/org/roam/20250401140302-yiff_arpa.org"
+     "/home/chu/Nextcloud/documents/org/roam/daily/2025-03-29.org"
+     "/home/chu/Nextcloud/documents/org/roam/20221004221829-todo.org"
      "/home/chu/Nextcloud/documents/org/roam/20220822103211-engl_1030.org"
      "/home/chu/Nextcloud/documents/org/roam/20220823133456-precalculus_algebra.org"
      "/home/chu/Nextcloud/documents/org/roam/20220826102105-chem_1115.org"
@@ -461,7 +475,8 @@ I use a document that I track with org roam but you don't necessarily have to do
      "/home/chu/Nextcloud/documents/org/roam/math/20220821114043-mathematics.org"
      "/home/chu/Nextcloud/documents/org/roam/math/20240903162832-linear_algebra.org"
      "/home/chu/Nextcloud/documents/org/roam/math/20240905211621-calculus_ii.org"
-     "/home/chu/Nextcloud/documents/org/roam/20220726210347-important_dates.org"))
+     "/home/chu/Nextcloud/documents/org/roam/20220726210347-important_dates.org"
+     ))
 #+end_src
 
 Usually, you just set these using `org-agenda-file-to-front`
@@ -1579,6 +1594,10 @@ Otherwise, process only the current transaction."
         :localleader
         "f" #'chu/ledger-post-fill))
 #+end_example
+*** Set default currency string in =hledger=
+#+begin_src elisp
+(setq hledger-currency-string "$")
+#+end_src
 
 ** Achievements in Emacs
 
@@ -1755,6 +1774,14 @@ Set base toplevel directory for default Hugo blog:
 
 #+begin_src elisp
 (setq easy-hugo-basedir "~/dogboner.xyz")
+#+end_src
+*** Set safe local variable values for exports (Hugo/ox-hugo)
+#+begin_src elisp
+(setq safe-local-variable-values '((eval org-hugo-auto-export-mode t)))
+#+end_src
+** Set ignored local variable values for exports (Org)
+#+begin_src elisp
+(setq ignored-local-variable-values '((eval setq org-export-initial-scope 'subtree)))
 #+end_src
 
 * Works Cited

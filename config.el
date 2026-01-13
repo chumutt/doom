@@ -581,6 +581,8 @@
 (add-to-list 'auto-mode-alist '("\\.hledger\\'" . ledger-mode))
 (add-to-list 'auto-mode-alist '("\\.journal\\'" . ledger-mode))
 
+(setq hledger-currency-string "$")
+
 (achievements-mode)
 
 (parrot-mode)
@@ -620,3 +622,7 @@
 (advice-add 'org-download-clipboard :before #'win2wsl-clipped-image)
 
 (setq easy-hugo-basedir "~/dogboner.xyz")
+
+(setq safe-local-variable-values '((eval org-hugo-auto-export-mode t)))
+
+(setq ignored-local-variable-values '((eval setq org-export-initial-scope 'subtree)))
