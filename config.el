@@ -17,15 +17,15 @@
 
 (setq image-use-external-converter t)
 
-(require 'random-splash-image)
+;; (require 'random-splash-image)
 
-(setq random-splash-image-dir
-      (concat
-       (getenv "HOME")
-       "/.local/share/random-splash-images/"))
+;; (setq random-splash-image-dir
+;;       (concat
+;;        (getenv "HOME")
+;;        "/.local/share/random-splash-images/"))
 
-(with-eval-after-load 'random-splash-image
-  (random-splash-image-set))
+;; (with-eval-after-load 'random-splash-image
+;;   (random-splash-image-set))
 
 (defun toggle-transparency ()
   "Toggle TOTAL EMACS X11 transparency. Might need to be called a couple of times in a row to work."
@@ -390,6 +390,8 @@
                            (format "pandoc -f markdown -t org -o %s"
                                    (concat (file-name-sans-extension
                                             (buffer-file-name)) ".org"))))
+
+(add-to-list 'org-modules '(org-habit))
 
 (add-to-list 'auto-mode-alist '("\\.\\(asm\\|s\\|S\\)$" . nasm-mode))
 

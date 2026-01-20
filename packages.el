@@ -103,7 +103,7 @@
 
 (package! find-dired+)
 
-(package! telega)
+;; (package! telega)
 
 (package! palimpsest-mode)
 
@@ -132,5 +132,3 @@
 (package! company-tabnine)
 
 (package! nasm-mode)
-
-;; (package! djvu) ;; for org noter
