@@ -283,6 +283,10 @@
                ("\\paragraph{%s}" . "\\paragraph*{%s}")
                ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 
+(after! org
+  (setq org-latex-preview-ltxpng-directory
+        (expand-file-name "org/ltximg/" doom-cache-dir)))
+
 (after! 'org
   (provide 'org-archive-subtree-hierarchical)
   (require 'org-archive)
@@ -635,8 +639,6 @@
     )
   )
 (advice-add 'org-download-clipboard :before #'win2wsl-clipped-image)
-
-(setq easy-hugo-basedir "~/dogboner.xyz")
 
 (setq safe-local-variable-values '((eval org-hugo-auto-export-mode t)))
 
