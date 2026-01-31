@@ -661,6 +661,14 @@ Helpful when editing LaTeX documents.
                ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 #+end_src
 
+*** Org latex preview hugo fix attempt
+
+#+begin_src elisp
+(after! org
+  (setq org-latex-preview-ltxpng-directory
+        (expand-file-name "org/ltximg/" doom-cache-dir)))
+#+end_src
+
 *** A Not-Stupid Way to Archive Sections of Org Documents: Hierarchical Subtree Archival :org:archive:
 
 By default, using the Org mode archive function 'org-archive-subtree-default' does not capture the higher-level headings a particular subheading was sitting under when it was archived, which makes a mess of the archive file that gets created. Use this instead!
@@ -1768,14 +1776,8 @@ This is done by installing the [[https://github.com/wslutilities/wslu][wslu]] on
   )
 (advice-add 'org-download-clipboard :before #'win2wsl-clipped-image)
 #+end_src
-** easy-hugo
 
-Set base toplevel directory for default Hugo blog:
-
-#+begin_src elisp
-(setq easy-hugo-basedir "~/dogboner.xyz")
-#+end_src
-*** Set safe local variable values for exports (Hugo/ox-hugo)
+** Set safe local variable values for exports (Hugo/ox-hugo)
 #+begin_src elisp
 (setq safe-local-variable-values '((eval org-hugo-auto-export-mode t)))
 #+end_src
