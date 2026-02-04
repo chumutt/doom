@@ -94,6 +94,7 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
 #+end_example
 
 * Config
+
 ** Private Configuration
 
 #+begin_src elisp
@@ -907,6 +908,7 @@ Wed Jun  4 18:28:02 2025
 
         ))
 #+end_example
+
 #+begin_src elisp
 (setq org-capture-templates
   '(
@@ -924,6 +926,7 @@ Wed Jun  4 18:28:02 2025
     ("b" "Bookmarks" entry (file+headline +org-capture-bookmarks-file "Inbox") "* %^{Title}\n%U\n%i\n%a" :prepend t)
     ))
 #+end_src
+
 ***** From systemcrafters
 
 #+begin_example elisp
@@ -1135,21 +1138,6 @@ Do this: put pointer in a code block -> m ' -> F9 to tangle.
                                             (buffer-file-name)) ".org"))))
 #+end_src
 
-*** TODO Custom Command to Show Only DONE Tasks Today
-
-Doesn't work for me.
-
-#+begin_example elisp
-(setq org-agenda-custom-commands
-      '(("d" "Tasks done today"
-         ((agenda ""
-                  ((org-agenda-span 'day)
-                   (org-agenda-start-with-log-mode t)
-                   (org-agenda-log-mode-items '(closed state))
-                   ;;(org-agenda-archives-mode t)
-                   ))))))
-#+end_example
-*** valign for LaTeX previews to be properly aligned in org tables
 ** nasm-mode
 
 #+begin_src elisp
@@ -1378,6 +1366,7 @@ Ange-FTP defaults to =~/.netrc=  so you need to add this to your init script:
 (after! sly
   (setq sly-complete-symbol-function 'sly-flex-completions))
 #+end_src
+
 ** C++
 
 #+begin_src elisp
@@ -1532,11 +1521,14 @@ A helper to browse TODO tags in the journal:
 #+end_example
 
 **** Use strict account name checking (optional)
+
 #+begin_example elisp
 (after! 'ledger-mode
   (setq ledger-report-use-strict t))
 #+end_example
+
 **** custom hledger formatting scripts (example)
+
 #+begin_example elisp
 (defvar chu/default-currency "$"
   "Default currency symbol used for formatting amounts.")
@@ -1602,6 +1594,7 @@ Otherwise, process only the current transaction."
         :localleader
         "f" #'chu/ledger-post-fill))
 #+end_example
+
 *** Set default currency string in =hledger=
 #+begin_src elisp
 (setq hledger-currency-string "$")
@@ -1620,7 +1613,9 @@ Otherwise, process only the current transaction."
 #+end_src
 
 ** WSL2
+
 *** Setup
+
 **** =wsl_path.py= Setup
 
 #+begin_example python :exec no
@@ -1778,10 +1773,13 @@ This is done by installing the [[https://github.com/wslutilities/wslu][wslu]] on
 #+end_src
 
 ** Set safe local variable values for exports (Hugo/ox-hugo)
+
 #+begin_src elisp
 (setq safe-local-variable-values '((eval org-hugo-auto-export-mode t)))
 #+end_src
+
 ** Set ignored local variable values for exports (Org)
+
 #+begin_src elisp
 (setq ignored-local-variable-values '((eval setq org-export-initial-scope 'subtree)))
 #+end_src
