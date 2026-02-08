@@ -95,6 +95,12 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
 
 * Config
 
+** Shell
+#+begin_src elisp
+(setq shell-file-name "/bin/zsh")
+(setq explicit-shell-file-name "/bin/zsh")
+(setq vterm-shell "/bin/zsh")
+#+end_src
 ** Private Configuration
 
 #+begin_src elisp
@@ -641,6 +647,16 @@ Added automatically when images are attached. Does not affect actual image dimen
 
 #+begin_src elisp
 (setq org-image-actual-width nil)
+#+end_src
+
+*** Custom function for linking latest screenshot as captured by Windows-to-WSL2 Screenshot Bridge
+
+=latest.png= is a symbolic link to whichever screenshot was taken most recently, which will then be copied to the user's attachment directory for Emacs org-mode.
+
+#+begin_src elisp
+(defun chu/org+/attach-latest-screenshot-and-insert-link ()
+  (interactive)
+  (+org/attach-file-and-insert-link "~/.screenshots/latest.png"))
 #+end_src
 
 *** LaTeX classes for org mode with org-latex-classes
