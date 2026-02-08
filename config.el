@@ -1,5 +1,9 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
+(setq shell-file-name "/bin/zsh")
+(setq explicit-shell-file-name "/bin/zsh")
+(setq vterm-shell "/bin/zsh")
+
 (setq user-full-name "chu the pup"
       user-mail-address "chufilthymutt@gmail.com")
 
@@ -269,6 +273,10 @@
   (require 'org-download))
 
 (setq org-image-actual-width nil)
+
+(defun chu/org+/attach-latest-screenshot-and-insert-link ()
+  (interactive)
+  (+org/attach-file-and-insert-link "~/.screenshots/latest.png"))
 
 (with-eval-after-load 'ox-latex
 (add-to-list 'org-latex-classes
