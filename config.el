@@ -449,6 +449,8 @@
                                    (concat (file-name-sans-extension
                                             (buffer-file-name)) ".org"))))
 
+(add-to-list '+format-on-save-disabled-modes 'emacs-lisp-mode)
+
 (add-to-list 'auto-mode-alist '("\\.\\(asm\\|s\\|S\\)$" . nasm-mode))
 
 (defun ascii-table ()
@@ -678,6 +680,10 @@ Otherwise operate on transaction at point."
                      (- sum)
                      (or currency ""))))))
       (forward-line 1))))
+
+
+
+
 
 (achievements-mode)
 
