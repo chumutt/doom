@@ -1153,6 +1153,11 @@ Do this: put pointer in a code block -> m ' -> F9 to tangle.
                                    (concat (file-name-sans-extension
                                             (buffer-file-name)) ".org"))))
 #+end_src
+** Specify format-on-save (format +onsave) enabled/disabled modes
+
+#+begin_src elisp
+(add-to-list '+format-on-save-disabled-modes 'emacs-lisp-mode)
+#+end_src
 
 ** nasm-mode
 
@@ -1687,6 +1692,15 @@ Otherwise operate on transaction at point."
                      (- sum)
                      (or currency ""))))))
       (forward-line 1))))
+#+end_src
+*** TODO Doom-native formatter for hledger
+
+#+begin_src elisp
+#+end_src
+
+**** TODO Enable format-on-save for hledger/ledger modes
+
+#+begin_src elisp
 #+end_src
 
 ** Achievements in Emacs
