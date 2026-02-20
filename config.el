@@ -610,6 +610,75 @@
 
 (setq hledger-currency-string "$")
 
+(defun chu/hledger-balance-transaction (beg end)
+  "Balance hledger transaction(s).
+
+If region is active, operate on all transactions in region.
+Otherwise operate on transaction at point."
+  (interactive
+   (if (use-region-p)
+       (list (region-beginning) (region-end))
+     (save-excursion
+       ;; find start of current transaction
+       (beginning-of-line)
+       (while (and (not (bobp))
+                   (looking-at "^[ \t]"))
+         (forward-line -1))
+       (let ((tbeg (point)))
+         ;; find end of transaction
+         (forward-line 1)
+         (while (and (not (eobp))
+                     (or (looking-at "^[ \t]")
+                         (looking-at "^$")))
+           (forward-line 1))
+         (list tbeg (point))))))
+
+  (save-excursion
+    (goto-char beg)
+    (while (< (point) end)
+      ;; find next transaction header
+      (when (looking-at
+             "^[0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\}")
+        (let ((tx-start (point))
+              tx-end postings sum missing-line currency)
+          ;; move to end of this transaction
+          (forward-line 1)
+          (while (and (not (eobp))
+                      (looking-at "^[ \t]"))
+            (forward-line 1))
+          (setq tx-end (point))
+
+          ;; collect postings
+          (save-excursion
+            (goto-char tx-start)
+            (forward-line 1)
+            (setq sum 0
+                  missing-line nil)
+
+            (while (< (point) tx-end)
+              (when (looking-at
+                     "^[ \t]+\\([^;\n]+?\\)\\(?:[ \t]+\\([-0-9.]+\\)[ \t]+\\([A-Z]+\\)\\)?[ \t]*$")
+                (let ((amount (match-string 2))
+                      (curr (match-string 3)))
+                  (if amount
+                      (progn
+                        (setq currency curr)
+                        (setq sum
+                              (+ sum (string-to-number amount))))
+                    ;; posting without amount
+                    (setq missing-line (point)))))
+              (forward-line 1)))
+
+          ;; fill missing amount
+          (when missing-line
+            (goto-char missing-line)
+            (end-of-line)
+            (insert
+             (format "%12.2f %s"
+                     (- sum)
+                     (or currency ""))))))
+      (forward-line 1))))
+
 (achievements-mode)
 
 (parrot-mode)
