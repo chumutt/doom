@@ -161,8 +161,8 @@
        ;; )                ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
        (org
-        ;;+pretty
-        +roam2
+        +pretty
+        +roam
         +hugo
         +pandoc
         +journal
