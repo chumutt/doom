@@ -215,3 +215,5 @@
 (package! org-doing)
 (package! easy-hugo)
 (package! org-hyperscheduler)
+(package! ein) ; ipython/jupyter notebooks in emacs
+(package! ox-hugo)

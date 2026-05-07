@@ -1,5 +1,8 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
+(use-package! ox-hugo
+  :after ox)
+
 (setq shell-file-name "/bin/zsh")
 (setq explicit-shell-file-name "/bin/zsh")
 (setq vterm-shell "/bin/zsh")
