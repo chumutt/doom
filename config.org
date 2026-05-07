@@ -94,7 +94,11 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
 #+end_example
 
 * Config
-
+** ox-hugo
+#+begin_src emacs-lisp
+(use-package! ox-hugo
+  :after ox)
+#+end_src
 ** Shell
 #+begin_src elisp
 (setq shell-file-name "/bin/zsh")
