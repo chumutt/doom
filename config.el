@@ -20,7 +20,7 @@
 
 (add-to-list 'default-frame-alist '(alpha-background . 100))
 
-(setq doom-font (font-spec :family "Mono" :size 12))
+(setq doom-font (font-spec :family "Fira Mono" :size 12))
 
 (setq image-use-external-converter t)
 
