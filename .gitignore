@@ -4,3 +4,6 @@ PKGBUILD
 emacs/keys/*
 *.asc
 *.~1~
+
+*.bak
+*.bak.*
