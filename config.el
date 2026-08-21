@@ -410,6 +410,9 @@
     ("on" "Project notes" entry #'+org-capture-central-project-notes-file "* %U %?\n%i\n%a" :heading "Notes" :prepend t)
     ("oc" "Project changelog" entry #'+org-capture-central-project-changelog-file "* %U %?\n%i\n%a" :heading "Changelog" :prepend t)
     ("b" "Bookmarks" entry (file+headline +org-capture-bookmarks-file "Inbox") "* %^{Title}\n%U\n%i\n%a" :prepend t)
+    ("d" "Drawing ideas" entry (file+headline "/home/chu/Nextcloud/documents/org/roam/20220726215421-ideas.org" "Inbox") "* %U Drawing idea: %?\n%i\n" :prepend t)
+    ("j2" "Journal" entry (file+olp+datetree "/home/chu/Nextcloud/documents/org/roam/20221004222230-journal.org") "* %U %?\n%i\n" :prepend t)
+    ("na" "Names" entry (file+headline "/home/chu/Nextcloud/documents/org/roam/20230105171216-names.org" "Inbox") "* %U Name idea: %?\n%i\n" :prepend t)
     ))
 
 (after! org
