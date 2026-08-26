@@ -1888,17 +1888,18 @@ This is done by installing the [[https://github.com/wslutilities/wslu][wslu]] on
 :END:
 
 #+begin_src elisp
-(defun win2wsl-clipped-image()
-  "use powershell to save the clipped image to wsl and load it to xclip"
-  (let* ((powershell "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe")
-         (file-name "//wsl$/Arch/home/chu/tmp/clip_win2wsl.png")
-         (file-name-wsl "~/tmp/clip_win2wsl.png")
-         )
-    (shell-command (concat powershell " -noprofile -command \"(Get-Clipboard -Format Image).Save(\\\"" file-name "\\\")\""))
-    (call-process-shell-command (concat "xclip -selection clipboard -t image/png -i " file-name-wsl))
+(when IS-WSL
+  (defun win2wsl-clipped-image()
+    "use powershell to save the clipped image to wsl and load it to xclip"
+    (let* ((powershell "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe")
+           (file-name "//wsl$/Arch/home/chu/tmp/clip_win2wsl.png")
+           (file-name-wsl "~/tmp/clip_win2wsl.png")
+           )
+      (shell-command (concat powershell " -noprofile -command \"(Get-Clipboard -Format Image).Save(\\\"" file-name "\\\")\""))
+      (call-process-shell-command (concat "xclip -selection clipboard -t image/png -i " file-name-wsl))
+      )
     )
-  )
-(advice-add 'org-download-clipboard :before #'win2wsl-clipped-image)
+  (advice-add 'org-download-clipboard :before #'win2wsl-clipped-image))
 #+end_src
 
 ** Set safe local variable values for exports (Hugo/ox-hugo)
