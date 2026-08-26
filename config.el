@@ -230,7 +230,7 @@
          (getenv "HOME")
          "/Nextcloud/documents/org/roam/20221004221829-todo.org")))
 
-(with-eval-after-load 'org
+;; (with-eval-after-load 'org
   (setq org-roam-directory
         (concat
          (getenv "HOME")

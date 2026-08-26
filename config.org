@@ -32,11 +32,13 @@ What I am about to explain is typically done in order to debug the configuration
 
 I try to keep the ones seen here (as in, in this configuration) limited to settings saved for reference, debugging, or other posterity purposes, rather than leaving behind a bunch of crud and bug fixes that are no longer necessary.
 
+
 * ~config.el~ lexical binding
 
 #+begin_src elisp
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 #+end_src
+
 
 * DOOM Emacs Documentation
 
@@ -92,6 +94,7 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
 (setq user-full-name "John Doe"
       user-mail-address "example@donut.arpa")
 #+end_example
+
 
 * Config
 ** ox-hugo
@@ -565,7 +568,7 @@ I primarily use a "todo" file rather than an "agenda" file, for agenda ("TODO") 
 **** Org Roam v2 directories and files :org:roam:
 
 #+begin_src elisp
-(with-eval-after-load 'org
+;; (with-eval-after-load 'org
   (setq org-roam-directory
         (concat
          (getenv "HOME")
