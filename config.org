@@ -566,14 +566,6 @@ I primarily use a "todo" file rather than an "agenda" file, for agenda ("TODO") 
 
 **** Org Roam v2 directories and files :org:roam:
 
-#+begin_src elisp
-;; (with-eval-after-load 'org
-  (setq org-roam-directory
-        (concat
-         (getenv "HOME")
-         "/Nextcloud/documents/org/roam/")))
-#+end_src
-
 **** Org Roam v2 dailies directory :org:roam:
 
 Path to daily-notes. This path is relative to org-roam-directory.
