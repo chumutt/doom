@@ -234,7 +234,7 @@
   (setq org-roam-directory
         (concat
          (getenv "HOME")
-         "/Nextcloud/documents/org/roam/"))))
+         "/Nextcloud/documents/org/roam/")))
 
 (setq org-roam-dailies-directory "daily/")
 
