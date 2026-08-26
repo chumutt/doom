@@ -2,7 +2,6 @@
 #+AUTHOR: chu the pup
 #+DESCRIPTION: Chu's Literate Doom GNU Emacs configuration
 #+PROPERTY: header-args :tangle yes :results none
-#+auto_tangle: t
 #+startup: show2levels
 
 * Preamble
@@ -95,7 +94,17 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
 #+end_example
 
 * Config
-
+** ox-hugo
+#+begin_src emacs-lisp
+(use-package! ox-hugo
+  :after ox)
+#+end_src
+** Shell
+#+begin_src elisp
+(setq shell-file-name "/bin/zsh")
+(setq explicit-shell-file-name "/bin/zsh")
+(setq vterm-shell "/bin/zsh")
+#+end_src
 ** Private Configuration
 
 #+begin_src elisp
@@ -159,10 +168,8 @@ You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs lo
 
 **** Font
 
-I use the default LARBS monospace font instead of Fira Mono for consistency's sake.
-
 #+begin_src elisp
-(setq doom-font (font-spec :family "Mono" :size 12))
+(setq doom-font (font-spec :family "Fira Mono" :size 12))
 #+end_src
 
 The following ensures correct font size without affecting the font used:
@@ -170,8 +177,6 @@ The following ensures correct font size without affecting the font used:
 #+begin_example elisp
 (setq doom-font (font-spec :size 12))
 #+end_example
-
-You may also wish to [[id:24408296-5370-4dbf-a52f-f1afe865ceb5][disable Emacs loading your Xresources file.]]
 
 **** Temporarily convert images that Emacs cannot otherwise display
 
@@ -219,7 +224,7 @@ Requires a compositor (xcompmgr, picom, compton (maybe (haven't tested compton))
 
 The original by kb:
 
-#+begin_src elisp :tangle no
+#+begin_example elisp
 (defun kb/toggle-window-transparency ()
   "Toggle transparency."
   (interactive)
@@ -227,7 +232,7 @@ The original by kb:
     (pcase (frame-parameter nil 'alpha-background)
       (alpha-transparency (set-frame-parameter nil 'alpha-background 100))
       (t (set-frame-parameter nil 'alpha-background alpha-transparency)))))
-#+end_src
+#+end_example
 
 My version(s):
 
@@ -258,10 +263,44 @@ My version(s):
       (put 'toggle-background-transparency 'state t))))
 #+end_src
 
-**** TODO Clean this section up.
+** A "remove all blank lines" custom script :custom:
+
+#+begin_src elisp
+(defun chu/remove-all-empty-lines ()
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (flush-lines "^\\s-*$")))
+#+end_src
+
 ** Org-Mode :org:
 
-*** Org TODO state hiding
+*** Org Tag List :org:
+
+From System Crafters: [[https://www.youtube.com/watch?v=3-sLBaJAtew][Org Roam: The Best Way to Keep a Journal in Emacs - YouTube]]
+
+#+begin_src elisp
+(setq org-tag-alist
+      '(;; Places
+        ("@home" . ?H)
+        ("@work" . ?W)
+
+        ;; Devices
+        ("@computer" . ?C)
+        ("@phone" . ?P)
+
+        ;; Activities
+        ("@planning" . ?n)
+        ("@programming" . ?p)
+        ("@writing" . ?w)
+        ("@creative" . ?c)
+        ("@email" . ?e)
+        ("@calls" . ?a)
+        ("@errands" . ?r)
+        ("@research" . ?R)))
+#+end_src
+
+*** Org TODO state hiding :org:
 
 Write TODO state changes into LOGBOOK drawer. [[https://stackoverflow.com/a/63798475][Thanks, LeeRuns (stackoverflow.com)]].
 
@@ -295,6 +334,8 @@ For the package org-babel-auto-tangle (see packages.org).
 #+end_src
 
 *** Ensure blank lines between headings and before contents
+
+From alphapapa.
 
 #+begin_src elisp
 (defun ap/org-fix-blank-lines (prefix)
@@ -549,7 +590,7 @@ Path to daily-notes. This path is relative to org-roam-directory.
                             "#+title: %<%Y-%m-%d>\n"))))
 #+end_src
 
-**** org-roam-protocol test :org:roam:protocols:
+**** =org-roam-protocol= test :org:roam:protocols:
 
 (I don't remember why I put this here.)
 
@@ -557,7 +598,7 @@ Path to daily-notes. This path is relative to org-roam-directory.
 (require 'org-roam-protocol)
 #+end_src
 
-**** org-roam-export test :org:roam:
+**** =org-roam-export= test :org:roam:
 
 (I don't remember why I put this here, either.)
 
@@ -574,7 +615,7 @@ Path to daily-notes. This path is relative to org-roam-directory.
        "/Nextcloud/documents/org/.orgids"))
 #+end_src
 
-**** Org-attach custom directory :org:
+**** =org-attach= custom directory :org:
 
 #+begin_src elisp
 (setq org-attach-id-dir
@@ -583,7 +624,7 @@ Path to daily-notes. This path is relative to org-roam-directory.
        "/Nextcloud/documents/org/.attach/"))
 #+end_src
 
-**** Org-Cite (oc.el) :org:cite:
+**** =org-cite= (oc.el) :org:cite:
 
 ***** Bibliography Location :org:cite:bib:
 
@@ -608,7 +649,7 @@ Citation Style Language (CSL) files can be used with org-cite.
        "/Nextcloud/documents/org/latex/citeproc-formatters/"))
 #+end_src
 
-**** Org Archive Location
+**** =org-archive= Location
 
 #+begin_src elisp
 (setq org-archive-location "archives/%s_archive::")
@@ -629,6 +670,16 @@ Added automatically when images are attached. Does not affect actual image dimen
 (setq org-image-actual-width nil)
 #+end_src
 
+*** Custom function for linking latest screenshot as captured by Windows-to-WSL2 Screenshot Bridge
+
+=latest.png= is a symbolic link to whichever screenshot was taken most recently, which will then be copied to the user's attachment directory for Emacs org-mode.
+
+#+begin_src elisp
+(defun chu/org+/attach-latest-screenshot-and-insert-link ()
+  (interactive)
+  (+org/attach-file-and-insert-link "~/.screenshots/latest.png"))
+#+end_src
+
 *** LaTeX classes for org mode with org-latex-classes
 
 Helpful when editing LaTeX documents.
@@ -646,6 +697,14 @@ Helpful when editing LaTeX documents.
                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
                ("\\paragraph{%s}" . "\\paragraph*{%s}")
                ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+#+end_src
+
+*** Org latex preview hugo fix attempt
+
+#+begin_src elisp
+(after! org
+  (setq org-latex-preview-ltxpng-directory
+        (expand-file-name "org/ltximg/" doom-cache-dir)))
 #+end_src
 
 *** A Not-Stupid Way to Archive Sections of Org Documents: Hierarchical Subtree Archival :org:archive:
@@ -794,31 +853,273 @@ Want files tracked in your agenda? Use the ~C-c [~ keybinding in each file to ad
 
 *** Org Mode Capture Templates Customization :org:templates:
 
+**** default version
+
+#+begin_example elisp
+(("t" "Personal todo" entry (file+headline +org-capture-todo-file "Inbox")
+  "* [ ] %?\n%i\n%a" :prepend t)
+ ("n" "Personal notes" entry (file+headline +org-capture-notes-file "Inbox")
+  "* %u %?\n%i\n%a" :prepend t)
+ ("j" "Journal" entry (file+olp+datetree +org-capture-journal-file)
+  "* %U %?\n%i\n%a" :prepend t)
+ ("p" "Templates for projects")
+ ("pt" "Project-local todo" entry
+  (file+headline +org-capture-project-todo-file "Inbox") "* TODO %?\n%i\n%a"
+  :prepend t)
+ ("pn" "Project-local notes" entry
+  (file+headline +org-capture-project-notes-file "Inbox") "* %U %?\n%i\n%a"
+  :prepend t)
+ ("pc" "Project-local changelog" entry
+  (file+headline +org-capture-project-changelog-file "Unreleased")
+  "* %U %?\n%i\n%a" :prepend t)
+ ("o" "Centralized templates for projects")
+ ("ot" "Project todo" entry #'+org-capture-central-project-todo-file
+  "* TODO %?\n %i\n %a" :heading "Tasks" :prepend nil)
+ ("on" "Project notes" entry #'+org-capture-central-project-notes-file
+  "* %U %?\n %i\n %a" :heading "Notes" :prepend t)
+ ("oc" "Project changelog" entry #'+org-capture-central-project-changelog-file
+  "* %U %?\n %i\n %a" :heading "Changelog" :prepend t))
+#+end_example
+
+**** old version
+
+#+begin_example elisp
+(setq org-capture-templates
+  '(("t" "Personal todo" entry (file+headline +org-capture-todo-file "Inbox") "* [ ] %?\n%i\n%a" :prepend t)
+  ("n" "Personal notes" entry
+  (file+headline +org-capture-notes-file "Inbox")
+  "* %u %?\n%i\n%a" :prepend t)
+  ("j" "Journal" entry
+  (file+olp+datetree +org-capture-journal-file)
+  "* %U %?\n%i\n%a" :prepend t)
+  ("p" "Templates for projects")
+  ("pt" "Project-local todo" entry
+  (file+headline +org-capture-project-todo-file "Inbox")
+  "* TODO %?\n%i\n%a" :prepend t)
+  ("pn" "Project-local notes" entry
+  (file+headline +org-capture-project-notes-file "Inbox")
+  "* %U %?\n%i\n%a" :prepend t)
+  ("pc" "Project-local changelog" entry
+  (file+headline +org-capture-project-changelog-file "Unreleased")
+  "* %U %?\n%i\n%a" :prepend t)
+  ("o" "Centralized templates for projects")
+  ("ot" "Project todo" entry #'+org-capture-central-project-todo-file "* TODO %?\n %i\n %a" :heading "Tasks" :prepend nil)
+  ("on" "Project notes" entry #'+org-capture-central-project-notes-file "* %U %?\n %i\n %a" :heading "Notes" :prepend t)
+  ("oc" "Project changelog" entry #'+org-capture-central-project-changelog-file "* %U %?\n %i\n %a" :heading "Changelog" :prepend t)))
+#+end_example
+
+**** TODO new version
+
+Mon Mar 31 09:50:32 2025
+Wed Jun  4 18:28:02 2025
+
+#+begin_quote
+  %a          Annotation, normally the link created with org-store-link.
+  %A          Like %a, but prompt for the description part.
+  %l          Like %a, but only insert the literal link.
+  %L          Like %l, but without brackets (the link content itself).
+#+end_quote
+
+#+begin_quote
+ :prepend            Normally newly captured information will be appended at
+                     the target location (last child, last table line,
+                     last list item...).  Setting this property will
+                     change that.
+#+end_quote
+
+***** Mine
+
+#+begin_example elisp
+(setq org-capture-templates
+  '(("t" "Personal todo" entry (file+headline +org-capture-todo-file "Inbox") "* [ ] %?\n%i\n" :prepend t)
+    ("n" "Personal notes" entry (file+headline +org-capture-notes-file "Inbox") "* %u %?\n%i\n" :prepend t)
+    ("j" "Journal" entry (file+olp+datetree +org-capture-journal-file) "* %U %?\n%i\n" :prepend t)
+    ("p" "Templates for projects")
+    ("pt" "Project-local todo" entry (file+headline +org-capture-project-todo-file "Inbox") "* TODO %?\n%i\n%a" :prepend t)
+    ("pn" "Project-local notes" entry (file+headline +org-capture-project-notes-file "Inbox") "* %U %?\n%i\n%a" :prepend t)
+    ("pc" "Project-local changelog" entry (file+headline +org-capture-project-changelog-file "Unreleased") "* %U %?\n%i\n%a" :prepend t)
+    ("o" "Centralized templates for projects")
+    ("ot" "Project todo" entry #'+org-capture-central-project-todo-file "* TODO %?\n %i\n %a" :heading "Tasks" :prepend nil)
+    ("on" "Project notes" entry #'+org-capture-central-project-notes-file "* %U %?\n %i\n %a" :heading "Notes" :prepend t)
+    ("oc" "Project changelog" entry #'+org-capture-central-project-changelog-file "* %U %?\n %i\n %a" :heading "Changelog" :prepend t)
+
+        ))
+#+end_example
+
+#+begin_src elisp
+(setq org-capture-templates
+  '(
+    ("t" "Personal todo" entry (file+headline +org-capture-todo-file "Inbox") "* [ ] %?\n%i\n" :prepend t)
+    ("n" "Personal notes" entry (file+headline +org-capture-notes-file "Inbox") "* %u %?\n%i\n" :prepend t)
+    ("j" "Journal" entry (file+olp+datetree +org-capture-journal-file) "* %U %?\n%i\n" :prepend t)
+    ("p" "Templates for projects")
+    ("pt" "Project-local todo" entry (file+headline +org-capture-project-todo-file "Inbox") "* TODO %?\n%i\n%a" :prepend t)
+    ("pn" "Project-local notes" entry (file+headline +org-capture-project-notes-file "Inbox") "* %U %?\n%i\n%a" :prepend t)
+    ("pc" "Project-local changelog" entry (file+headline +org-capture-project-changelog-file "Unreleased") "* %U %?\n%i\n%a" :prepend t)
+    ("o" "Centralized templates for projects")
+    ("ot" "Project todo" entry #'+org-capture-central-project-todo-file "* TODO %?\n%i\n%a" :heading "Tasks" :prepend nil)
+    ("on" "Project notes" entry #'+org-capture-central-project-notes-file "* %U %?\n%i\n%a" :heading "Notes" :prepend t)
+    ("oc" "Project changelog" entry #'+org-capture-central-project-changelog-file "* %U %?\n%i\n%a" :heading "Changelog" :prepend t)
+    ("b" "Bookmarks" entry (file+headline +org-capture-bookmarks-file "Inbox") "* %^{Title}\n%U\n%i\n%a" :prepend t)
+    ("d" "Drawing ideas" entry (file+headline "/home/chu/Nextcloud/documents/org/roam/20220726215421-ideas.org" "Inbox") "* %U Drawing idea: %?\n%i\n" :prepend t)
+    ("i" "Idea" entry (file+headline "/home/chu/Nextcloud/documents/org/roam/20220726215421-ideas.org" "Inbox") "* %U Idea: %?\n%i\n" :prepend t)
+    ("s" "Shopping list item" item (file+headline "/home/chu/Nextcloud/documents/org/roam/20220726205516-shopping_list.org" "Inbox") "- [ ] %?\n%i\n" :prepend t)
+    ("j2" "Journal" entry (file+olp+datetree "/home/chu/Nextcloud/documents/org/roam/20221004222230-journal.org") "* %U %?\n%i\n" :prepend t)
+    ("na" "Names" entry (file+headline "/home/chu/Nextcloud/documents/org/roam/20230105171216-names.org" "Inbox") "* %U Name idea: %?\n%i\n" :prepend t)
+    ))
+#+end_src
+
+***** From systemcrafters
+
+#+begin_example elisp
+(defun dw/read-file-as-string (path)
+  (with-temp-buffer
+    (insert-file-contents path)
+    (buffer-string)))
+#+end_example
+
+#+begin_example elisp
+(setq org-capture-templates
+  `(("t" "Tasks / Projects")
+    ("tt" "Task" entry (file+olp "~/Projects/Code/emacs-from-scratch/OrgFiles/Tasks.org" "Inbox")
+         "* TODO %?\n  %U\n  %a\n  %i" :empty-lines 1)
+    ("ts" "Clocked Entry Subtask" entry (clock)
+         "* TODO %?\n  %U\n  %a\n  %i" :empty-lines 1)
+
+    ("j" "Journal Entries")
+    ("jj" "Journal" entry
+         (file+olp+datetree "~/Projects/Code/emacs-from-scratch/OrgFiles/Journal.org")
+         "\n* %<%I:%M %p> - Journal :journal:\n\n%?\n\n"
+         ;; ,(dw/read-file-as-string "~/Notes/Templates/Daily.org")
+         :clock-in :clock-resume
+         :empty-lines 1)
+    ("jm" "Meeting" entry
+         (file+olp+datetree "~/Projects/Code/emacs-from-scratch/OrgFiles/Journal.org")
+         "* %<%I:%M %p> - %a :meetings:\n\n%?\n\n"
+         :clock-in :clock-resume
+         :empty-lines 1)
+
+    ("w" "Workflows")
+    ("we" "Checking Email" entry (file+olp+datetree ,(dw/get-todays-journal-file-name))
+         "* Checking Email :email:\n\n%?" :clock-in :clock-resume :empty-lines 1)
+
+    ("m" "Metrics Capture")
+    ("mw" "Weight" table-line (file+headline "~/Projects/Code/emacs-from-scratch/OrgFiles/Metrics.org" "Weight")
+     "| %U | %^{Weight} | %^{Notes} |" :kill-buffer t)))
+#+end_example
+
+#+begin_quote
+Bindings straight to templates
+#+end_quote
+
+#+begin_example elisp
+(define-key global-map (kbd "C-c j")
+  (lambda () (interactive) (org-capture nil "j")))
+#+end_example
+
+Habit tracking
+
+#+begin_src elisp
+(after! org
+  (add-to-list 'org-modules 'org-habit)
+  (setq org-habit-graph-column 60))
+#+end_src
+
+***** NO An even newer version :@computer:@home:@programming:
+
 #+begin_src elisp :tangle no
-  ;; (setq org-capture-templates
-  ;;   '(("t" "Personal todo" entry
-  ;;     (file+headline +org-capture-todo-file "Inbox")
-  ;;   "* [ ] %?\n%i\n%a" :prepend t)
-  ;;   ("n" "Personal notes" entry
-  ;;   (file+headline +org-capture-notes-file "Inbox")
-  ;;   "* %u %?\n%i\n%a" :prepend t)
-  ;;   ("j" "Journal" entry
-  ;;   (file+olp+datetree +org-capture-journal-file)
-  ;;   "* %U %?\n%i\n%a" :prepend t)
-  ;;   ("p" "Templates for projects")
-  ;;   ("pt" "Project-local todo" entry
-  ;;   (file+headline +org-capture-project-todo-file "Inbox")
-  ;;   "* TODO %?\n%i\n%a" :prepend t)
-  ;;   ("pn" "Project-local notes" entry
-  ;;   (file+headline +org-capture-project-notes-file "Inbox")
-  ;;   "* %U %?\n%i\n%a" :prepend t)
-  ;;   ("pc" "Project-local changelog" entry
-  ;;   (file+headline +org-capture-project-changelog-file "Unreleased")
-  ;;   "* %U %?\n%i\n%a" :prepend t)
-  ;;   ("o" "Centralized templates for projects")
-  ;;   ("ot" "Project todo" entry #'+org-capture-central-project-todo-file "* TODO %?\n %i\n %a" :heading "Tasks" :prepend nil)
-  ;;   ("on" "Project notes" entry #'+org-capture-central-project-notes-file "* %U %?\n %i\n %a" :heading "Notes" :prepend t)
-  ;;   ("oc" "Project changelog" entry #'+org-capture-central-project-changelog-file "* %U %?\n %i\n %a" :heading "Changelog" :prepend t)))
+(setq org-capture-templates
+  '(
+    ("t" "Personal todo / tasks")
+    ("tt" "Personal todo" entry
+     (file+headline +org-capture-todo-file "Inbox")
+     "* TODO %?\n%i\n"
+     :prepend t)
+
+    ("n" "Personal notes" entry
+     (file+headline +org-capture-notes-file "Inbox")
+     "* %u %?\n%i\n"
+     :prepend t)
+
+    ("j" "Journal Entries")
+    ("jj" "Journal" entry
+     (file+olp+datetree +org-capture-journal-file)
+     "* %U %?\n%i\n"
+     :prepend t)
+
+    ("p" "Templates for projects")
+    ("pt" "Project-local todo" entry
+     (file+headline +org-capture-project-todo-file "Inbox")
+     "* TODO %?\n%i\n%a"
+     :prepend t)
+    ("pn" "Project-local notes" entry
+     (file+headline +org-capture-project-notes-file "Inbox")
+     "* %U %?\n%i\n%a"
+     :prepend t)
+    ("pc" "Project-local changelog" entry
+     (file+headline +org-capture-project-changelog-file "Unreleased")
+     "* %U %?\n%i\n%a"
+     :prepend t)
+
+    ("o" "Centralized templates for projects")
+    ("ot" "Project todo" entry
+     #'+org-capture-central-project-todo-file
+     "* TODO %?\n %i\n %a"
+     :heading "Tasks"
+     :prepend nil)
+    ("on" "Project notes" entry
+     #'+org-capture-central-project-notes-file
+     "* %U %?\n %i\n %a"
+     :heading "Notes"
+     :prepend t)
+    ("oc" "Project changelog" entry
+     #'+org-capture-central-project-changelog-file
+     "* %U %?\n %i\n %a"
+     :heading "Changelog"
+     :prepend t)
+
+    ("t" "Tasks / Projects")
+    ("tt" "Task" entry
+     (
+      file+headline +org-capture-todo-file
+      "Inbox")
+     "* TODO %?\n  %U\n  %a\n  %i"
+     :empty-lines 1)
+    ("ts" "Clocked Entry Subtask" entry
+     (clock)
+     "* TODO %?\n  %U\n  %a\n  %i"
+     :empty-lines 1)
+
+    ("j" "Journal Entries")
+    ("jj" "Journal" entry
+         (file+olp+datetree +org-capture-journal-file)
+         "* %U %?\n%i\n%a"
+         :prepend t)
+    ("jm" "Meeting" entry
+         (file+olp+datetree +org-capture-journal-file)
+         "* %<%I:%M %p> - %a :meetings:\n\n%?\n\n"
+         :prepend t
+         :clock-in :clock-resume
+         :empty-lines 1)
+
+    ;; ("w" "Workflows")
+    ;; ("we" "Checking Email" entry
+    ;;  (file+olp+datetree
+    ;;   ;; FIXME
+    ;;   ;; ,(dw/get-todays-journal-file-name))
+    ;;  "* Checking Email :email:\n\n%?"
+    ;;  :clock-in
+    ;;  :clock-resume
+    ;;  :empty-lines 1)
+
+    ;; ("m" "Metrics Capture")
+    ;; ("mw" "Weight" table-line
+    ;;  (file+headline
+    ;;   ;; FIXME
+    ;;   ;; "~/Projects/Code/emacs-from-scratch/OrgFiles/Metrics.org"
+    ;;   "Weight")
+    ;;  "| %U | %^{Weight} | %^{Notes} |"
+    ;;  :kill-buffer t)))
 #+end_src
 
 *** Vulpea Auto-Sync Org Roam v2 todos from dailies :org:roam:vulpea:
@@ -893,23 +1194,23 @@ Do this: put pointer in a code block -> m ' -> F9 to tangle.
 By [[https://www.emacswiki.org/emacs/Rick_Bielawski][Rick Bielawski]] ([[https://www.emacswiki.org/emacs/AsciiTable][EmacsWiki: Ascii Table]]):
 
 #+begin_src elisp
-  (defun ascii-table ()
-    "Display basic ASCII table (0 thru 128)."
-    (interactive)
-    (switch-to-buffer "*ASCII*")
-    (erase-buffer)
-    (setq buffer-read-only nil)        ;; Not need to edit the content, just read mode (added)
-    (local-set-key "q" 'bury-buffer)   ;; Nice to have the option to bury the buffer (added)
-    (save-excursion (let ((i -1))
-      (insert "ASCII characters 0 thru 127.\n\n")
-      (insert " Hex  Dec  Char|  Hex  Dec  Char|  Hex  Dec  Char|  Hex  Dec  Char\n")
-      (while (< i 31)
-        (insert (format "%4x %4d %4s | %4x %4d %4s | %4x %4d %4s | %4x %4d %4s\n"
-                        (setq i (+ 1  i)) i (single-key-description i)
-                        (setq i (+ 32 i)) i (single-key-description i)
-                        (setq i (+ 32 i)) i (single-key-description i)
-                        (setq i (+ 32 i)) i (single-key-description i)))
-        (setq i (- i 96))))))
+(defun ascii-table ()
+  "Display basic ASCII table (0 thru 128)."
+  (interactive)
+  (switch-to-buffer "*ASCII*")
+  (erase-buffer)
+  (setq buffer-read-only nil)        ;; Not need to edit the content, just read mode (added)
+  (local-set-key "q" 'bury-buffer)   ;; Nice to have the option to bury the buffer (added)
+  (save-excursion (let ((i -1))
+    (insert "ASCII characters 0 thru 127.\n\n")
+    (insert " Hex  Dec  Char|  Hex  Dec  Char|  Hex  Dec  Char|  Hex  Dec  Char\n")
+    (while (< i 31)
+      (insert (format "%4x %4d %4s | %4x %4d %4s | %4x %4d %4s | %4x %4d %4s\n"
+                      (setq i (+ 1  i)) i (single-key-description i)
+                      (setq i (+ 32 i)) i (single-key-description i)
+                      (setq i (+ 32 i)) i (single-key-description i)
+                      (setq i (+ 32 i)) i (single-key-description i)))
+      (setq i (- i 96))))))
 #+end_src
 
 ** Emacs Relay Chat (~erc~) for Internet Relay Chat (IRC) :irc:
@@ -986,6 +1287,7 @@ Make sure you know where your Emacs cache backup directory actually resides befo
 #+begin_src elisp
 (setq dired-listing-switches "-hl -v --group-directories-first")
 #+end_src
+
 *** Dirvish
 
 #+begin_src elisp
@@ -1005,8 +1307,6 @@ Make sure you know where your Emacs cache backup directory actually resides befo
         "C-<escape>" #'dirvish-toggle-dotfiles))
 #+end_src
 
-
-
 ** Enable active presence on Discord for Emacs
 
 *WARNING*: This will tell anyone on your Discord your current activity status in Emacs—with a pretty hefty amount of detail as well. [[id:8f9bc104-87a1-4fa4-b624-a5ea64210b8a][Remember: you can do the following if you want to disable something]].
@@ -1020,7 +1320,9 @@ Make sure you know where your Emacs cache backup directory actually resides befo
         elcord-quiet t
         elcord-mode t))
 #+end_src
+
 ** emms
+
 #+begin_src elisp
 (setq emms-source-beets-database "/run/media/root/grandarchive/root/audio/music/library.db")
 #+end_src
@@ -1056,6 +1358,8 @@ Ange-FTP defaults to =~/.netrc=  so you need to add this to your init script:
   ;; https://www.gnu.org/software/tramp/#Improving-performance-of-asynchronous-remote-processes-1.
   (add-to-list 'tramp-connection-properties
                (list (regexp-quote "/ssh:chunix:")
+                     (regexp-quote "/ssh:navi")
+                     (regexp-quote "/ssh:dogleash")
                      "direct-async-process" t))
   ;; Tips to speed up connections
   (setq tramp-verbose 0
@@ -1072,6 +1376,17 @@ Ange-FTP defaults to =~/.netrc=  so you need to add this to your init script:
 
 ** Common Lisp
 
+*** ~roswell~ Lisp Sly helper :lisp:roswell:sly:repl:
+
+#+begin_src elisp
+(setq inferior-lisp-program "ros dynamic-space-size=8000 -Q run")
+;; (load (expand-file-name "~/.roswell/helper.el"))
+;; (setq sly-replace-slime t)
+;; (after! lisp-mode
+;; 
+;; )
+#+end_src
+
 *** Common Lisp find file fix for Roswell compatibility :lisp:
 
 #+begin_src elisp
@@ -1079,18 +1394,10 @@ Ange-FTP defaults to =~/.netrc=  so you need to add this to your init script:
   (defun +lisp/find-file-in-quicklisp ()
     "Find a file belonging to a library downloaded by Quicklisp."
     (interactive)
-    (doom-project-find-file "~/.local/share/roswell/lisp/quicklisp/dists")))
+    (doom-project-find-file "~/.roswell/lisp/quicklisp/dists")))
 #+end_src
 
-*** ~roswell~ Lisp Sly helper :lisp:roswell:sly:repl:
-
-#+begin_src elisp
-(after! lisp-mode
-  (load! (expand-file-name "~/.local/share/roswell/helper.el"))
-  (setq inferior-lisp-program "ros dynamic-space-size=8000 -Q run"))
-#+end_src
-
-*** Common Lisp snippets for ya snippets (require)
+*** Common Lisp snippets for yasnippets (require)
 
 #+begin_src elisp
 (after! lisp-mode
@@ -1106,36 +1413,504 @@ Ange-FTP defaults to =~/.netrc=  so you need to add this to your init script:
 #+end_src
 
 ** C++
+
 #+begin_src elisp
 ;;(setq c-syntactic-indentation nil)
 #+end_src
+
 ** ~whisper~ Voice transcription (speech to text)
 
 Personally, I can't get a model other than the ~base~ one to download. I'm an English speaker, so there's no translation services enabled.
 
 The ~num-processors~ function is a part of base Emacs: [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Process-Information.html#index-num_002dprocessors][GNU Emacs Manual 40.6 Process Information]].
 
+I wouldn't bother using anything other than the "base.en" model specified below by the two model and language variables.
+
 #+begin_src elisp
 (use-package whisper
   :config
   (setq whisper-install-directory "~/.config/emacs/.local/cache/"
-        whisper-model "base"
+        whisper-model "small"
         whisper-language "en"
         whisper-translate nil
         whisper-use-threads (/ (num-processors) 2))
         ;; turn off after 600 seconds of silence
         whisper-recording-timeout 600)
 #+end_src
+
 ** company-tabnine
 :PROPERTIES:
 :ID:       bf00e5e6-33e9-4db7-ab2a-03118c2f2990
 :END:
+
 #+begin_src elisp
 (after! company
   (setq +lsp-company-backends '(company-tabnine :separate company-capf company-yasnippet))
   (setq company-show-numbers t)
   (setq company-idle-delay 0))
 #+end_src
+
+** newline custom
+
+#+begin_src elisp
+(defun newline-after-comma-in-parens ()
+  "Insert a newline after each comma within the parentheses of the current line and re-indent."
+  (interactive)
+  (save-excursion
+    (let ((start (line-beginning-position))
+          (end (line-end-position)))
+      (goto-char start)
+      (while (re-search-forward ",\\s-*" end t)
+        (replace-match ",\n" t t))
+      (indent-region start (line-end-position)))))
+
+(map! :n "SPC p ," #'newline-after-comma-in-parens) ;; Bind it to a key, like `SPC p ,`
+#+end_src
+
+** hledger/ledger
+
+*** Turn =ledger-mode= into =hledger-mode=
+
+Figuratively, of course.
+
+Requires hledger to be installed.
+
+From https://hledger.org/editors.html#emacs
+
+#+begin_src elisp
+(require 'ob-hledger) ; hledger-mode depends on org-contrib package
+(setq ledger-binary-path "hledger.sh" ; may need to be customized; need to add to your path variable
+      ledger-mode-should-check-version nil
+      ledger-report-auto-width nil
+      ledger-report-links-in-register nil
+      ledger-report-native-highlighting-arguments '("--color=always")
+      ledger-default-date-string "%Y-%m-%d" ; 2000-01-01
+      ledger-source-directory (getenv "LEDGER_FILE")
+      ledger-init-file nil ; optional
+      ;; ledger-init-file-name "~/.ledgerrc"
+      ;; ledger-init-file-name "~/.config/ledger/ledgerrc"
+      ledger-accounts-file nil
+      ledger-schedule-file nil
+      ledger-payees-file nil)
+
+(add-to-list 'auto-mode-alist '("\\.hledger\\'" . ledger-mode))
+(add-to-list 'auto-mode-alist '("\\.journal\\'" . ledger-mode))
+#+end_src
+
+**** hledger.sh script
+
+from https://hledger.org/editors.html#emacs
+#+begin_src sh :mkdirp t :tangle ~/.local/bin/hledger.sh :shebang "#!/bin/sh" :eval no
+# hledger.sh
+# Kudos to acarrico for the original script.
+
+# The script is contingent on ledger-default-date-string
+# being set to "%Y-%m-%d", aka ISO date format.
+
+iargs=("$@")
+oargs=()
+j=0;
+date=;
+for((i=0; i<${#iargs[@]}; ++i)); do
+    case ${iargs[i]} in
+        --date-format)
+            # drop --date-format and the next arg
+            i=$((i+1));
+            ;;
+        cleared) # for ledger-di
+            splay-balance-at-point
+            # convert "cleared" to "balance -N -C"
+            oargs[j]=balance; oargs[j+1]=-N; oargs[j+2]=-C; j=$((j+3));
+            ;;
+        xact)
+            # convert "xact" to "print --match"
+            oargs[j]=print; oargs[j+1]=--match; j=$((j+2));
+            # drop xact argument and stash the date argument
+            i=$((i+1));
+            date=${iargs[i]};
+            ;;
+        # NOTE: Reconciliation still doesn't work for other reasons
+        #       so the following filters/conversions are unnecessary for now.
+        # --sort) # for reconcilliation
+        #     # drop --sort and the next arg
+        #     i=$((i+1));
+        #     ;;
+        # --uncleared) # for reconcilliation
+        #     # convert "--uncleared" to "--unmarked --pending"
+        #     oargs[j]=--unmarked; oargs[j+1]=--pending; j=$((j+2))
+        #     ;;
+        ,*)
+            # keep any other args:
+            oargs[j]=${iargs[i]};
+            j=$((j+1));
+            ;;
+    esac
+done
+
+if test "$date"
+then
+    # substitute the given date for the old date:
+    hledger "${oargs[@]}" | sed "1s/....-..-../$date/"
+else
+    # echo "${oargs[@]}"
+    hledger "${oargs[@]}"
+fi
+#+end_src
+
+**** [[https://hledger.org/editors.html#misc][Misc]]
+
+A helper to browse TODO tags in the journal:
+
+#+begin_example elisp
+(defun journal-todos nil (interactive) (lgrep "TODO:" "current.journal" "~/finance" nil))
+#+end_example
+
+**** Use strict account name checking (optional)
+
+#+begin_example elisp
+(after! 'ledger-mode
+  (setq ledger-report-use-strict t))
+#+end_example
+
+**** custom hledger formatting scripts (example)
+
+#+begin_example elisp
+(defvar chu/default-currency "$"
+  "Default currency symbol used for formatting amounts.")
+
+(defun chu/ledger-format-number-with-commas (num)
+  "Format NUM with commas and two decimals (e.g., 1,234.56)."
+  (let* ((str (format "%.2f" num))
+         (parts (split-string str "\\."))
+         (int-part (car parts))
+         (dec-part (cadr parts))
+         (int-with-commas
+          (replace-regexp-in-string
+           "\\B\\(\\d\\{3\\}\\)\\(\\(?:\\d\\{3\\}\\)*\\)" ",\\1" int-part)))
+    (concat int-with-commas "." dec-part)))
+
+(defun chu/format-usd (amount)
+  "Format AMOUNT as a USD value with commas, 2 decimals, and no space before $."
+  (let* ((num (abs amount))
+         (sign (if (< amount 0) "-" ""))
+         (formatted (chu/ledger-format-number-with-commas num)))
+    (format "%s%s%s" sign chu/default-currency formatted)))
+
+(defun chu/ledger-fill-1-xact ()
+  "Fill one missing posting in the current transaction with formatted amount."
+  (pcase-let* ((`(,total . ,missing-positions) (ledger-post-xact-total))
+               (missing-amount (ledger-negate-commodity total))
+               (amounts-balance (< (abs (car missing-amount)) 0.0001)))
+    (pcase missing-positions
+      ('() (unless amounts-balance
+             (user-error "Postings do not balance, but no posting to fill")))
+      (`(,missing-pos)
+       (if amounts-balance
+           (user-error "Missing amount but amounts balance already")
+         (goto-char missing-pos)
+         (insert "  " (chu/format-usd (car missing-amount)))
+         (ledger-post-align-xact (point))))
+      (_ (user-error "More than one posting with missing amount")))))
+
+(with-eval-after-load 'ledger-mode
+  (defun chu/ledger-post-fill (&optional beg end)
+    "Fill missing posting amounts.
+
+If region is active, process all transactions in region.
+Otherwise, process only the current transaction."
+    (interactive (if (use-region-p)
+                     (list (region-beginning) (region-end))))
+    (save-excursion
+      (if (and beg end)
+          ;; Region-based processing
+          (progn
+            (goto-char beg)
+            (while (and (< (point) end)
+                        (re-search-forward ledger-transaction-start-regexp end t))
+              (goto-char (match-beginning 0))
+              (chu/ledger-fill-1-xact)
+              (ledger-next-xact)))
+        ;; Single transaction fallback
+        (chu/ledger-fill-1-xact)))))
+
+;; Optional: keybinding for Doom Emacs
+(with-eval-after-load 'ledger-mode
+  (map! :map ledger-mode-map
+        :localleader
+        "f" #'chu/ledger-post-fill))
+#+end_example
+
+*** Set default currency string in =hledger=
+#+begin_src elisp
+(setq hledger-currency-string "$")
+#+end_src
+*** Balance transaction at point / in selected region
+
+#+name: hledger-balance-transaction
+#+begin_src elisp
+(defun chu/hledger-balance-transaction (beg end)
+  "Balance hledger transaction(s).
+
+If region is active, operate on all transactions in region.
+Otherwise operate on transaction at point."
+  (interactive
+   (if (use-region-p)
+       (list (region-beginning) (region-end))
+     (save-excursion
+       ;; find start of current transaction
+       (beginning-of-line)
+       (while (and (not (bobp))
+                   (looking-at "^[ \t]"))
+         (forward-line -1))
+       (let ((tbeg (point)))
+         ;; find end of transaction
+         (forward-line 1)
+         (while (and (not (eobp))
+                     (or (looking-at "^[ \t]")
+                         (looking-at "^$")))
+           (forward-line 1))
+         (list tbeg (point))))))
+
+  (save-excursion
+    (goto-char beg)
+    (while (< (point) end)
+      ;; find next transaction header
+      (when (looking-at
+             "^[0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\}")
+        (let ((tx-start (point))
+              tx-end postings sum missing-line currency)
+          ;; move to end of this transaction
+          (forward-line 1)
+          (while (and (not (eobp))
+                      (looking-at "^[ \t]"))
+            (forward-line 1))
+          (setq tx-end (point))
+
+          ;; collect postings
+          (save-excursion
+            (goto-char tx-start)
+            (forward-line 1)
+            (setq sum 0
+                  missing-line nil)
+
+            (while (< (point) tx-end)
+              (when (looking-at
+                     "^[ \t]+\\([^;\n]+?\\)\\(?:[ \t]+\\([-0-9.]+\\)[ \t]+\\([A-Z]+\\)\\)?[ \t]*$")
+                (let ((amount (match-string 2))
+                      (curr (match-string 3)))
+                  (if amount
+                      (progn
+                        (setq currency curr)
+                        (setq sum
+                              (+ sum (string-to-number amount))))
+                    ;; posting without amount
+                    (setq missing-line (point)))))
+              (forward-line 1)))
+
+          ;; fill missing amount
+          (when missing-line
+            (goto-char missing-line)
+            (end-of-line)
+            (insert
+             (format "%12.2f %s"
+                     (- sum)
+                     (or currency ""))))))
+      (forward-line 1))))
+#+end_src
+*** TODO Doom-native formatter for hledger
+
+#+begin_src elisp
+#+end_src
+
+**** TODO Enable format-on-save for hledger/ledger modes
+
+#+begin_src elisp
+#+end_src
+
+** Achievements in Emacs
+
+#+begin_src elisp
+(achievements-mode)
+#+end_src
+
+** =parrot-mode=
+
+#+begin_src elisp
+(parrot-mode)
+#+end_src
+
+** WSL2
+
+*** Setup
+
+**** =wsl_path.py= Setup
+
+#+begin_example python :exec no
+import os
+import sys
+
+file_path = os.path.abspath(sys.argv[-1]).replace("\\", "/").replace("C:", "/mnt/c")
+
+wsl_path_prefix = "//wsl$/Arch/"
+if file_path.startswith(wsl_path_prefix):
+    file_path = file_path.replace(wsl_path_prefix, "/")
+
+command = "echo " + file_path.strip() + "| clip"
+os.system(command)
+#+end_example
+
+**** wsl_emacs.py setup
+
+#+begin_example python :exec no
+import sys
+import subprocess
+import os
+import re
+
+import win32gui
+
+
+class WindowMgr:
+    """Encapsulates some calls to the winapi for window management"""
+
+    def __init__(self):
+        """Constructor"""
+        self._handle = None
+
+    def find_window(self, class_name, window_name=None):
+        """find a window by its class_name"""
+        self._handle = win32gui.FindWindow(class_name, window_name)
+
+    def _window_enum_callback(self, hwnd, wildcard):
+        """Pass to win32gui.EnumWindows() to check all the opened windows"""
+        if re.match(wildcard, str(win32gui.GetWindowText(hwnd))) is not None:
+            self._handle = hwnd
+
+    def find_window_wildcard(self, wildcard):
+        """find a window whose title matches the wildcard regex"""
+        self._handle = None
+        win32gui.EnumWindows(self._window_enum_callback, wildcard)
+
+    def set_foreground(self):
+        """put the window in the foreground"""
+        win32gui.SetForegroundWindow(self._handle)
+
+
+if __name__ == "__main__":
+
+    file_name = (
+        '"' + sys.argv[1] + '"'
+        if sys.argv[1].startswith("org-protocol")
+        else os.path.abspath(sys.argv[1]).replace("\\", "/").replace("C:", "/mnt/c")
+    )
+
+    wsl_path_prefix = "//wsl$/Arch/"
+    if file_name.startswith(wsl_path_prefix):
+        file_name = file_name.replace(wsl_path_prefix, "/")
+
+    command = " ".join(
+        [
+            "C:/Windows/System32/wsl.exe",
+            "-d",
+            "Arch",
+            "emacsclient",
+            "-n",
+            file_name,
+        ]
+    )
+    subprocess.Popen(command, shell=True)
+
+    w = WindowMgr()
+    w.find_window_wildcard(".*Doom Emac")
+    w.set_foreground()
+#+end_example
+
+**** org-protocol registry setup
+
+#+begin_example reg :exec no
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\org-protocol]
+@="URL:Org Protocol"
+"URL Protocol"=""
+
+[HKEY_CLASSES_ROOT\org-protocol\shell]
+
+[HKEY_CLASSES_ROOT\org-protocol\shell\open]
+
+[HKEY_CLASSES_ROOT\org-protocol\shell\open\command]
+@="\"C:\\Users\\lain\\scoop\\apps\\python\\current\\pythonw.exe\" \"C:\\Portables.chu\\emacs-wsl\\wsl_emacs.py\" \"%1\""
+#+end_example
+
+*** TODO enable/disable WSL-specific settings
+
+Since this is the 'navi' branch this is (will be?) enabled by default:
+
+#+begin_src elisp
+(defvar IS-WSL t)
+#+end_src
+
+*** TODO open links in org-mode in emacs@wsl2 using windows apps
+
+This is done by installing the [[https://github.com/wslutilities/wslu][wslu]] on your wsl2, and then you can config your org-mode by:
+
+#+begin_src elisp
+;; Set org-file-apps based on the system type
+(when IS-WSL
+  (setq org-file-apps '((remote . emacs)
+                        (auto-mode . emacs)
+                        (directory . emacs)
+                        ("\\.mm\\'" . "wslview \"%s\"")
+                        ("\\.x?html?\\'" . "wslview \"%s\"")
+                        ("\\.pptx?\\'" . "wslview \"%s\"")
+                        ("\\.xlsx?\\'" . "wslview \"%s\"")
+                        ("\\.docx?\\'" . "wslview \"%s\"")
+                        ("\\.pdf\\'" .  "wslview \"%s\"")))
+  ;; need to set explorer for open weblinks and htmls seperately
+  (setq browse-url-generic-program "/mnt/c/Program Files/Mozilla Firefox/firefox.exe"))
+#+end_src
+
+*** TODO fix keyboard shortcut for C-shift-0
+
+#+begin_src elisp
+;; Windows 10 blocks Ctrl-Shift-0, so, using powertoy to cheat the system,
+;; when we press "C-)", it will become "C->"
+(cond (IS-WSL
+       (map! "C->" #'sp-forward-slurp-sexp))
+      (t (map! "C-)" #'sp-forward-slurp-sexp)))
+#+end_src
+
+*** DONE share clipboard between windows host and WSL2
+:PROPERTIES:
+:ID:       723b4e62-7315-4dd4-8515-7ca2748220b2
+:END:
+
+#+begin_src elisp
+(defun win2wsl-clipped-image()
+  "use powershell to save the clipped image to wsl and load it to xclip"
+  (let* ((powershell "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe")
+         (file-name "//wsl$/Arch/home/chu/tmp/clip_win2wsl.png")
+         (file-name-wsl "~/tmp/clip_win2wsl.png")
+         )
+    (shell-command (concat powershell " -noprofile -command \"(Get-Clipboard -Format Image).Save(\\\"" file-name "\\\")\""))
+    (call-process-shell-command (concat "xclip -selection clipboard -t image/png -i " file-name-wsl))
+    )
+  )
+(advice-add 'org-download-clipboard :before #'win2wsl-clipped-image)
+#+end_src
+
+** Set safe local variable values for exports (Hugo/ox-hugo)
+
+#+begin_src elisp
+(setq safe-local-variable-values '((eval org-hugo-auto-export-mode t)))
+#+end_src
+
+** Set ignored local variable values for exports (Org)
+
+#+begin_src elisp
+(setq ignored-local-variable-values '((eval setq org-export-initial-scope 'subtree)))
+#+end_src
+
 * Works Cited
 
 ** [[https://gergely.polonkai.eu/blog/2014/10/7/rounding-numbers-to-n-decimals-in-emacs.html][Rounding numbers to N decimals in Emacs]]
@@ -1163,3 +1938,9 @@ By [[https://gist.github.com/kepi/2f4acc3cc93403c75fbba5684c5d852d][Kepi]]. Than
 *** [[https://lists.gnu.org/archive/html/emacs-orgmode/2014-08/msg00109.html][org-archive-subtree-hierarchical.el v0.1]]
 
 By [[https://lists.gnu.org/archive/html/emacs-orgmode/2014-08/msg00109.html][Florian Adamsky]]. Thanks, Florian Adamsky.
+
+** System Crafters
+
+Thanks, David!
+
+*** [[https://www.youtube.com/watch?v=3-sLBaJAtew][Org Roam: The Best Way to Keep a Journal in Emacs - YouTube]]

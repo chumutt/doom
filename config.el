@@ -1,5 +1,12 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
+(use-package! ox-hugo
+  :after ox)
+
+(setq shell-file-name "/bin/zsh")
+(setq explicit-shell-file-name "/bin/zsh")
+(setq vterm-shell "/bin/zsh")
+
 (setq user-full-name "chu the pup"
       user-mail-address "chufilthymutt@gmail.com")
 
@@ -13,7 +20,7 @@
 
 (add-to-list 'default-frame-alist '(alpha-background . 100))
 
-(setq doom-font (font-spec :family "Mono" :size 12))
+(setq doom-font (font-spec :family "Fira Mono" :size 12))
 
 (setq image-use-external-converter t)
 
@@ -49,6 +56,31 @@
     (progn
       (set-frame-parameter nil 'alpha-background 75)
       (put 'toggle-background-transparency 'state t))))
+
+(defun chu/remove-all-empty-lines ()
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (flush-lines "^\\s-*$")))
+
+(setq org-tag-alist
+      '(;; Places
+        ("@home" . ?H)
+        ("@work" . ?W)
+
+        ;; Devices
+        ("@computer" . ?C)
+        ("@phone" . ?P)
+
+        ;; Activities
+        ("@planning" . ?n)
+        ("@programming" . ?p)
+        ("@writing" . ?w)
+        ("@creative" . ?c)
+        ("@email" . ?e)
+        ("@calls" . ?a)
+        ("@errands" . ?r)
+        ("@research" . ?R)))
 
 (setq org-log-into-drawer "LOGBOOK")
 
@@ -244,6 +276,10 @@
 
 (setq org-image-actual-width nil)
 
+(defun chu/org+/attach-latest-screenshot-and-insert-link ()
+  (interactive)
+  (+org/attach-file-and-insert-link "~/.screenshots/latest.png"))
+
 (with-eval-after-load 'ox-latex
 (add-to-list 'org-latex-classes
              '("org-plain-latex"
@@ -256,6 +292,10 @@
                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
                ("\\paragraph{%s}" . "\\paragraph*{%s}")
                ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+
+(after! org
+  (setq org-latex-preview-ltxpng-directory
+        (expand-file-name "org/ltximg/" doom-cache-dir)))
 
 (after! 'org
   (provide 'org-archive-subtree-hierarchical)
@@ -354,6 +394,31 @@
 
 (after! 'org-archive
   (setq org-archive-default-command 'org-archive-subtree-hierarchical))
+
+(setq org-capture-templates
+  '(
+    ("t" "Personal todo" entry (file+headline +org-capture-todo-file "Inbox") "* [ ] %?\n%i\n" :prepend t)
+    ("n" "Personal notes" entry (file+headline +org-capture-notes-file "Inbox") "* %u %?\n%i\n" :prepend t)
+    ("j" "Journal" entry (file+olp+datetree +org-capture-journal-file) "* %U %?\n%i\n" :prepend t)
+    ("p" "Templates for projects")
+    ("pt" "Project-local todo" entry (file+headline +org-capture-project-todo-file "Inbox") "* TODO %?\n%i\n%a" :prepend t)
+    ("pn" "Project-local notes" entry (file+headline +org-capture-project-notes-file "Inbox") "* %U %?\n%i\n%a" :prepend t)
+    ("pc" "Project-local changelog" entry (file+headline +org-capture-project-changelog-file "Unreleased") "* %U %?\n%i\n%a" :prepend t)
+    ("o" "Centralized templates for projects")
+    ("ot" "Project todo" entry #'+org-capture-central-project-todo-file "* TODO %?\n%i\n%a" :heading "Tasks" :prepend nil)
+    ("on" "Project notes" entry #'+org-capture-central-project-notes-file "* %U %?\n%i\n%a" :heading "Notes" :prepend t)
+    ("oc" "Project changelog" entry #'+org-capture-central-project-changelog-file "* %U %?\n%i\n%a" :heading "Changelog" :prepend t)
+    ("b" "Bookmarks" entry (file+headline +org-capture-bookmarks-file "Inbox") "* %^{Title}\n%U\n%i\n%a" :prepend t)
+    ("d" "Drawing ideas" entry (file+headline "/home/chu/Nextcloud/documents/org/roam/20220726215421-ideas.org" "Inbox") "* %U Drawing idea: %?\n%i\n" :prepend t)
+    ("i" "Idea" entry (file+headline "/home/chu/Nextcloud/documents/org/roam/20220726215421-ideas.org" "Inbox") "* %U Idea: %?\n%i\n" :prepend t)
+    ("s" "Shopping list item" item (file+headline "/home/chu/Nextcloud/documents/org/roam/20220726205516-shopping_list.org" "Inbox") "- [ ] %?\n%i\n" :prepend t)
+    ("j2" "Journal" entry (file+olp+datetree "/home/chu/Nextcloud/documents/org/roam/20221004222230-journal.org") "* %U %?\n%i\n" :prepend t)
+    ("na" "Names" entry (file+headline "/home/chu/Nextcloud/documents/org/roam/20230105171216-names.org" "Inbox") "* %U Name idea: %?\n%i\n" :prepend t)
+    ))
+
+(after! org
+  (add-to-list 'org-modules 'org-habit)
+  (setq org-habit-graph-column 60))
 
 (after! 'org
   (use-package! vulpea
@@ -473,6 +538,8 @@
   ;; https://www.gnu.org/software/tramp/#Improving-performance-of-asynchronous-remote-processes-1.
   (add-to-list 'tramp-connection-properties
                (list (regexp-quote "/ssh:chunix:")
+                     (regexp-quote "/ssh:navi")
+                     (regexp-quote "/ssh:dogleash")
                      "direct-async-process" t))
   ;; Tips to speed up connections
   (setq tramp-verbose 0
@@ -482,15 +549,18 @@
 (use-package! palimpsest-mode
   :hook (prog-mode . palimpsest-mode))
 
+(setq inferior-lisp-program "ros dynamic-space-size=8000 -Q run")
+;; (load (expand-file-name "~/.roswell/helper.el"))
+;; (setq sly-replace-slime t)
+;; (after! lisp-mode
+;; 
+;; )
+
 (after! lisp-mode
   (defun +lisp/find-file-in-quicklisp ()
     "Find a file belonging to a library downloaded by Quicklisp."
     (interactive)
-    (doom-project-find-file "~/.local/share/roswell/lisp/quicklisp/dists")))
-
-(after! lisp-mode
-  (load! (expand-file-name "~/.local/share/roswell/helper.el"))
-  (setq inferior-lisp-program "ros dynamic-space-size=8000 -Q run"))
+    (doom-project-find-file "~/.roswell/lisp/quicklisp/dists")))
 
 (after! lisp-mode
   (use-package! common-lisp-snippets
@@ -504,7 +574,7 @@
 (use-package whisper
   :config
   (setq whisper-install-directory "~/.config/emacs/.local/cache/"
-        whisper-model "base"
+        whisper-model "small"
         whisper-language "en"
         whisper-translate nil
         whisper-use-threads (/ (num-processors) 2))
@@ -515,3 +585,151 @@
   (setq +lsp-company-backends '(company-tabnine :separate company-capf company-yasnippet))
   (setq company-show-numbers t)
   (setq company-idle-delay 0))
+
+(defun newline-after-comma-in-parens ()
+  "Insert a newline after each comma within the parentheses of the current line and re-indent."
+  (interactive)
+  (save-excursion
+    (let ((start (line-beginning-position))
+          (end (line-end-position)))
+      (goto-char start)
+      (while (re-search-forward ",\\s-*" end t)
+        (replace-match ",\n" t t))
+      (indent-region start (line-end-position)))))
+
+(map! :n "SPC p ," #'newline-after-comma-in-parens) ;; Bind it to a key, like `SPC p ,`
+
+(require 'ob-hledger) ; hledger-mode depends on org-contrib package
+(setq ledger-binary-path "hledger.sh" ; may need to be customized; need to add to your path variable
+      ledger-mode-should-check-version nil
+      ledger-report-auto-width nil
+      ledger-report-links-in-register nil
+      ledger-report-native-highlighting-arguments '("--color=always")
+      ledger-default-date-string "%Y-%m-%d" ; 2000-01-01
+      ledger-source-directory (getenv "LEDGER_FILE")
+      ledger-init-file nil ; optional
+      ;; ledger-init-file-name "~/.ledgerrc"
+      ;; ledger-init-file-name "~/.config/ledger/ledgerrc"
+      ledger-accounts-file nil
+      ledger-schedule-file nil
+      ledger-payees-file nil)
+
+(add-to-list 'auto-mode-alist '("\\.hledger\\'" . ledger-mode))
+(add-to-list 'auto-mode-alist '("\\.journal\\'" . ledger-mode))
+
+(setq hledger-currency-string "$")
+
+(defun chu/hledger-balance-transaction (beg end)
+  "Balance hledger transaction(s).
+
+If region is active, operate on all transactions in region.
+Otherwise operate on transaction at point."
+  (interactive
+   (if (use-region-p)
+       (list (region-beginning) (region-end))
+     (save-excursion
+       ;; find start of current transaction
+       (beginning-of-line)
+       (while (and (not (bobp))
+                   (looking-at "^[ \t]"))
+         (forward-line -1))
+       (let ((tbeg (point)))
+         ;; find end of transaction
+         (forward-line 1)
+         (while (and (not (eobp))
+                     (or (looking-at "^[ \t]")
+                         (looking-at "^$")))
+           (forward-line 1))
+         (list tbeg (point))))))
+
+  (save-excursion
+    (goto-char beg)
+    (while (< (point) end)
+      ;; find next transaction header
+      (when (looking-at
+             "^[0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\}")
+        (let ((tx-start (point))
+              tx-end postings sum missing-line currency)
+          ;; move to end of this transaction
+          (forward-line 1)
+          (while (and (not (eobp))
+                      (looking-at "^[ \t]"))
+            (forward-line 1))
+          (setq tx-end (point))
+
+          ;; collect postings
+          (save-excursion
+            (goto-char tx-start)
+            (forward-line 1)
+            (setq sum 0
+                  missing-line nil)
+
+            (while (< (point) tx-end)
+              (when (looking-at
+                     "^[ \t]+\\([^;\n]+?\\)\\(?:[ \t]+\\([-0-9.]+\\)[ \t]+\\([A-Z]+\\)\\)?[ \t]*$")
+                (let ((amount (match-string 2))
+                      (curr (match-string 3)))
+                  (if amount
+                      (progn
+                        (setq currency curr)
+                        (setq sum
+                              (+ sum (string-to-number amount))))
+                    ;; posting without amount
+                    (setq missing-line (point)))))
+              (forward-line 1)))
+
+          ;; fill missing amount
+          (when missing-line
+            (goto-char missing-line)
+            (end-of-line)
+            (insert
+             (format "%12.2f %s"
+                     (- sum)
+                     (or currency ""))))))
+      (forward-line 1))))
+
+
+
+
+
+(achievements-mode)
+
+(parrot-mode)
+
+(defvar IS-WSL t)
+
+;; Set org-file-apps based on the system type
+(when IS-WSL
+  (setq org-file-apps '((remote . emacs)
+                        (auto-mode . emacs)
+                        (directory . emacs)
+                        ("\\.mm\\'" . "wslview \"%s\"")
+                        ("\\.x?html?\\'" . "wslview \"%s\"")
+                        ("\\.pptx?\\'" . "wslview \"%s\"")
+                        ("\\.xlsx?\\'" . "wslview \"%s\"")
+                        ("\\.docx?\\'" . "wslview \"%s\"")
+                        ("\\.pdf\\'" .  "wslview \"%s\"")))
+  ;; need to set explorer for open weblinks and htmls seperately
+  (setq browse-url-generic-program "/mnt/c/Program Files/Mozilla Firefox/firefox.exe"))
+
+;; Windows 10 blocks Ctrl-Shift-0, so, using powertoy to cheat the system,
+;; when we press "C-)", it will become "C->"
+(cond (IS-WSL
+       (map! "C->" #'sp-forward-slurp-sexp))
+      (t (map! "C-)" #'sp-forward-slurp-sexp)))
+
+(defun win2wsl-clipped-image()
+  "use powershell to save the clipped image to wsl and load it to xclip"
+  (let* ((powershell "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe")
+         (file-name "//wsl$/Arch/home/chu/tmp/clip_win2wsl.png")
+         (file-name-wsl "~/tmp/clip_win2wsl.png")
+         )
+    (shell-command (concat powershell " -noprofile -command \"(Get-Clipboard -Format Image).Save(\\\"" file-name "\\\")\""))
+    (call-process-shell-command (concat "xclip -selection clipboard -t image/png -i " file-name-wsl))
+    )
+  )
+(advice-add 'org-download-clipboard :before #'win2wsl-clipped-image)
+
+(setq safe-local-variable-values '((eval org-hugo-auto-export-mode t)))
+
+(setq ignored-local-variable-values '((eval setq org-export-initial-scope 'subtree)))
