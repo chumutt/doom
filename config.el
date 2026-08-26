@@ -421,6 +421,9 @@
   (map! :map org-src-mode-map
         "<f9>" #'org-babel-tangle-from-edit-special))
 
+(require 'ob-dot)
+;; (add-to-list 'org-babel-load-languages '(dot . t))
+
 (defun markdown-convert-buffer-to-org ()
   "Convert the current buffer's content from markdown to orgmode format
    and save it with the current buffer's file name but with .org extension."

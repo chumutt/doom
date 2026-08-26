@@ -1082,6 +1082,11 @@ From [[https://stackoverflow.com/a/68962704][Dennis Proksch]]:
 #+end_src
 
 Do this: put pointer in a code block -> m ' -> F9 to tangle.
+*** Load =dot= programatically into org mode for graphs
+#+begin_src elisp
+(require 'ob-dot)
+;; (add-to-list 'org-babel-load-languages '(dot . t))
+#+end_src
 
 *** Convert markdown buffer to org
 
