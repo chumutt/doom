@@ -95,7 +95,6 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
       user-mail-address "example@donut.arpa")
 #+end_example
 
-
 * Config
 ** ox-hugo
 #+begin_src emacs-lisp
@@ -597,11 +596,15 @@ Path to daily-notes. This path is relative to org-roam-directory.
 
 (I don't remember why I put this here.)
 
+(I don't remember why I put this here.)
+
 #+begin_src elisp
 (require 'org-roam-protocol)
 #+end_src
 
 **** =org-roam-export= test :org:roam:
+
+(I don't remember why I put this here, either.)
 
 (I don't remember why I put this here, either.)
 
@@ -658,11 +661,17 @@ Citation Style Language (CSL) files can be used with org-cite.
 (setq org-archive-location "archives/%s_archive::")
 #+end_src
 
+**** Org Archive Location
+
+#+begin_src elisp
+(setq org-archive-location "archives/%s_archive::")
+#+end_src
+
 *** Download/capture for Org mode
 
 #+begin_src elisp
 (with-eval-after-load 'org
-  (require 'org-download))
+(require 'org-download))
 #+end_src
 
 *** Org-download image width attribute tag
@@ -682,7 +691,6 @@ Added automatically when images are attached. Does not affect actual image dimen
   (interactive)
   (+org/attach-file-and-insert-link "~/.screenshots/latest.png"))
 #+end_src
-
 *** LaTeX classes for org mode with org-latex-classes
 
 Helpful when editing LaTeX documents.
@@ -855,7 +863,6 @@ By default, using the Org mode archive function 'org-archive-subtree-default' do
 Want files tracked in your agenda? Use the ~C-c [~ keybinding in each file to add them to your custom.el to be tracked via your agenda.
 
 *** Org Mode Capture Templates Customization :org:templates:
-
 **** default version
 
 #+begin_example elisp
@@ -1215,7 +1222,6 @@ By [[https://www.emacswiki.org/emacs/Rick_Bielawski][Rick Bielawski]] ([[https:/
                       (setq i (+ 32 i)) i (single-key-description i)))
       (setq i (- i 96))))))
 #+end_src
-
 ** Emacs Relay Chat (~erc~) for Internet Relay Chat (IRC) :irc:
 
 Set user information.
@@ -1266,7 +1272,6 @@ Make sure you know where your Emacs cache backup directory actually resides befo
 #+end_src
 
 *** Trash instead of delete :dired:
-
 #+begin_src elisp
 (setq delete-by-moving-to-trash t)
 #+end_src
@@ -1365,7 +1370,7 @@ Ange-FTP defaults to =~/.netrc=  so you need to add this to your init script:
                      (regexp-quote "/ssh:dogleash")
                      "direct-async-process" t))
   ;; Tips to speed up connections
-  (setq tramp-verbose 0
+(setq tramp-verbose 0
         tramp-chunksize 2000
         tramp-use-ssh-controlmaster-options nil))
 #+end_src
@@ -1378,6 +1383,7 @@ Ange-FTP defaults to =~/.netrc=  so you need to add this to your init script:
 #+end_src
 
 ** Common Lisp
+
 
 *** ~roswell~ Lisp Sly helper :lisp:roswell:sly:repl:
 
@@ -1428,7 +1434,6 @@ Personally, I can't get a model other than the ~base~ one to download. I'm an En
 The ~num-processors~ function is a part of base Emacs: [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Process-Information.html#index-num_002dprocessors][GNU Emacs Manual 40.6 Process Information]].
 
 I wouldn't bother using anything other than the "base.en" model specified below by the two model and language variables.
-
 #+begin_src elisp
 (use-package whisper
   :config

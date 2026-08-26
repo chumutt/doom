@@ -271,8 +271,10 @@
 
 (setq org-archive-location "archives/%s_archive::")
 
+(setq org-archive-location "archives/%s_archive::")
+
 (with-eval-after-load 'org
-  (require 'org-download))
+(require 'org-download))
 
 (setq org-image-actual-width nil)
 

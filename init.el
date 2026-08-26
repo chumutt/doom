@@ -69,6 +69,7 @@
 
        :emacs
        (dired +icons +dirvish)
+
        electric          ; smarter, keyword-based electric-indent
        ibuffer           ; interactive buffer management
        undo              ; persistent, smarter undo for your inevitable mistakes
@@ -170,7 +171,7 @@
         +gnuplot
         +pomodoro
         +dragndrop
-        +present
++present
         )                ; organize your plain life in plain text
        ;;php               ; perl's insecure younger brother
        plantuml          ; diagrams for confusing people more
