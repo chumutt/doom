@@ -1847,7 +1847,9 @@ Windows Registry Editor Version 5.00
 Since this is the 'navi' branch this is (will be?) enabled by default:
 
 #+begin_src elisp
-(defvar IS-WSL t)
+(defvar IS-WSL
+  (when-let* ((uname (shell-command-to-string "uname -a")))
+    (string-match-p "Microsoft" uname)))
 #+end_src
 
 *** TODO open links in org-mode in emacs@wsl2 using windows apps
