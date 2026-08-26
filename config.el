@@ -544,7 +544,7 @@
                      (regexp-quote "/ssh:dogleash")
                      "direct-async-process" t))
   ;; Tips to speed up connections
-  (setq tramp-verbose 0
+(setq tramp-verbose 0
         tramp-chunksize 2000
         tramp-use-ssh-controlmaster-options nil))
 
