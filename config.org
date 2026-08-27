@@ -107,6 +107,20 @@ Some functionality uses this to identify you, e.g. GPG configuration, email clie
 (setq explicit-shell-file-name "/bin/zsh")
 (setq vterm-shell "/bin/zsh")
 #+end_src
+
+#+begin_src elisp
+;; Guard recentf-exclude against early references before recentf loads
+(when (boundp 'recentf-exclude)
+  (setq recentf-exclude (append recentf-exclude '("TAGS" "/tmp/" "\\.gpg$"))))
+#+end_src
+
+#+begin_src elisp
+;; Prevent winner-ring from breaking workspace/persp saves
+(after! persp-mode
+  (remove-hook 'persp-save-state-functions #'+workspace--save-winner-ring)
+  (remove-hook 'persp-save-state-functions #'persp-save-winner-ring))
+#+end_src
+
 ** Private Configuration
 
 #+begin_src elisp
@@ -1023,7 +1037,7 @@ Habit tracking
 
 #+begin_src elisp
 (after! org
-  (add-to-list 'org-modules 'org-habit)
+  (require 'org-habit)
   (setq org-habit-graph-column 60))
 #+end_src
 
@@ -1404,6 +1418,17 @@ Ange-FTP defaults to =~/.netrc=  so you need to add this to your init script:
 (after! lisp-mode
   (use-package! common-lisp-snippets
   :defer t))
+#+end_src
+
+#+begin_src elisp
+;; Drop empty-identity snippets that trigger yas warnings
+(after! yasnippet
+  (defun chu/clean-empty-yas-snippets ()
+    (when (boundp 'yas--snippets-table)
+      (setq yas--snippets-table
+            (cl-delete-if (lambda (s) (string= (yas--snippet-name s) ""))
+                          (hash-table-values yas--snippets-table)))))
+  (add-hook 'yasnippet-snippet-mode-hook #'chu/clean-empty-yas-snippets))
 #+end_src
 
 *** Sly completion fix :lisp:
