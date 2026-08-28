@@ -1195,10 +1195,6 @@ Do this: put pointer in a code block -> m ' -> F9 to tangle.
                                    (concat (file-name-sans-extension
                                             (buffer-file-name)) ".org"))))
 #+end_src
-*** Org-Habit module add
-#+begin_src elisp
-(add-to-list 'org-modules '(org-habit))
-#+end_src
 ** nasm-mode
 
 #+begin_src elisp
