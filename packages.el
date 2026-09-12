@@ -175,7 +175,8 @@
 (package! org-easy-img-insert)
 (package! org-drawio)
 (package! org-doing)
-(package! org-contacts)
+(package! org-contacts
+  :recipe (:host github :repo "tap87/org-contacts"))
 (package! org-clock-convenience)
 (package! org-chef)
 (package! org-books)
