@@ -164,6 +164,9 @@
 (package! howdoi)
 (package! org-gamedb)
 (package! org-gcal)
+(package! org-timeblock)
+(package! org-other-agenda
+  :recipe (:host github :repo "yibie/org-other-agenda"))
 (package! org-generate)
 (package! org-habit-stats)
 (package! org-hyperscheduler)
