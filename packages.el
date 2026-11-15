@@ -198,3 +198,6 @@
 (package! easy-hugo)
 (package! ein)
 (package! ox-hugo)
+(package! eglot)
+(package! djvu)
+(package! dired-duplicates)

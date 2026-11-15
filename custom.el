@@ -5,8 +5,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(org-agenda-files
-   '("~/Nextcloud/documents/org/roam/daily/2025-04-23.org"
-     "/home/chu/Nextcloud/documents/org/roam/20220726210346-important_dates.org"
+   '("/home/chu/Nextcloud/documents/org/roam/20220726210346-important_dates.org"
      "/home/chu/Nextcloud/documents/org/roam/20221004221829-todo.org"))
  '(package-selected-packages '(djvu eglot)))
 (custom-set-faces
