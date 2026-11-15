@@ -162,7 +162,7 @@
        ;;ocaml             ; an objective camel
        (org
         ;;+pretty
-        +roam2
+        +roam
         +hugo
         +pandoc
         +journal
