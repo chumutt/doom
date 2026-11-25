@@ -255,6 +255,10 @@ time will simply show nothing.
           (unless (or (string-empty-p raw) (string= raw "-"))
             (ignore-errors (parse-iso8601-time-string raw))))))
 
+  ;; Pin the calendar emoji to Noto Color Emoji; without this Emacs falls
+  ;; back to a monochrome symbol font for it in the modeline.
+  (set-fontset-font t '(#x1F4C5 . #x1F4C5) "Noto Color Emoji")
+
   (doom-modeline-def-segment buffer-creation-date
     "The creation (birth) date of the current buffer's file."
     (when-let* ((file (buffer-file-name (buffer-base-buffer)))
